@@ -1,0 +1,9 @@
+{% extends '/home/pawel/Kurs_Python/Team_travels_planner/travel_planner_app/templates/base.html' %}
+{% block body %}
+    <h2>Add new country:</h2>
+    <form action="{% url "add-country" %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Add">
+    </form>
+{% endblock %}

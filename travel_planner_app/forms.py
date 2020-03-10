@@ -19,16 +19,25 @@ class CityForm(ModelForm):
         fields = '__all__'
 
 
+#?
 class AirportForm(ModelForm):
     class Meta:
         model = Airport
         fields = '__all__'
 
 
-class TicketForm(ModelForm):
-    class Meta:
-        model = Ticket
-        fields = '__all__'
+class TicketForm(forms.Form):
+    travel_booking_summary = forms.ModelChoiceField(queryset=TravelBookingSummary.objects.all())
+    travel_date_start = forms.DateField()
+    travel_date_end = forms.DateField()
+    airport_departure = forms.CharField()
+    airport_arrival = forms.CharField()
+    ticket_cost = forms.DecimalField()
+    supervisor_approval = forms.NullBooleanField()
+
+
+#choices = tuple(TravelBookingSummary.objects.all().values_list())
+#    travel_booking_summary = forms.ChoiceField(choices=choices)
 
 
 class VisaForm(ModelForm):
@@ -43,25 +52,40 @@ class HotelForm(ModelForm):
         fields = '__all__'
 
 
-class HotelBookingForm(ModelForm):
-    class Meta:
-        model = HotelBooking
-        fields = '__all__'
+class HotelBookingForm(forms.Form):
+    travel_booking_summary = forms.ModelChoiceField(queryset=TravelBookingSummary.objects.all())
+    hotel = forms.ModelChoiceField(queryset=Hotel.objects.all())
+    check_in = forms.DateField()
+    check_out = forms.DateField()
+    cost_per_stay = forms.DecimalField()
 
 
 class TravelBookingSummaryForm(ModelForm):
-    class Meta:
-        model = TravelBookingSummary
-        fields = '__all__'
+    travel_calendar = forms.ModelChoiceField(queryset=TravelCalendar.objects.all())
+    employee_comment = forms.CharField(label='Add your comment', max_length=500)
+    supervisor_comment = forms.CharField(label='Add your comment', max_length=500)
 
 
 class TravelCalendar(ModelForm):
-    class Meta:
-        model = TravelCalendar
-        fields = '__all__'
+    employee = forms.ModelChoiceField(queryset=Employee.objects.all())
+    travel_date_start = forms.DateField()
+    travel_date_end = forms.DateField()
+    city_from = forms.ModelChoiceField(queryset=City.objects.all())
+    city_destination = forms.CharField(label='Travel destination (city)', max_length=64)
+    country_destination = forms.CharField(label='Travel destination (country)', max_length=64)
+    travel_purpose_description = forms.Textarea()
+    employee_approval = forms.NullBooleanField()
+    supervisor_approval = forms.NullBooleanField()
+    notification_advance = forms.IntegerField()
 
 
 class EmployeeForm(ModelForm):
     class Meta:
         model = Employee
         fields = '__all__'
+
+
+class AddUserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ("username", "password1", "password2", "first_name", "last_name", "email")

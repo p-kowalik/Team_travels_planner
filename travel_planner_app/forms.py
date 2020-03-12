@@ -19,7 +19,6 @@ class CityForm(ModelForm):
         fields = '__all__'
 
 
-#?
 class AirportForm(ModelForm):
     class Meta:
         model = Airport
@@ -34,10 +33,6 @@ class TicketForm(forms.Form):
     airport_arrival = forms.ModelChoiceField(queryset=Airport.objects.all())
     ticket_cost = forms.DecimalField()
     supervisor_approval = forms.NullBooleanField()
-
-
-#choices = tuple(TravelBookingSummary.objects.all().values_list())
-#    travel_booking_summary = forms.ChoiceField(choices=choices)
 
 
 class VisaForm(ModelForm):
@@ -57,13 +52,12 @@ class HotelBookingForm(forms.Form):
     hotel = forms.ModelChoiceField(queryset=Hotel.objects.all())
     check_in = forms.DateField()
     check_out = forms.DateField()
-    cost_per_stay = forms.DecimalField()
 
 
 class TravelBookingSummaryForm(forms.Form):
     travel_calendar = forms.ModelChoiceField(queryset=TravelCalendar.objects.all())
-    employee_comment = forms.CharField(label='Add your comment', max_length=500)
-    supervisor_comment = forms.CharField(label='Add your comment', max_length=500)
+    employee_comment = forms.CharField(label='Employee comment', max_length=500)
+    supervisor_comment = forms.CharField(label='Supervisor comment', max_length=500)
 
 
 class TravelCalendarForm(forms.Form):
@@ -71,12 +65,12 @@ class TravelCalendarForm(forms.Form):
     travel_date_start = forms.DateField()
     travel_date_end = forms.DateField()
     city_from = forms.ModelChoiceField(queryset=City.objects.all())
-    city_destination = forms.ModelChoiceField(queryset=City.objects.all())  #forms.CharField(label='Travel destination (city)', max_length=64)
-    country_destination = forms.ModelChoiceField(queryset=Country.objects.all())  #forms.CharField(label='Travel destination (country)', max_length=64)
-    travel_purpose_description = forms.Textarea()
+    city_destination = forms.ModelChoiceField(queryset=City.objects.all())
+    country_destination = forms.ModelChoiceField(queryset=Country.objects.all())
     employee_approval = forms.NullBooleanField()
     supervisor_approval = forms.NullBooleanField()
     notification_advance = forms.IntegerField()
+    travel_purpose_description = forms.Textarea()
 
 
 class EmployeeForm(ModelForm):

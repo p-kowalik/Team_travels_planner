@@ -1,8 +1,7 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block body %}
 
-    <h2>List of travels starting over next 14 days</h2>
-        <table border="1">
+    <table border="1">
         <tr>
             <td>id</td>
             <td>employee</td>
@@ -27,21 +26,11 @@
                 <td>{{ booking.emptravel_purpose_descriptionloyee }}</td>
                 <td>{{ booking.employee_approval }}</td>
                 <td>{{ booking.supervisor_approval }}</td>
-                <td><a href="/booking_details/{{ booking.id }}/">Details</a></td>
+                <td><a href="/booking_details/{{ booking.id }}/">{{ booking.employee }}</a></td>
                 <td><a href="/edit_booking/{{ booking.id }}/">Edit</a></td>
                 <td><a href="/booking_delete/{{ booking.id }}/">Delete</a></td>
             </tr>
         {% endfor %}
     </table>
-    <h3><a href='/bookings_upcoming/'><input type="submit" value="See all future travels"/></a> </h3>
-<br><br>
-
-    <h2>Manage current and future reservations</h2>
-    <ul>
-        <h3><a href='/manage_trips/'><input type="submit" value="Manage trips"/></a></h3>
-        <h3><a href='/manage_employees/'><input type="submit" value="Manage employees and users"/></a></h3>
-        <h3><a href='/manage_locations/'><input type="submit" value="Manage locations"/></a></h3>
-    </ul>
-
 
 {% endblock %}

@@ -7,12 +7,12 @@ from travel_planner_app.models import *
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        fake = Faker("pl_PL")
+        fake = Faker("")
         countries = Country.objects.all()
         for country in countries:
             for _ in range(10):
                 City.objects.create(
-                    name=fake.country(),
+                    name=fake.city(),
                     country=country
                 )
         self.stdout.write("Dodano miasta do krajów")

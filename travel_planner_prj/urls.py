@@ -23,6 +23,7 @@ urlpatterns = [
     path('', LandingPage.as_view(), name="start"),
     path('base/', Base.as_view(), name="base"),
     path('main_menu/', MainMenu.as_view(), name="menu"),
+    path('bookings_upcoming/', BookingsUpcoming.as_view(), name="bookings-upcoming"),
     path('manage_trips/', ManageTrips.as_view(), name="manage-trips"),
     path('manage_employees/', ManageEmployees.as_view(), name="manage-employees"),
     path('manage_locations/', ManageLocations.as_view(), name="manage-locations"),

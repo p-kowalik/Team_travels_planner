@@ -38,8 +38,17 @@ Logowanie (*)
 ###Notatki i info developer
 superuser:
 pawel
-pawel.mariusz.kowalik@gmail.com
-12_travelplanner
+DJANGO User name:  pawel.mariusz.kowalik@gmail.com
+password: 12_travelplanner
+
+
+Supervisor:
+DJANGO User name:  Supervisor  |  password:  12_travelplanner
+Gmail account:  supervisortravels@gmail.com  |  password:  12_travelplanner
+
+Coordinator:
+DJANGO User name:  Coordinator  |  password:  11_travelplanner
+Gmail account:  supervisortravels@gmail.com  |  password:  12_travelplanner
 
 users:
 employee1

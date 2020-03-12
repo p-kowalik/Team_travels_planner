@@ -30,8 +30,8 @@ class TicketForm(forms.Form):
     travel_booking_summary = forms.ModelChoiceField(queryset=TravelBookingSummary.objects.all())
     travel_date_start = forms.DateField()
     travel_date_end = forms.DateField()
-    airport_departure = forms.CharField()
-    airport_arrival = forms.CharField()
+    airport_departure = forms.ModelChoiceField(queryset=Airport.objects.all())
+    airport_arrival = forms.ModelChoiceField(queryset=Airport.objects.all())
     ticket_cost = forms.DecimalField()
     supervisor_approval = forms.NullBooleanField()
 
@@ -60,19 +60,19 @@ class HotelBookingForm(forms.Form):
     cost_per_stay = forms.DecimalField()
 
 
-class TravelBookingSummaryForm(ModelForm):
+class TravelBookingSummaryForm(forms.Form):
     travel_calendar = forms.ModelChoiceField(queryset=TravelCalendar.objects.all())
     employee_comment = forms.CharField(label='Add your comment', max_length=500)
     supervisor_comment = forms.CharField(label='Add your comment', max_length=500)
 
 
-class TravelCalendar(ModelForm):
+class TravelCalendarForm(forms.Form):
     employee = forms.ModelChoiceField(queryset=Employee.objects.all())
     travel_date_start = forms.DateField()
     travel_date_end = forms.DateField()
     city_from = forms.ModelChoiceField(queryset=City.objects.all())
-    city_destination = forms.CharField(label='Travel destination (city)', max_length=64)
-    country_destination = forms.CharField(label='Travel destination (country)', max_length=64)
+    city_destination = forms.ModelChoiceField(queryset=City.objects.all())  #forms.CharField(label='Travel destination (city)', max_length=64)
+    country_destination = forms.ModelChoiceField(queryset=Country.objects.all())  #forms.CharField(label='Travel destination (country)', max_length=64)
     travel_purpose_description = forms.Textarea()
     employee_approval = forms.NullBooleanField()
     supervisor_approval = forms.NullBooleanField()

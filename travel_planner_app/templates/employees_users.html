@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block body %}
+    <ul>
+        <li>
+            <h3>Manage employees and users</h3>
+            <h4>Employees</h4>
+            <a href='/add_employee/'><input type="submit" value="Add new employee"/></a>
+            <a href='/edit_employee/'><input type="submit" value="Edit employee"/></a>
+            <a href='/delete_employee/'><input type="submit" value="Delete employee"/></a>
+            <h4>Users</h4>
+            <a href='/add_user/'><input type="submit" value="Add new user"/></a>
+            <a href='/edit_user/'><input type="submit" value="Edit user"/></a>
+            <a href='/delete_user/'><input type="submit" value="Delete user"/></a>
+        </li>
+    </ul>
+    <br>
+
+{% endblock %}

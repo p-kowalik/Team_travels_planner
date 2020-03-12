@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block body %}
+    <ul>
+        <li>
+            <h3>Manage locations</h3>
+            <h4>Countries</h4>
+            <a href='/add_country/'><input type="submit" value="Add new country"/></a>
+            <a href='/edit_country/'><input type="submit" value="Edit country"/></a>
+            <a href='/delete_country/'><input type="submit" value="Delete country"/></a>
+            <h4>Cities</h4>
+            <a href='/add_city/'><input type="submit" value="Add new city"/></a>
+            <a href='/edit_city/'><input type="submit" value="Edit city"/></a>
+            <a href='/delete_city/'><input type="submit" value="Delete city"/></a>
+            <h4>Airports</h4>
+            <a href='/add_airport/'><input type="submit" value="Add new airport"/></a>
+            <a href='/edit_airport/'><input type="submit" value="Edit airport"/></a>
+            <a href='/delete_airport/'><input type="submit" value="Delete airport"/></a>
+            <h4>Hotels</h4>
+            <a href='/add_hotel/'><input type="submit" value="Add new hotel"/></a>
+            <a href='/edit_hotel/'><input type="submit" value="Edit hotel"/></a>
+            <a href='/delete_hotel/'><input type="submit" value="Delete hotel"/></a>
+        </li>
+    </ul>
+    <br>
+
+{% endblock %}

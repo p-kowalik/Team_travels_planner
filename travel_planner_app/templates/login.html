@@ -1,4 +1,4 @@
-{% extends "/home/pawel/Kurs_Python/Team_travels_planner/travel_planner_app/templates/base.html" %}
+{% extends "landing_page.html" %}
 
 {% block body %}
 
@@ -29,7 +29,7 @@
 </table>
 
 <input type="submit" value="login">
-<input type="hidden" name="next" value="/">
+<input type="hidden" name="next" value="/base/">
 </form>
 
 {# Assumes you setup the password_reset view in your URLconf #}

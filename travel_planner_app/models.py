@@ -15,7 +15,7 @@ class City(models.Model):
     country = models.ForeignKey('Country', on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.country) + str(" ") + str(self.name)
+        return self.name  #str(self.country) + str(" ") + str(self.name)
 
 
 class Airport(models.Model):
@@ -25,6 +25,7 @@ class Airport(models.Model):
 
     def __str__(self):
         return str(self.city) + str(" ") + str(self.name) + str(" ") + str(self.IATA_code)
+
 
 class Ticket(models.Model):
     travel_booking_summary = models.ForeignKey('TravelBookingSummary', on_delete=models.CASCADE)
@@ -64,8 +65,6 @@ class HotelBooking(models.Model):
     cost_per_stay = models.DecimalField(max_digits=5, decimal_places=2)
 
 
-
-
 class TravelBookingSummary(models.Model):
     travel_calendar = models.ForeignKey('TravelCalendar', on_delete=models.CASCADE)
     employee_comment = models.TextField(null=True)
@@ -73,6 +72,7 @@ class TravelBookingSummary(models.Model):
 
     def __str__(self):
         return self.travel_calendar
+
 
 class TravelCalendar(models.Model):
     employee = models.ForeignKey('Employee', on_delete=models.CASCADE)
@@ -87,8 +87,6 @@ class TravelCalendar(models.Model):
     notification_advance = models.IntegerField(default=14)
 
 
-
-
 class Employee(models.Model):
     forename = models.CharField(max_length=64)
     surname = models.CharField(max_length=64)
@@ -101,3 +99,6 @@ class Employee(models.Model):
     address = models.TextField()
     phone = models.CharField(max_length=30)
     email = models.EmailField()
+
+    def __str__(self):
+        return str(self.surname) + str(" ") + str(self.forename)

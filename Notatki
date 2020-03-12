@@ -1,15 +1,47 @@
 Zadania projekt końcowy
 
-Logowanie
-Wylogowanie
-Rejestracja nowego użytkownika
-Wypełnienie bazy danych
-CRUD danych do każdej tabeli
-Wysyłanie maili
-	- zdefiniowanie triggerów
+###landing page
+welcome message (*)
+Logowanie (*)
+
+###main page:
+- lista (info) podróży nadchodzących w nadchodzących 2 tygodniach (z kalendarza)
+- lista (info) rezerwacji w toku (ze statusem akceptów i wysłanych notyfikacji)
+- zarządzanie DB
+	- zarządzaj trips
+	- zarządzaj locations
+	- zarządzaj employees
+- wylogowanie
+	Rejestracja nowego użytkownika
+	
+	CRUD danych do każdej tabeli
+
+###user page
+- tylko swoje podróże (widok)
+- zostawianie komentarza dla przyszłych
+- akcept dla najbliższej podróży (z warunkiem deadline)
+
+
+###funkcjonalności
+- faker procedury do wypełnienia bazy danych
+- kalendarz ze zdefiniowanymi triggerami
+- Wysyłanie maili
+	- o nadchodzących podróżach
+	- o konieczności zatwierdzenia (employee)
+	- o konieczności zatwierdzenia (supervisor)
+- bootstrap
+- testy
 
 
 
+
+###Notatki i info developer
+superuser:
+pawel
+pawel.mariusz.kowalik@gmail.com
+12_travelplanner
+
+users:
 employee1
 12employee1
 Jan
@@ -21,4 +53,11 @@ employee3
 Adam
 Mickiewicz
 a.mickiewicz@gmail.com
+
+email do wysyłania notyfikacji:
+travel_planner_notifications@gmail.com
+pass: 11_Travel_planner_admin
+
+
+
 

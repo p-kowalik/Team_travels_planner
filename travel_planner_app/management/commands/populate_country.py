@@ -1,7 +1,7 @@
+from django.core.management.base import BaseCommand
 from faker import Faker
 from faker.providers import address
 from random import randint
-from django.core.management.base import BaseCommand
 from travel_planner_app.models import Country
 
 

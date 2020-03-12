@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block body %}
+    <ul>
+        <li>
+            <h3>Manage trips</h3>
+            <h4>Travel calendar</h4>
+            <a href='/add_travel/'><input type="submit" value="Add new travel"/></a>
+            <a href='/edit_travel/'><input type="submit" value="Edit travel"/></a>
+            <a href='/delete_travel/'><input type="submit" value="Delete travel"/></a>
+            <h4>Ticket</h4>
+            <a href='/add_ticket/'><input type="submit" value="Add new ticket"/></a>
+            <a href='/edit_ticket/'><input type="submit" value="Edit ticket"/></a>
+            <a href='/delete_ticket/'><input type="submit" value="Delete ticket"/></a>
+            <h4>Visa</h4>
+            <a href='/add_visa/'><input type="submit" value="Add new visa information"/></a>
+            <a href='/edit_visa/'><input type="submit" value="Edit visa information"/></a>
+            <a href='/delete_visa/'><input type="submit" value="Delete visa information"/></a>
+            <h4>Hotel booking</h4>
+            <a href='/add_hotel_booking/'><input type="submit" value="Add new hotel booking"/></a>
+            <a href='/edit_hotel_booking/'><input type="submit" value="Edit hotel booking"/></a>
+            <a href='/delete_hotel_booking/'><input type="submit" value="Delete hotel booking"/></a>
+            <h4>Travel booking summary</h4>
+            <a href='/add_travel_booking_summary/'><input type="submit" value="Add new travel booking summary"/></a>
+            <a href='/edit_travel_booking_summary/'><input type="submit" value="Edit travel booking summary"/></a>
+            <a href='/delete_travel_booking_summary/'><input type="submit" value="Delete travel booking summary"/></a>
+        </li>
+
+    </ul>
+    <br>
+
+{% endblock %}

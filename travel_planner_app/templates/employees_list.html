@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block body %}
+
+    <table border="1">
+        <tr>
+            <td>Id</td>
+            <td>Forename</td>
+            <td>Surname</td>
+            <td>Passport_no</td>
+            <td>Passport_validity</td>
+            <td>Birthday</td>
+            <td>Nationality</td>
+            <td>Residence_country</td>
+            <td>Residence_city</td>
+            <td>Address</td>
+            <td>Phone</td>
+            <td>Email</td>
+            <td>Username</td>
+            <td>Edit</td>
+            <td>Delete</td>
+        </tr>
+        {% for employee in employees %}
+            <tr>
+                <td>{{ employee.id }}</td>
+                <td>{{ employee.forename }}</td>
+                <td>{{ employee.surname }}</td>
+                <td>{{ employee.passport_no }}</td>
+                <td>{{ employee.passport_validity }}</td>
+                <td>{{ employee.birthday }}</td>
+                <td>{{ employee.nationality }}</td>
+                <td>{{ employee.residence_country }}</td>
+                <td>{{ employee.residence_city }}</td>
+                <td>{{ employee.address }}</td>
+                <td>{{ employee.phone }}</td>
+                <td>{{ employee.email }}</td>
+                <td>{{ employee.user }}</td>
+                <td><a href="/update_employee/{{ employee.id }}/">Update</a></td>
+                <td><a href="/delete_employee/{{ employee.id }}/">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block body %}
+
+    <table border="1">
+        <tr>
+            <td>Id</td>
+            <td>User name</td>
+            <td>Forename</td>
+            <td>Surname</td>
+            <td>Email</td>
+            <td>Is staff</td>
+            <td>Last login</td>
+            <td>Edit</td>
+            <td>Delete</td>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.is_staff }}</td>
+                <td>{{ employee.last_login }}</td>
+                <td><a href="/update_user/{{ user.id }}/">Update</a></td>
+                <td><a href="/delete_user/{{ user.id }}/">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

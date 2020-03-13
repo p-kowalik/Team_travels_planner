@@ -27,17 +27,25 @@ urlpatterns = [
     path('manage_trips/', ManageTrips.as_view(), name="manage-trips"),
     path('manage_employees/', ManageEmployees.as_view(), name="manage-employees"),
     path('manage_locations/', ManageLocations.as_view(), name="manage-locations"),
+
+    path('add_user/', AddUserView.as_view(), name="add-user"),
+    path('list_user/', UsersList.as_view(), name="list-user"),
+    path('update_user/<int:pk>/', UpdateUserView.as_view(template_name='update_user_form.html'), name="update-user"),
+    path('delete_user/<int:id>/', DeleteUserView.as_view(), name="delete-user"),
+
+    path('add_employee/', AddEmployeeView.as_view(), name="add-employee"),
+    path('list_employee/', EmployeesList.as_view(), name="list-employee"),
+    path('update_employee/<int:pk>/', UpdateEmployeeView.as_view(template_name='update_employee_form.html'), name="update-employee"),
+    path('delete_employee/<int:id>/', DeleteEmployeeView.as_view(), name="delete-employee"),
+
     path('add_country/', AddCountryView.as_view(), name="add-country"),
     path('add_city/', AddCityView.as_view(), name="add-city"),
-    path('add_user/', AddUserView.as_view(), name="add-user"),
-    path('add_employee/', AddEmployeeView.as_view(), name="add-employee"),
     path('add_airport/', AddAirportView.as_view(), name="add-airport"),
     path('add_visa/', AddVisaView.as_view(), name="add-visa"),
     path('add_ticket/', AddTicketView.as_view(), name="add-ticket"),
     path('add_hotel_booking/', AddHotelBookingView.as_view(), name="add-hotel-booking"),
     path('add_travel_booking_summary/', AddTravelBookingSummaryView.as_view(), name="add-travel-booking-summary"),
     path('add_travel/', AddTravelCalendarView.as_view(), name="add-travel-calendar"),
-
 
     path('accounts/', include('django.contrib.auth.urls')),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),

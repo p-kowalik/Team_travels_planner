@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -90,6 +91,7 @@ class TravelCalendar(models.Model):
                + str("; travel end: ") + str(self.travel_date_end)
 
 
+# class Employee(AbstractUser):
 class Employee(models.Model):
     forename = models.CharField(max_length=64)
     surname = models.CharField(max_length=64)
@@ -102,6 +104,8 @@ class Employee(models.Model):
     address = models.TextField()
     phone = models.CharField(max_length=128)
     email = models.EmailField()
+    user = models.OneToOneField(User, null=True, on_delete=models.SET_NULL)
+    # invitiation_code = models.CharField(max_length=140)
 
     def __str__(self):
         return str(self.surname) + str(" ") + str(self.forename)

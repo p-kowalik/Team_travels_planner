@@ -69,8 +69,8 @@ class TravelCalendarForm(forms.Form):
     country_destination = forms.ModelChoiceField(queryset=Country.objects.all())
     employee_approval = forms.NullBooleanField()
     supervisor_approval = forms.NullBooleanField()
-    notification_advance = forms.IntegerField()
-    travel_purpose_description = forms.Textarea()
+    notification_advance = forms.IntegerField(initial=7)
+    travel_purpose_description = forms.CharField(max_length=500)
 
 
 class EmployeeForm(ModelForm):

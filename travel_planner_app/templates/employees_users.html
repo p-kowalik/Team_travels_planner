@@ -1,15 +1,18 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 {% block body %}
     <ul>
         <li>
-            <h3>Manage employees and users</h3>
+            <h3>Manage employees and users</h3><br><br>
             <h4>Employees</h4>
             <a href='/add_employee/'><input type="submit" value="Add new employee"/></a>
             <a href='/list_employee/'><input type="submit" value="Review/edit/delete employees"/></a>
-             <h4>Users</h4>
+            {% block employees %}
+            {% endblock %}<br><br>
+            <h4>Users</h4>
             <a href='/add_user/'><input type="submit" value="Add new user"/></a>
             <a href='/list_user/'><input type="submit" value="Review/edit/delete users"/></a>
-
+            {% block users %}
+            {% endblock %}
         </li>
     </ul>
     <br>

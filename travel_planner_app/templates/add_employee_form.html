@@ -1,10 +1,11 @@
-{% extends "base.html" %}
-{% block body %}
-    <h3>Add new employee</h3>
+{% extends "employees_users.html" %}
+{% block employees %}
+        <br><br>
+    <h5>Add new employee</h5>
     <form action="{% url "add-employee" %}" method="post">
         {% csrf_token %}
         {{ form }}
-        <input type="submit" value="Add"><br>
+        <input type="submit" value="Add"><br><br>
 
     </form>
 {% endblock %}

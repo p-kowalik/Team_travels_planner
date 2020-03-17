@@ -1,6 +1,5 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 {% block body %}
-
     <h2>List of travels starting over next 14 days</h2>
         <table border="1">
         <tr>
@@ -15,7 +14,6 @@
             <td>details</td>
             <td>edit</td>
             <td>delete</td>
-
         </tr>
         {% for booking in bookings %}
             <tr>
@@ -33,15 +31,6 @@
             </tr>
         {% endfor %}
     </table>
-    <h3><a href='/bookings_upcoming/'><input type="submit" value="See all future travels"/></a> </h3>
-<br><br>
-
-    <h2>Manage current and future reservations</h2>
-    <ul>
-        <h3><a href='/manage_trips/'><input type="submit" value="Manage trips"/></a></h3>
-        <h3><a href='/manage_employees/'><input type="submit" value="Manage employees and users"/></a></h3>
-        <h3><a href='/manage_locations/'><input type="submit" value="Manage locations"/></a></h3>
-    </ul>
-
-
 {% endblock %}
+
+

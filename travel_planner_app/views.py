@@ -39,6 +39,11 @@ def email_new_booking_summary(request):
     return redirect('base/')
 
 
+class LandingPageBootstrap(View):
+    def get(self, request):
+        return render(request, "index.html")
+
+
 class LandingPage(View):
     def get(self, request):
         return render(request, "landing_page.html")
@@ -141,22 +146,6 @@ class AddAirportView(LoginRequiredMixin, PermissionRequiredMixin, View):
             form.save()
             return redirect('/main_menu/')
         return render(request, 'add_airport_form.html', {'form': form})
-
-
-class AddVisaView(LoginRequiredMixin, PermissionRequiredMixin, View):
-    login_url = '/login/'
-    permission_required = 'view_user'
-
-    def get(self, request):
-        form = VisaForm()
-        return render(request, 'add_visa_form.html', {'form': form})
-
-    def post(self, request):
-        form = VisaForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/main_menu/')
-        return render(request, 'add_visa_form.html', {'form': form})
 
 
 class AddEmployeeView(LoginRequiredMixin, PermissionRequiredMixin, View):
@@ -298,6 +287,33 @@ class DeleteUserView(LoginRequiredMixin, PermissionRequiredMixin, View):
         return redirect('/main_menu/')
 
 
+class AddTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/login/'
+    permission_required = 'view_user'
+
+    def get(self, request):
+        form = TravelCalendarForm()
+        return render(request, 'add_travel_calendar_form.html', {'form': form})
+
+    def post(self, request):
+        form = TravelCalendarForm(request.POST)
+        if form.is_valid():
+            email_new_travel_booking(request)
+            TravelCalendar.objects.create(
+                employee=form.cleaned_data['employee'],
+                travel_date_start=form.cleaned_data['travel_date_start'],
+                travel_date_end=form.cleaned_data['travel_date_end'],
+                city_from=form.cleaned_data['city_from'],
+                city_destination=form.cleaned_data['city_destination'],
+                country_destination=form.cleaned_data['country_destination'],
+                employee_approval=form.cleaned_data['employee_approval'],
+                supervisor_approval=form.cleaned_data['supervisor_approval'],
+                notification_advance=form.cleaned_data['notification_advance'],
+                travel_purpose_description=form.cleaned_data['travel_purpose_description'],)
+            return redirect('/main_menu/')
+        return render(request, 'add_travel_calendar_form.html', {'form': form})
+
+
 class AddTicketView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
     permission_required = 'view_user'
@@ -319,6 +335,22 @@ class AddTicketView(LoginRequiredMixin, PermissionRequiredMixin, View):
                 supervisor_approval=form.cleaned_data['supervisor_approval'])
             return redirect('/main_menu/')
         return render(request, 'add_employee_form.html', {'form': form})
+
+
+class AddVisaView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/login/'
+    permission_required = 'view_user'
+
+    def get(self, request):
+        form = VisaForm()
+        return render(request, 'add_visa_form.html', {'form': form})
+
+    def post(self, request):
+        form = VisaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/main_menu/')
+        return render(request, 'add_visa_form.html', {'form': form})
 
 
 class AddHotelBookingView(LoginRequiredMixin, PermissionRequiredMixin, View):
@@ -360,30 +392,4 @@ class AddTravelBookingSummaryView(LoginRequiredMixin, PermissionRequiredMixin, V
             return redirect('/main_menu/')
         return render(request, 'add_travel_booking_summary_form.html', {'form': form})
 
-
-class AddTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
-    login_url = '/login/'
-    permission_required = 'view_user'
-
-    def get(self, request):
-        form = TravelCalendarForm()
-        return render(request, 'add_travel_calendar_form.html', {'form': form})
-
-    def post(self, request):
-        form = TravelCalendarForm(request.POST)
-        if form.is_valid():
-            email_new_travel_booking(request)
-            TravelCalendar.objects.create(
-                employee=form.cleaned_data['employee'],
-                travel_date_start=form.cleaned_data['travel_date_start'],
-                travel_date_end=form.cleaned_data['travel_date_end'],
-                city_from=form.cleaned_data['city_from'],
-                city_destination=form.cleaned_data['city_destination'],
-                country_destination=form.cleaned_data['country_destination'],
-                employee_approval=form.cleaned_data['employee_approval'],
-                supervisor_approval=form.cleaned_data['supervisor_approval'],
-                notification_advance=form.cleaned_data['notification_advance'],
-                travel_purpose_description=form.cleaned_data['travel_purpose_description'],)
-            return redirect('/main_menu/')
-        return render(request, 'add_travel_calendar_form.html', {'form': form})
 

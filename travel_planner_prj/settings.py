@@ -121,6 +121,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+#STATICFILES_DIRS = (
+#
+#    # path to bootstrap folder
+#    '/home/pawel/Kurs_Python/Team_travels_planner/travel_planner_app/static/bootstrap',
+#)
 
 STATIC_URL = '/static/'
 

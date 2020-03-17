@@ -70,3 +70,22 @@ pass: 11_Travel_planner_admin
 
 
 
+
+
+import requests
+username = 'pawelkowalik'
+token = '34f6961d165da5ad44690ad98a6d42916d8a16a7'
+
+response = requests.get(
+  'https://www.pythonanywhere.com/api/v0/user/{username}/cpu/'.format(
+      username=username
+  ),
+  headers={'Authorization': 'Token {token}'.format(token=token)}
+)
+if response.status_code == 200:
+  print('CPU quota info:')
+  print(response.content)
+else:
+  print('Got unexpected status code {}: {!r}'.format(response.status_code, response.content))
+
+

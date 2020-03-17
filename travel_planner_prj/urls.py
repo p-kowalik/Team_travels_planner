@@ -21,6 +21,8 @@ from travel_planner_app.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', LandingPage.as_view(), name="start"),
+    path('boot', LandingPageBootstrap.as_view(), name="startBoot"),
+
     path('base/', Base.as_view(), name="base"),
     path('main_menu/', MainMenu.as_view(), name="menu"),
     path('bookings_upcoming/', BookingsUpcoming.as_view(), name="bookings-upcoming"),
@@ -41,6 +43,7 @@ urlpatterns = [
     path('add_country/', AddCountryView.as_view(), name="add-country"),
     path('add_city/', AddCityView.as_view(), name="add-city"),
     path('add_airport/', AddAirportView.as_view(), name="add-airport"),
+
     path('add_visa/', AddVisaView.as_view(), name="add-visa"),
     path('add_ticket/', AddTicketView.as_view(), name="add-ticket"),
     path('add_hotel_booking/', AddHotelBookingView.as_view(), name="add-hotel-booking"),

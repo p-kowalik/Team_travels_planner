@@ -4,7 +4,7 @@
     <h5>Add new user</h5>
     <form action="{% url "add-user" %}" method="post">
         {% csrf_token %}
-        {{ form }}
+        {{ form.as_ul }}
         <input type="submit" value="Add"><br>
 
     </form>

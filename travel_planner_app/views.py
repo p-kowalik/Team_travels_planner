@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.core.mail import EmailMessage
 from django import forms
@@ -64,7 +65,7 @@ class MainMenu(LoginRequiredMixin, View):
     def get(self, request):
         date_in_14_days = (datetime.now() + timedelta(days=14)).strftime('%Y-%m-%d')
         bookings = TravelCalendar.objects.filter(travel_date_start__gt=date.today()).filter(travel_date_start__lt=date_in_14_days)
-        return render(request, "menu.html", {"bookings": bookings})
+        return render(request, "bookings_upcoming_list.html", {"bookings": bookings})
 
 
 class BookingsUpcoming(LoginRequiredMixin, PermissionRequiredMixin, View):
@@ -72,7 +73,15 @@ class BookingsUpcoming(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'view_user'
 
     def get(self, request):
-        bookings = TravelCalendar.objects.filter(travel_date_start__gt=date.today())
+        bookings_list = TravelCalendar.objects.filter(travel_date_start__gt=date.today())
+        page = request.GET.get('page', 1)
+        paginator = Paginator(bookings_list, 10)
+        try:
+            bookings = paginator.page(page)
+        except PageNotAnInteger:
+            bookings = paginator.page(1)
+        except EmptyPage:
+            bookings = paginator.page(paginator.num_pages)
         return render(request, "future_travels.html", {"bookings": bookings})
 
 
@@ -169,7 +178,15 @@ class EmployeesList(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'view_user'
 
     def get(self, request):
-        employees = Employee.objects.all()
+        employees_list = Employee.objects.all()
+        page = request.GET.get('page', 1)
+        paginator = Paginator(employees_list, 10)
+        try:
+            employees = paginator.page(page)
+        except PageNotAnInteger:
+            employees = paginator.page(1)
+        except EmptyPage:
+            employees = paginator.page(paginator.num_pages)
         return render(request, "employees_list.html", {"employees": employees})
 
 

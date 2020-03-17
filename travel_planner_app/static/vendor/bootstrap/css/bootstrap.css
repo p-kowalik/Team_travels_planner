@@ -1726,6 +1726,7 @@ pre code {
 .table-dark > th,
 .table-dark > td {
   background-color: #c6c8ca;
+
 }
 
 .table-dark th,
@@ -1774,6 +1775,8 @@ pre code {
 .table-dark {
   color: #fff;
   background-color: #343a40;
+  table-layout: auto;
+  width:90%;
 }
 
 .table-dark th,

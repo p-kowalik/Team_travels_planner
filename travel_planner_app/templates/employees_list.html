@@ -1,18 +1,19 @@
 {% extends "employees_users.html" %}
 {% block employees %}
-        <br><br>
+    <br><br>
 
-    <table border="1">
+    <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        <thead>
         <tr>
             <td>Id</td>
             <td>Forename</td>
             <td>Surname</td>
-            <td>Passport_no</td>
-            <td>Passport_validity</td>
+            <td>Passport no</td>
+            <td>Passport validity</td>
             <td>Birthday</td>
             <td>Nationality</td>
-            <td>Residence_country</td>
-            <td>Residence_city</td>
+            <td>Residence country</td>
+            <td>Residence city</td>
             <td>Address</td>
             <td>Phone</td>
             <td>Email</td>
@@ -20,12 +21,14 @@
             <td>Edit</td>
             <td>Delete</td>
         </tr>
+        </thead>
+        <tbody>
         {% for employee in employees %}
             <tr>
                 <td>{{ employee.id }}</td>
                 <td>{{ employee.forename }}</td>
                 <td>{{ employee.surname }}</td>
-                <td>{{ employee.passport_no }}</td>
+                <td>{{ employee.passportno }}</td>
                 <td>{{ employee.passport_validity }}</td>
                 <td>{{ employee.birthday }}</td>
                 <td>{{ employee.nationality }}</td>
@@ -35,10 +38,31 @@
                 <td>{{ employee.phone }}</td>
                 <td>{{ employee.email }}</td>
                 <td>{{ employee.user }}</td>
-                <td><a href="/update_employee/{{ employee.id }}/">Update</a></td>
-                <td><a href="/delete_employee/{{ employee.id }}/">Delete</a></td>
+                <td><a href="/update_employee/{{ employee.id }}/" class="btn btn-info" role="button">Update</a></td>
+                <td><a href="/delete_employee/{{ employee.id }}/" class="btn btn-danger" role="button">Delete</a></td>
             </tr>
         {% endfor %}
+        </tbody>
     </table><br><br>
+
+    {% if employees.has_other_pages %}
+        <ul class="pagination">
+            {% if employees.has_previous %}
+                <a href="?page=1">&laquo; First page &emsp;</a>
+                <a href="?page={{ employees.previous_page_number }}">Previous &emsp;</a>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            <span class="current">
+                Page {{ employees.number }} of {{ employees.paginator.num_pages }}&emsp;
+                </span>
+            {% if employees.has_next %}
+                <a href="?page={{ employees.next_page_number }}"> Next &emsp;</a>
+                <a href="?page={{ employees.paginator.num_pages }}">Last page &raquo;</a>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
 
 {% endblock %}

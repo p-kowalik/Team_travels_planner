@@ -21,7 +21,7 @@ from travel_planner_app.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', LandingPage.as_view(), name="start"),
-    path('boot', LandingPageBootstrap.as_view(), name="startBoot"),
+    path('boot/', LandingPageBootstrap.as_view(), name="startBoot"),
 
     path('base/', Base.as_view(), name="base"),
     path('main_menu/', MainMenu.as_view(), name="menu"),

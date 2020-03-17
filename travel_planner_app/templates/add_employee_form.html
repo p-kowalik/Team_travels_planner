@@ -3,9 +3,10 @@
         <br><br>
     <h5>Add new employee</h5>
     <form action="{% url "add-employee" %}" method="post">
+    <div class="form-group">
         {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Add"><br><br>
-
+        {{ form.as_ul }}
+        <input class="form-control" type="submit" value="Add"><br><br>
+    </div>
     </form>
 {% endblock %}

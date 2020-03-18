@@ -3,6 +3,7 @@
 *.pyo
 env/
 tags
+venv/
 
 
 # Created by https://www.gitignore.io/api/django,python,visualstudiocode

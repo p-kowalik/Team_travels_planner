@@ -1,20 +1,26 @@
 {% extends 'index.html' %}
 {% block body %}
-    <ul>
-        <li>
-            <h3>Manage employees and users</h3><br><br>
-            <h4>Employees</h4>
-            <a href='/add_employee/'><input type="submit" value="Add new employee"/></a>
-            <a href='/list_employee/'><input type="submit" value="Review/edit/delete employees"/></a>
-            {% block employees %}
-            {% endblock %}<br><br>
-            <h4>Users</h4>
-            <a href='/add_user/'><input type="submit" value="Add new user"/></a>
-            <a href='/list_user/'><input type="submit" value="Review/edit/delete users"/></a>
-            {% block users %}
-            {% endblock %}
-        </li>
-    </ul>
-    <br>
+    <h2>Manage employees and users&nbsp;&nbsp;<a href='/manage_employees/' class="btn btn-primary" role="button">back</a></h2><br>
+    <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        <thead>
+        <tr>
+            <td><h4>Action</h4></td>
+            <td><h4>Add</h4></td>
+            <td><h4>Review/Update/Delete</h4></td>
+        </tr>
+        </thead>
+        <tr>
+            <td>Employees</td>
+            <td><a href='/add_employee/' class="btn btn-info" role="button">Add employees to DB</a></td>
+            <td><a href='/list_employee/' class="btn btn-warning" role="button">Review/edit/delete employees</a></td>
+            {% block employees %}{% endblock %}
+        </tr>
+        <tr>
+            <td>Users</td>
+            <td><a href='/add_user/' class="btn btn-info" role="button">Add users to DB</a></td>
+            <td><a href='/list_user/' class="btn btn-warning" role="button">Review/edit/delete users</a></td>
+            {% block users %}{% endblock %}
+        </tr>
+    </table><br>
 
 {% endblock %}

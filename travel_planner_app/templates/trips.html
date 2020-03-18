@@ -5,50 +5,38 @@
         <thead>
         <tr>
             <td><h4>Action</h4></td>
-            <td><h4>Review</h4></td>
             <td><h4>Add</h4></td>
-            <td><h4>Update</h4></td>
-            <td><h4>Delete</h4></td>
+            <td><h4>Review/Update/Delete</h4></td>
         </tr>
         </thead>
         <tr>
             <td>Travel calendar</td>
-            <td><a href='/list_travel/' class="btn btn-info" role="button">List of travels</a></td>
             <td><a href='/add_travel/' class="btn btn-info" role="button">Add new travel</a></td>
-            <td><a href='/edit_travel/' class="btn btn-warning" role="button">Update travel</a></td>
-            <td><a href='/delete_travel/' class="btn btn-danger" role="button">Delete travel</a></td>
+            <td><a href='/list_travel/' class="btn btn-warning" role="button">Review/edit/delete travels</a></td>
             {% block travel_calendar %}{% endblock %}
         </tr>
         <tr>
             <td>Ticket</td>
-            <td><a href='/list_travel/' class="btn btn-info" role="button">List of travels</a></td>
             <td><a href='/add_ticket/' class="btn btn-info" role="button">Add new ticket</a></td>
-            <td><a href='/edit_ticket/' class="btn btn-warning" role="button">Edit ticket</a></td>
-            <td><a href='/delete_ticket/' class="btn btn-danger" role="button">Delete ticket</a></td>
+            <td><a href='/list_ticket/' class="btn btn-warning" role="button">Review/edit/delete tickets</a></td>
             {% block ticket %}{% endblock %}
         </tr>
         <tr>
             <td>Visa</td>
-            <td><a href='/list_travel/' class="btn btn-info" role="button">List of travels</a></td>
             <td><a href='/add_visa/' class="btn btn-info" role="button">Add new visa information</a></td>
-            <td><a href='/edit_visa/' class="btn btn-warning" role="button">Edit visa information</a></td>
-            <td><a href='/delete_visa/' class="btn btn-danger" role="button">Delete visa information</a></td>
+            <td><a href='/list_visa/' class="btn btn-warning" role="button">Review/edit/delete visas</a></td>
             {% block visa %}{% endblock %}
         </tr>
         <tr>
             <td>Hotel booking</td>
-            <td><a href='/list_travel/' class="btn btn-info" role="button">List of travels</a></td>
             <td><a href='/add_hotel_booking/' class="btn btn-info" role="button">Add new hotel booking</a></td>
-            <td> <a href='/edit_hotel_booking/' class="btn btn-warning" role="button">Edit hotel booking</a></td>
-            <td><a href='/delete_hotel_booking/' class="btn btn-danger" role="button">Delete hotel booking</a></td>
+            <td><a href='/list_booking/' class="btn btn-warning" role="button">Review/edit/delete hotel bookings</a></td>
             {% block hotel_booking %}{% endblock %}
         </tr>
         <tr>
             <td>Travel booking summary</td>
-            <td><a href='/list_travel/' class="btn btn-info" role="button">List of travels</a></td>
             <td><a href='/add_travel_booking_summary/' class="btn btn-info" role="button">Add new travel booking summary</a></td>
-            <td><a href='/edit_travel_booking_summary/' class="btn btn-warning" role="button">Edit travel booking summary</a></td>
-            <td><a href='/delete_travel_booking_summary/' class="btn btn-danger" role="button">Delete travel booking summary</a></td>
+            <td><a href='/list_travel_booking_summary/' class="btn btn-warning" role="button">Review/edit/delete travel booking summaries</a></td>
             {% block travel_booking_summary %}{% endblock %}
         </tr>
     </table>

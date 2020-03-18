@@ -331,6 +331,23 @@ class AddTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
         return render(request, 'add_travel_calendar_form.html', {'form': form})
 
 
+class ListTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/login/'
+    permission_required = 'view_user'
+
+    def get(self, request):
+        travels_list = TravelCalendar.objects.all()
+        page = request.GET.get('page', 1)
+        paginator = Paginator(travels_list, 10)
+        try:
+            travels = paginator.page(page)
+        except PageNotAnInteger:
+            travels = paginator.page(1)
+        except EmptyPage:
+            travels = paginator.page(paginator.num_pages)
+        return render(request, "travel_calendar_list.html", {"travels": travels})
+
+
 class AddTicketView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
     permission_required = 'view_user'

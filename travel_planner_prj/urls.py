@@ -21,7 +21,7 @@ from travel_planner_app.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', LandingPageLogin.as_view(), name="start"),
-    path('boot/', LandingPage.as_view(), name="landing-page"),
+    path('index/', LandingPage.as_view(), name="landing-page"),
 
     path('main_menu/', MainMenu.as_view(), name="menu"),
     path('bookings_upcoming/', BookingsUpcoming.as_view(), name="bookings-upcoming"),
@@ -46,8 +46,14 @@ urlpatterns = [
     path('add_visa/', AddVisaView.as_view(), name="add-visa"),
     path('add_ticket/', AddTicketView.as_view(), name="add-ticket"),
     path('add_hotel_booking/', AddHotelBookingView.as_view(), name="add-hotel-booking"),
+
     path('add_travel_booking_summary/', AddTravelBookingSummaryView.as_view(), name="add-travel-booking-summary"),
+    path('list_travel/', ListTravelCalendarView.as_view(), name="list-travel"),
+
     path('add_travel/', AddTravelCalendarView.as_view(), name="add-travel-calendar"),
+
+
+
 
     path('accounts/', include('django.contrib.auth.urls')),
 #    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),

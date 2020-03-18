@@ -16,6 +16,7 @@
 
   <!-- Custom styles for this template -->
   <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
+  <link href="{% static 'css/carousel.css' %}" rel="stylesheet">
 
 </head>
 
@@ -29,7 +30,7 @@
       <div class="list-group list-group-flush">
         <a href="/main_menu/" class="list-group-item list-group-item-action bg-light">Upcoming travels</a>
         <a href="/bookings_upcoming/" class="list-group-item list-group-item-action bg-light">All future travels</a>
-        <a href="/manage_trips/" class="list-group-item list-group-item-action bg-light">Manage trips</a>
+        <a href="/manage_trips/" class="list-group-item list-group-item-action bg-light">Manage travels</a>
         <a href="/manage_employees/" class="list-group-item list-group-item-action bg-light">Manage employees</a>
         <a href="/manage_locations" class="list-group-item list-group-item-action bg-light">Manage locations</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Other</a>
@@ -64,17 +65,7 @@
                   {% endif %}
               </li>
 
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
+
           </ul>
         </div>
       </nav>

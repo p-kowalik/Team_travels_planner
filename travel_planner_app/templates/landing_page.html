@@ -1,23 +1,75 @@
-{% load static %}
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
+{% load static%}
+
 <head>
+
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Travel planner</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
+
 </head>
+
 <body>
-    <h1>Team rotation & travels planner</h1>
-{% block body %}
-{% endblock %}
-<br><br>
+
+<div class="d-flex" id="wrapper">
+
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container">
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto">
+                    <h1 class="mt-4"><strong>BUSINESS TRAVEL PLANNER</strong></h1>
+                </div>
+            </div>
+            <div class="row justify-content-md-center">
+                <p>&nbsp;</p>
+            </div>
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto">
+
+                    {% if user.is_authenticated %}
+                        Logged user: {{user}} <br>
+                        <br>
+                        <a href="/logout/">Logout</a>
+                        <a href='/main_menu/'><input type="submit" value="Main menu"/></a>
+                    {% else %}
+                        <a href="/login/">Sign in</a>
+                    {% endif %}
+                    {% block body %}
+                    {% endblock %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- Bootstrap core JavaScript -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Menu Toggle Script -->
+<script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
+
 </body>
-<footer>
-    {% if user.is_authenticated %}
-        Logged user: {{user}} <br>
-        <br>
-        <a href="/logout/">Logout</a>
-        <a href='/main_menu/'><input type="submit" value="Main menu"/></a>
-    {% else %}
-        <a href="/login/">Sign in</a>
-    {% endif %}
-</footer>
+
 </html>

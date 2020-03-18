@@ -40,14 +40,14 @@ def email_new_booking_summary(request):
     return redirect('base/')
 
 
-class LandingPageBootstrap(View):
-    def get(self, request):
-        return render(request, "index.html")
-
-
 class LandingPage(View):
     def get(self, request):
-        return render(request, "landing_page.html")
+        return render(request, "welcome.html")
+
+
+class LandingPageLogin(View):
+    def get(self, request):
+        return render(request, "landing_page_login.html")
 
 
 class Base(LoginRequiredMixin, View):

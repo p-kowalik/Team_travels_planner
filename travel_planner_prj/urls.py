@@ -20,10 +20,9 @@ from travel_planner_app.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', LandingPage.as_view(), name="start"),
-    path('boot/', LandingPageBootstrap.as_view(), name="startBoot"),
+    path('', LandingPageLogin.as_view(), name="start"),
+    path('boot/', LandingPage.as_view(), name="landing-page"),
 
-    path('base/', Base.as_view(), name="base"),
     path('main_menu/', MainMenu.as_view(), name="menu"),
     path('bookings_upcoming/', BookingsUpcoming.as_view(), name="bookings-upcoming"),
     path('manage_trips/', ManageTrips.as_view(), name="manage-trips"),
@@ -51,7 +50,8 @@ urlpatterns = [
     path('add_travel/', AddTravelCalendarView.as_view(), name="add-travel-calendar"),
 
     path('accounts/', include('django.contrib.auth.urls')),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+#    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='landing_page_login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
     path('password_change/', auth_views.PasswordChangeView.as_view(), name='change-password'),
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name='change-password-done'),

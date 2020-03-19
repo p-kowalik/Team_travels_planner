@@ -1,0 +1,46 @@
+{% extends "locations.html" %}
+{% block airport %}   <br><br>
+
+    <h2>List of all airports </h2><br>
+        <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        <thead>
+        <tr>
+            <td>Id</td>
+            <td>City</td>
+            <td>Name</td>
+            <td>IATA_code</td>
+            <td>Delete</td>
+        </tr>
+        </thead>
+        {% for airport in airports %}
+            <tr>
+                <td>{{ airport.id }}</td>
+                <td>{{ airport.city }}</td>
+                <td>{{ airport.name }}</td>
+                <td>{{ airport.IATA_code }}</td>
+                <td><a href="/airport_delete/{{ airport.id }}/" class="btn btn-danger" role="button">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% if airports.has_other_pages %}
+        <ul class="pagination">
+            {% if airports.has_previous %}
+                <a href="?page=1">&laquo; First page &emsp;</a>
+                <a href="?page={{ airports.previous_page_number }}">Previous &emsp;</a>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            <span class="current">
+                Page {{ airports.number }} of {{ airports.paginator.num_pages }}&emsp;
+                </span>
+            {% if airports.has_next %}
+                <a href="?page={{ airports.next_page_number }}"> Next &emsp;</a>
+                <a href="?page={{ airports.paginator.num_pages }}">Last page &raquo;</a>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

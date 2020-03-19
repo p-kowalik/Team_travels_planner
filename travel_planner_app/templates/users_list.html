@@ -1,7 +1,7 @@
 {% extends "employees_users.html" %}
 {% block users %}   <br><br>
 
-    <table border="1">
+    <table class="table table-bordered table-sm table-striped m-10px table-hover">
         <tr>
             <td>Id</td>
             <td>User name</td>
@@ -22,8 +22,8 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.is_staff }}</td>
                 <td>{{ employee.last_login }}</td>
-                <td><a href="/update_user/{{ user.id }}/">Update</a></td>
-                <td><a href="/delete_user/{{ user.id }}/">Delete</a></td>
+                <td><a href="/update_user/{{ user.id }}/" class="btn btn-info" role="button">Update</a></td>
+                <td><a href="/delete_user/{{ user.id }}/" class="btn btn-danger" role="button">Delete</a></td>
             </tr>
         {% endfor %}
     </table>

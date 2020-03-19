@@ -1,0 +1,120 @@
+{% extends 'index.html' %}
+{% block body %}
+
+    <h2>Details of {{ travel_details.employee }} travel to {{ travel_details.city_destination }}</h2><br>
+    <h3>Travel data</h3>
+    <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        <thead>
+        <tr>
+            <td>Travel Id</td>
+            <td>Travel date start</td>
+            <td>From</td>
+            <td>To</td>
+            <td>Travel purpose</td>
+            <td>Employee approval</td>
+            <td>Employee comment</td>
+            <td>Supervisor approval</td>
+            <td>Supervisor comment</td>
+
+        </tr>
+        </thead>
+        <tr>
+            <td>{{ travel_details.id }}</td>
+            <td>{{ travel_details.travel_date_start  }}</td>
+            <td>{{ travel_details.city_from }}</td>
+            <td>{{ travel_details.city_destination}}</td>
+            <td>{{ travel_details.travel_purpose_description }}</td>
+            <td>{{ travel_details.employee_approval }}</td>
+            <td>{{ booking_details.employee_comment }}</td>
+            <td>{{ travel_details.supervisor_approval }}</td>
+            <td>{{ booking_details.supervisor_comment }}</td>
+
+        </tr>
+
+    </table><br>
+    <h3>Employee information</h3>
+    <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        <thead>
+        <tr>
+            <td>Employee Id</td>
+            <td>Forename</td>
+            <td>Surname</td>
+            <td>Passport_no</td>
+            <td>Passport_validity</td>
+            <td>Birthday</td>
+            <td>Nationality</td>
+            <td>Residence_city</td>
+            <td>Address</td>
+            <td>Phone</td>
+            <td>Email</td>
+            <td>User ID</td>
+        </tr>
+        </thead>
+        <tr>
+            <td>{{ employee_details.id }}</td>
+            <td>{{ employee_details.forename }}</td>
+            <td>{{ employee_details.surname }}</td>
+            <td>{{ employee_details.passport_no }}</td>
+            <td>{{ employee_details.passport_validity }}</td>
+            <td>{{ employee_details.birthday }}</td>
+            <td>{{ employee_details.nationality }}</td>
+            <td>{{ employee_details.residence_city }}</td>
+            <td>{{ employee_details.address }}</td>
+            <td>{{ employee_details.phone }}</td>
+            <td>{{ employee_details.email }}</td>
+            <td>{{ employee_details.user }}</td>
+        </tr>
+    </table><br>
+
+    <h3>Ticket information</h3>
+    <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        <thead>
+        <tr>
+            <td>Ticket Id</td>
+            <td>Travel date start</td>
+            <td>Travel date end</td>
+            <td>Departure airport</td>
+            <td>Arrival airport</td>
+            <td>Ticket cost</td>
+            <td>Supervisor approval</td>
+        </tr>
+        </thead>
+        <tr>
+            <td>{{ ticket_details.id }}</td>
+            <td>{{ ticket_details.travel_date_start }}</td>
+            <td>{{ ticket_details.travel_date_end }}</td>
+            <td>{{ ticket_details.airport_departure }}</td>
+            <td>{{ ticket_details.airport_arrival }}</td>
+            <td>{{ ticket_details.ticket_cost }}</td>
+            <td>{{ ticket_details.supervisor_approval }}</td>
+        </tr>
+    </table><br>
+    <h3>Hotel information</h3>
+    <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        <thead>
+        <tr>
+            <td>Id</td>
+            <td>Hotel name</td>
+            <td>City</td>
+            <td>Address</td>
+            <td>Check in</td>
+            <td>Check out</td>
+            <td>Phone</td>
+            <td>Email</td>
+            <td>Cost per night</td>
+        </tr>
+        </thead>
+        <tr>
+            <td>{{ hotel_details.id }}</td>
+            <td>{{ hotel_details.name }}</td>
+            <td>{{ hotel_details.city }}</td>
+            <td>{{ hotel_details.address }}</td>
+            <td>{{ hotel_booking_details.check_in }}</td>
+            <td>{{ hotel_booking_details.check_out }}</td>
+            <td>{{ hotel_details.phone }}</td>
+            <td>{{ hotel_details.email }}</td>
+            <td>{{ hotel_details.cost_per_night }}</td>
+        </tr>
+    </table>
+
+{% endblock %}

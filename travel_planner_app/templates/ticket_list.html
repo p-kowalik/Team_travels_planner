@@ -1,0 +1,58 @@
+{% extends "trips.html" %}
+{% block ticket %}   <br><br>
+
+    <h2>List of all tickets </h2><br>
+        <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        <thead>
+        <tr>
+            <td>Id</td>
+            <td>Booking summary id</td>
+            <td>Travel date start</td>
+            <td>Travel date end</td>
+            <td>Airport departure</td>
+            <td>Airport arrival</td>
+            <td>Ticket cost</td>
+            <td>Supervisor approval</td>
+            <td>Info</td>
+            <td>Edit</td>
+            <td>Delete</td>
+        </tr>
+        </thead>
+        {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.id }}</td>
+                <td>{{ ticket.travel_booking_summary }}</td>
+                <td>{{ ticket.travel_date_start }}</td>
+                <td>{{ ticket.travel_date_end }}</td>
+                <td>{{ ticket.airport_departure }}</td>
+                <td>{{ ticket.airport_arrival }}</td>
+                <td>{{ ticket.ticket_cost }}</td>
+                <td>{{ ticket.supervisor_approval }}</td>
+                <td><a href="/ticket_details/{{ travel.id }}/" class="btn btn-info" role="button">Info</a></td>
+                <td><a href="/edit_ticket/{{ travel.id }}/" class="btn btn-warning" role="button">Update</a></td>
+                <td><a href="/ticket_delete/{{ travel.id }}/" class="btn btn-danger" role="button">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% if tickets.has_other_pages %}
+        <ul class="pagination">
+            {% if tickets.has_previous %}
+                <a href="?page=1">&laquo; First page &emsp;</a>
+                <a href="?page={{ tickets.previous_page_number }}">Previous &emsp;</a>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            <span class="current">
+                Page {{ tickets.number }} of {{ tickets.paginator.num_pages }}&emsp;
+                </span>
+            {% if tickets.has_next %}
+                <a href="?page={{ tickets.next_page_number }}"> Next &emsp;</a>
+                <a href="?page={{ tickets.paginator.num_pages }}">Last page &raquo;</a>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

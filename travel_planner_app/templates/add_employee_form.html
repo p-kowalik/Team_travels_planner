@@ -1,12 +1,9 @@
 {% extends "employees_users.html" %}
 {% block employees %}
-        <br><br>
     <h5>Add new employee</h5>
     <form action="{% url "add-employee" %}" method="post">
-    <div class="form-group">
         {% csrf_token %}
-        {{ form.as_ul }}
-        <input class="form-control" type="submit" value="Add"><br><br>
-    </div>
+        {{ form }}
+        <input type="submit" value="Add" class="btn btn-primary" role="button"><br><br>
     </form>
 {% endblock %}

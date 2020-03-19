@@ -1,11 +1,10 @@
 {% extends "trips.html" %}
 {% block hotel_booking %}
     <br><br>
-    <h5>Add new hotel booking</h5><br>
+    <h4>Add new hotel booking</h4><br>
     <form action="{% url "add-hotel-booking" %}" method="post">
         {% csrf_token %}
         {{ form }}
-        <input type="submit" value="Add"><br><br>
-
+        <input type="submit" value="Add" class="btn btn-primary" role="button"><br><br>
     </form>
 {% endblock %}

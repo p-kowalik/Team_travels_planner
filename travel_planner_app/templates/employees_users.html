@@ -13,14 +13,15 @@
             <td>Employees</td>
             <td><a href='/add_employee/' class="btn btn-info" role="button">Add employees to DB</a></td>
             <td><a href='/list_employee/' class="btn btn-warning" role="button">Review/edit/delete employees</a></td>
-            {% block employees %}{% endblock %}
         </tr>
         <tr>
             <td>Users</td>
             <td><a href='/add_user/' class="btn btn-info" role="button">Add users to DB</a></td>
             <td><a href='/list_user/' class="btn btn-warning" role="button">Review/edit/delete users</a></td>
-            {% block users %}{% endblock %}
         </tr>
-    </table><br>
-
+    </table>
+    <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        {% block employees %}{% endblock %}
+        {% block users %}{% endblock %}<br>
+    </table>
 {% endblock %}

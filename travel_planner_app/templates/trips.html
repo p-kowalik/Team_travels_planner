@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 {% block body %}
-    <h2>Manage trips&nbsp;&nbsp;<a href='/manage_trips/' class="btn btn-primary" role="button">back</a></h2><br>
+    <h2>Manage travel calendar & bookings&nbsp;&nbsp;<a href='/manage_trips/' class="btn btn-primary" role="button">back</a></h2><br>
     <table class="table table-bordered table-sm table-striped m-10px table-hover">
         <thead>
         <tr>
@@ -13,31 +13,35 @@
             <td>Travel calendar</td>
             <td><a href='/add_travel/' class="btn btn-info" role="button">Add new travel</a></td>
             <td><a href='/list_travel/' class="btn btn-warning" role="button">Review/edit/delete travels</a></td>
-            {% block travel_calendar %}{% endblock %}
-        </tr>
-        <tr>
-            <td>Ticket</td>
-            <td><a href='/add_ticket/' class="btn btn-info" role="button">Add new ticket</a></td>
-            <td><a href='/list_ticket/' class="btn btn-warning" role="button">Review/edit/delete tickets</a></td>
-            {% block ticket %}{% endblock %}
-        </tr>
-        <tr>
-            <td>Visa</td>
-            <td><a href='/add_visa/' class="btn btn-info" role="button">Add new visa information</a></td>
-            <td><a href='/list_visa/' class="btn btn-warning" role="button">Review/edit/delete visas</a></td>
-            {% block visa %}{% endblock %}
-        </tr>
-        <tr>
-            <td>Hotel booking</td>
-            <td><a href='/add_hotel_booking/' class="btn btn-info" role="button">Add new hotel booking</a></td>
-            <td><a href='/list_booking/' class="btn btn-warning" role="button">Review/edit/delete hotel bookings</a></td>
-            {% block hotel_booking %}{% endblock %}
         </tr>
         <tr>
             <td>Travel booking summary</td>
             <td><a href='/add_travel_booking_summary/' class="btn btn-info" role="button">Add new travel booking summary</a></td>
             <td><a href='/list_travel_booking_summary/' class="btn btn-warning" role="button">Review/edit/delete travel booking summaries</a></td>
-            {% block travel_booking_summary %}{% endblock %}
+        </tr>
+        <tr>
+            <td>Ticket</td>
+            <td><a href='/add_ticket/' class="btn btn-info" role="button">Add new ticket</a></td>
+            <td><a href='/list_ticket/' class="btn btn-warning" role="button">Review/edit/delete tickets</a></td>
+        </tr>
+        <tr>
+            <td>Visa</td>
+            <td><a href='/add_visa/' class="btn btn-info" role="button">Add new visa information</a></td>
+            <td><a href='/list_visa/' class="btn btn-warning" role="button">Review/edit/delete visas</a></td>
+        </tr>
+        <tr>
+            <td>Hotel booking</td>
+            <td><a href='/add_hotel_booking/' class="btn btn-info" role="button">Add new hotel booking</a></td>
+            <td><a href='/list_hotel_booking/' class="btn btn-warning" role="button">Review/edit/delete hotel bookings</a></td>
         </tr>
     </table>
+    <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        {% block travel_calendar %}{% endblock %}
+        {% block travel_booking_summary %}{% endblock %}
+        {% block ticket %}{% endblock %}
+        {% block visa %}{% endblock %}
+        {% block hotel_booking %}{% endblock %}
+
+    </table>
+
 {% endblock %}

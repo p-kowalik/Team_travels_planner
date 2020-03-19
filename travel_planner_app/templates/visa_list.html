@@ -1,0 +1,54 @@
+{% extends "trips.html" %}
+{% block visa %}   <br><br>
+
+    <h2>List of all visas </h2><br>
+        <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        <thead>
+        <tr>
+            <td>Id</td>
+            <td>Booking summary id</td>
+            <td>Issued on</td>
+            <td>Validity days</td>
+            <td>Extension option</td>
+            <td>Visa cost</td>
+            <td>Info</td>
+            <td>Edit</td>
+            <td>Delete</td>
+        </tr>
+        </thead>
+        {% for visa in visas %}
+            <tr>
+                <td>{{ visa.id }}</td>
+                <td>{{ visa.travel_booking_summary }}</td>
+                <td>{{ visa.issued_on }}</td>
+                <td>{{ visa.validity_days }}</td>
+                <td>{{ visa.extension_option }}</td>
+                <td>{{ visa.visa_cost }}</td>
+                <td><a href="/visa_details/{{ visa.id }}/" class="btn btn-info" role="button">Info</a></td>
+                <td><a href="/edit_visa/{{ visa.id }}/" class="btn btn-warning" role="button">Update</a></td>
+                <td><a href="/visa_delete/{{ visa.id }}/" class="btn btn-danger" role="button">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% if visas.has_other_pages %}
+        <ul class="pagination">
+            {% if visas.has_previous %}
+                <a href="?page=1">&laquo; First page &emsp;</a>
+                <a href="?page={{ visas.previous_page_number }}">Previous &emsp;</a>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            <span class="current">
+                Page {{ visas.number }} of {{ visas.paginator.num_pages }}&emsp;
+                </span>
+            {% if visas.has_next %}
+                <a href="?page={{ visas.next_page_number }}"> Next &emsp;</a>
+                <a href="?page={{ visas.paginator.num_pages }}">Last page &raquo;</a>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

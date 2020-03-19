@@ -37,20 +37,20 @@
     </table>
 
 
-    {% if bookings.has_other_pages %}
+    {% if travels.has_other_pages %}
         <ul class="pagination">
-            {% if bookings.has_previous %}
+            {% if travels.has_previous %}
                 <a href="?page=1">&laquo; First page &emsp;</a>
-                <a href="?page={{ bookings.previous_page_number }}">Previous &emsp;</a>
+                <a href="?page={{ travels.previous_page_number }}">Previous &emsp;</a>
             {% else %}
                 <li class="disabled"><span>&laquo;</span></li>
             {% endif %}
             <span class="current">
-                Page {{ bookings.number }} of {{ bookings.paginator.num_pages }}&emsp;
+                Page {{ travels.number }} of {{ travels.paginator.num_pages }}&emsp;
                 </span>
-            {% if bookings.has_next %}
-                <a href="?page={{ bookings.next_page_number }}"> Next &emsp;</a>
-                <a href="?page={{ bookings.paginator.num_pages }}">Last page &raquo;</a>
+            {% if travels.has_next %}
+                <a href="?page={{ travels.next_page_number }}"> Next &emsp;</a>
+                <a href="?page={{ travels.paginator.num_pages }}">Last page &raquo;</a>
             {% else %}
                 <li class="disabled"><span>&raquo;</span></li>
             {% endif %}

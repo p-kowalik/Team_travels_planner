@@ -1,0 +1,50 @@
+{% extends "trips.html" %}
+{% block travel_booking_summary %}   <br><br>
+
+    <h2>List of all travel bookings </h2><br>
+        <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        <thead>
+        <tr>
+            <td>Id</td>
+            <td>Travel calendar id</td>
+            <td>Employee comment</td>
+            <td>Supervisor comment</td>
+            <td>Info</td>
+            <td>Edit</td>
+            <td>Delete</td>
+        </tr>
+        </thead>
+        {% for travel_booking in travel_booking_summary %}
+            <tr>
+                <td>{{ travel_booking.id }}</td>
+                <td>{{ travel_booking.travel_calendar }}</td>
+                <td>{{ travel_booking.employee_comment }}</td>
+                <td>{{ travel_booking.supervisor_comment }}</td>
+                 <td><a href="/travel_booking_details/{{ travel_booking.id }}/" class="btn btn-info" role="button">Info</a></td>
+                <td><a href="/travel_booking_ticket/{{ travel_booking.id }}/" class="btn btn-warning" role="button">Update</a></td>
+                <td><a href="/travel_booking_delete/{{ travel_booking.id }}/" class="btn btn-danger" role="button">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% if travel_booking_summary.has_other_pages %}
+        <ul class="pagination">
+            {% if travel_booking_summary.has_previous %}
+                <a href="?page=1">&laquo; First page &emsp;</a>
+                <a href="?page={{ travel_booking_summary.previous_page_number }}">Previous &emsp;</a>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            <span class="current">
+                Page {{ travel_booking_summary.number }} of {{ travel_booking_summary.paginator.num_pages }}&emsp;
+                </span>
+            {% if travel_booking_summary.has_next %}
+                <a href="?page={{ travel_booking_summary.next_page_number }}"> Next &emsp;</a>
+                <a href="?page={{ travel_booking_summary.paginator.num_pages }}">Last page &raquo;</a>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

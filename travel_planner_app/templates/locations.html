@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 {% block body %}
-    <h2>Manage locations&nbsp;&nbsp;<a href='/manage_locations/' class="btn btn-primary" role="button">back</a></h2><br>
+    <h2>Manage countries, cities, airports&nbsp;&nbsp;<a href='/manage_locations/' class="btn btn-primary" role="button">back</a></h2><br>
     <table class="table table-bordered table-sm table-striped m-10px table-hover">
         <thead>
         <tr>
@@ -13,25 +13,27 @@
             <td>Countries</td>
             <td><a href='/add_country/' class="btn btn-info" role="button">Add new country</a></td>
             <td><a href='/list_country/' class="btn btn-warning" role="button">List of countries</a></td>
-            {% block country %}{% endblock %}
         </tr>
         <tr>
             <td>Cities</td>
             <td><a href='/add_city/' class="btn btn-info" role="button">Add new city</a></td>
             <td><a href='/list_city/' class="btn btn-warning" role="button">List of cities</a></td>
-            {% block city %}{% endblock %}
         </tr>
         <tr>
             <td>Airports</td>
             <td><a href='/add_airport/' class="btn btn-info" role="button">Add new airport</a></td>
             <td><a href='/list_airport/' class="btn btn-warning" role="button">List of airports</a></td>
-            {% block airport %}{% endblock %}
         </tr>
         <tr>
             <td>Hotels</td>
             <td><a href='/add_hotel/' class="btn btn-info" role="button">Add new hotel</a></td>
-            <td><a href='/list_add_hotel/' class="btn btn-warning" role="button">List of hotels</a></td>
-            {% block hotel %}{% endblock %}
+            <td><a href='/list_hotel/' class="btn btn-warning" role="button">List of hotels</a></td>
         </tr>
+    </table>
+    <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        {% block country %}{% endblock %}
+        {% block city %}{% endblock %}
+        {% block airport %}{% endblock %}
+        {% block hotel %}{% endblock %}
     </table>
 {% endblock %}

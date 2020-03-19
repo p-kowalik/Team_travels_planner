@@ -1,0 +1,52 @@
+{% extends "locations.html" %}
+{% block hotel %}   <br><br>
+
+    <h2>List of all hotels </h2><br>
+    <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        <thead>
+        <tr>
+            <td>Id</td>
+            <td>City</td>
+            <td>Name</td>
+            <td>Address</td>
+            <td>Phone</td>
+            <td>Email</td>
+            <td>Cost per night</td>
+            <td>Delete</td>
+        </tr>
+        </thead>
+        {% for hotel in hotels %}
+            <tr>
+                <td>{{ hotel.id }}</td>
+                <td>{{ hotel.city }}</td>
+                <td>{{ hotel.name }}</td>
+                <td>{{ hotel.address }}</td>
+                <td>{{ hotel.phone }}</td>
+                <td>{{ hotel.email }}</td>
+                <td>{{ hotel.cost_per_night }}</td>
+                <td><a href="/hotel_delete/{{ hotel.id }}/" class="btn btn-danger" role="button">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% if hotels.has_other_pages %}
+        <ul class="pagination">
+            {% if hotels.has_previous %}
+                <a href="?page=1">&laquo; First page &emsp;</a>
+                <a href="?page={{ hotels.previous_page_number }}">Previous &emsp;</a>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            <span class="current">
+                Page {{ hotels.number }} of {{ hotels.paginator.num_pages }}&emsp;
+                </span>
+            {% if hotels.has_next %}
+                <a href="?page={{ hotels.next_page_number }}"> Next &emsp;</a>
+                <a href="?page={{ hotels.paginator.num_pages }}">Last page &raquo;</a>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

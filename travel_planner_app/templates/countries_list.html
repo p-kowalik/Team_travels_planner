@@ -1,0 +1,46 @@
+{% extends "locations.html" %}
+{% block country %}   <br><br>
+
+    <h2>List of all countries </h2><br>
+        <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        <thead>
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+            <td>Time to obtain visa</td>
+            <td>Advance days required to complete reservations and visas</td>
+            <td>Delete</td>
+        </tr>
+        </thead>
+        {% for country in countries %}
+            <tr>
+                <td>{{ country.id }}</td>
+                <td>{{ country.name }}</td>
+                <td>{{ country.time_to_obtain_visa }}</td>
+                <td>{{ country.advance_days_required }}</td>
+                <td><a href="/country_delete/{{ country.id }}/" class="btn btn-danger" role="button">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% if countries.has_other_pages %}
+        <ul class="pagination">
+            {% if countries.has_previous %}
+                <a href="?page=1">&laquo; First page &emsp;</a>
+                <a href="?page={{ countries.previous_page_number }}">Previous &emsp;</a>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            <span class="current">
+                Page {{ countries.number }} of {{ countries.paginator.num_pages }}&emsp;
+                </span>
+            {% if countries.has_next %}
+                <a href="?page={{ countries.next_page_number }}"> Next &emsp;</a>
+                <a href="?page={{ countries.paginator.num_pages }}">Last page &raquo;</a>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

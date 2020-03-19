@@ -1,7 +1,7 @@
-{% extends "employees_users.html" %}
-{% block users %}
-    <h5>Add new user</h5>
-    <form action="{% url "add-user" %}" method="post">
+{% extends "locations.html" %}
+{% block hotel %}
+    <h4>Add new hotel details</h4><br>
+    <form action="{% url "add-hotel" %}" method="post">
         {% csrf_token %}
         {{ form }}
         <input type="submit" value="Add" class="btn btn-primary" role="button"><br><br>

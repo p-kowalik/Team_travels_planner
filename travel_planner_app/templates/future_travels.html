@@ -2,7 +2,7 @@
 {% block body %}
 
     <h2>List of all future travels </h2><br>
-        <table class="table table-bordered table-sm table-striped m-10px table-hover">
+    <table class="table table-bordered table-sm table-striped m-10px table-hover">
         <thead>
         <tr>
             <td>Id</td>
@@ -14,9 +14,6 @@
             <td>Employee approval</td>
             <td>Supervisor approval</td>
             <td>Info</td>
-            <td>Edit</td>
-            <td>Delete</td>
-
         </tr>
         </thead>
         {% for booking in bookings %}
@@ -30,8 +27,6 @@
                 <td>{{ booking.employee_approval }}</td>
                 <td>{{ booking.supervisor_approval }}</td>
                 <td><a href="/booking_details/{{ booking.id }}/" class="btn btn-info" role="button">Info</a></td>
-                <td><a href="/edit_booking/{{ booking.id }}/" class="btn btn-warning" role="button">Update</a></td>
-                <td><a href="/booking_delete/{{ booking.id }}/" class="btn btn-danger" role="button">Delete</a></td>
             </tr>
         {% endfor %}
     </table>

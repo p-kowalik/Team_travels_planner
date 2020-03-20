@@ -34,18 +34,23 @@ urlpatterns = [
 
     path('add_travel/', AddTravelCalendarView.as_view(), name="add-travel-calendar"),
     path('list_travel/', ListTravelCalendarView.as_view(), name="list-travel"),
+    path('booking_delete/<int:id>/', DeleteTravelCalendarView.as_view(), name="delete-travel"),
 
     path('add_travel_booking_summary/', AddTravelBookingSummaryView.as_view(), name="add-travel-booking-summary"),
     path('list_travel_booking_summary/', ListTravelBookingSummaryView.as_view(), name="list-travel-booking-summary"),
+    path('travel_booking_delete/<int:id>/', DeleteTravelBookingSummaryView.as_view(), name="delete-travel-booking-summary"),
 
     path('add_ticket/', AddTicketView.as_view(), name="add-ticket"),
     path('list_ticket/', ListTicketView.as_view(), name="list-ticket"),
+    path('ticket_delete/<int:id>/', DeleteTicketsView.as_view(), name="delete-ticket"),
 
     path('add_visa/', AddVisaView.as_view(), name="add-visa"),
     path('list_visa/', ListVisaView.as_view(), name="list-visa"),
+    path('visa_delete/<int:id>/', DeleteVisaView.as_view(), name="delete-visa"),
 
     path('add_hotel_booking/', AddHotelBookingView.as_view(), name="add-hotel-booking"),
     path('list_hotel_booking/', ListHotelBookingView.as_view(), name="list-hotel-booking"),
+    path('delete_hotel_booking/<int:id>/', DeleteHotelBookingView.as_view(), name="delete-hotel-booking"),
 
 
     path('add_user/', AddUserView.as_view(), name="add-user"),
@@ -77,7 +82,6 @@ urlpatterns = [
 
 
     path('accounts/', include('django.contrib.auth.urls')),
-#    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('login/', auth_views.LoginView.as_view(template_name='landing_page_login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
     path('password_change/', auth_views.PasswordChangeView.as_view(), name='change-password'),

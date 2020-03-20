@@ -28,10 +28,8 @@
             <td>{{ booking_details.employee_comment }}</td>
             <td>{{ travel_details.supervisor_approval }}</td>
             <td>{{ booking_details.supervisor_comment }}</td>
-
         </tr>
-
-    </table><br>
+    </table>
     <h3>Employee information</h3>
     <table class="table table-bordered table-sm table-striped m-10px table-hover">
         <thead>
@@ -64,8 +62,7 @@
             <td>{{ employee_details.email }}</td>
             <td>{{ employee_details.user }}</td>
         </tr>
-    </table><br>
-
+    </table>
     <h3>Ticket information</h3>
     <table class="table table-bordered table-sm table-striped m-10px table-hover">
         <thead>
@@ -88,7 +85,7 @@
             <td>{{ ticket_details.ticket_cost }}</td>
             <td>{{ ticket_details.supervisor_approval }}</td>
         </tr>
-    </table><br>
+    </table>
     <h3>Hotel information</h3>
     <table class="table table-bordered table-sm table-striped m-10px table-hover">
         <thead>
@@ -114,6 +111,25 @@
             <td>{{ hotel_details.phone }}</td>
             <td>{{ hotel_details.email }}</td>
             <td>{{ hotel_details.cost_per_night }}</td>
+        </tr>
+    </table>
+    <h3>Visa information</h3>
+    <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        <thead>
+        <tr>
+            <td>Visa Id</td>
+            <td>issued_on name</td>
+            <td>validity_days</td>
+            <td>extension_option</td>
+            <td>visa_cost in</td>
+        </tr>
+        </thead>
+        <tr>
+            <td>{{ visa_details.id }}</td>
+            <td>{{ visa_details.issued_on }}</td>
+            <td>{{ visa_details.validity_days }}</td>
+            <td>{{ visa_details.extension_option }}</td>
+            <td>{{ visa_details.visa_cost }}</td>
         </tr>
     </table>
 

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'travel_planner_app',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,13 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'travel.planner.notification@gmail.com'
 EMAIL_HOST_PASSWORD = '11_Travel_planner_admin'
 # AUTH_USER_MODEL = 'travel_planner_app.Employee'
+
+CRONJOBS = [
+    ('1 7 * * *', 'travel_planner_app.cron.upcoming_travels')
+]
+#sends mail daily 7:01 am     ('1 7 * * *', 'travel_planner_app.cron.test_mail')
+#https://gutsytechster.wordpress.com/2019/06/24/how-to-setup-a-cron-job-in-django/
+#python manage.py crontab add - update crone jobs
+#python manage.py crontab show - view active crone jobs
+#python manage.py crontab remove - remove all
+

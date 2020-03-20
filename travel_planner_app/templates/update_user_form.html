@@ -1,10 +1,9 @@
-{% extends "base.html" %}
-{% block body %}
+{% extends "employees_users.html" %}
+{% block users %}
     <h3>Update user</h3>
     <form action="" method="post">
         {% csrf_token %}
         {{ form }}
-        <input type="submit" value="Update"><br>
-
+        <input type="submit" value="Add" class="btn btn-primary" role="button"><br><br>
     </form>
 {% endblock %}

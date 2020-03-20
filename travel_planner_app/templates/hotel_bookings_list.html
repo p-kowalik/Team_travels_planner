@@ -10,8 +10,6 @@
             <td>Hotel name</td>
             <td>Check in</td>
             <td>Check out</td>
-            <td>Info</td>
-            <td>Edit</td>
             <td>Delete</td>
         </tr>
         </thead>
@@ -22,9 +20,7 @@
                 <td>{{ hotel_booking.hotel }}</td>
                 <td>{{ hotel_booking.check_in }}</td>
                 <td>{{ hotel_booking.check_out }}</td>
-                <td><a href="/ticket_details/{{ hotel_booking.id }}/" class="btn btn-info" role="button">Info</a></td>
-                <td><a href="/edit_ticket/{{ hotel_booking.id }}/" class="btn btn-warning" role="button">Update</a></td>
-                <td><a href="/ticket_delete/{{ hotel_booking.id }}/" class="btn btn-danger" role="button">Delete</a></td>
+                <td><a href="/delete_hotel_booking/{{ hotel_booking.id }}/" class="btn btn-danger" role="button">Delete</a></td>
             </tr>
         {% endfor %}
     </table>

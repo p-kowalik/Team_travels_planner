@@ -66,36 +66,42 @@ class MainMenu(LoginRequiredMixin, View):
     def get(self, request):
         date_in_14_days = (datetime.now() + timedelta(days=14)).strftime('%Y-%m-%d')
         travel_details = TravelCalendar.objects.filter(travel_date_start__gt=date.today()).filter(travel_date_start__lt=date_in_14_days).order_by('travel_date_start')
-        print("tr_det: ", travel_details)
-        for travel_detail in travel_details:
-            travel_id = travel_detail.id
-            print("travel_id: ", travel_id)
-            try:
-                booking_details = TravelBookingSummary.objects.get(travel_calendar=travel_id)
-                booking_summary_id = booking_details.id
-                print("booking_summary_id: ", booking_summary_id)
-                employee_id = travel_detail.employee.id
-                print("emp id: ", employee_id)
-                employee_name = travel_detail.employee
-                print("emp name: ", employee_name)
-                employee_details = Employee.objects.get(id=employee_id)
-                ticket_details = Ticket.objects.get(travel_booking_summary=booking_summary_id)
-                print("ticket_details id: ", ticket_details.id)
-                hotel_booking_details = HotelBooking.objects.get(travel_booking_summary=booking_summary_id)
-                print("hotel_name id: ", hotel_booking_details.hotel)
-                hotel_id = hotel_booking_details.hotel.id
-                print("hotel id: ", hotel_id)
-                hotel_details = Hotel.objects.get(id=hotel_id)
-            except Exception:
-                #pass
-                continue
+#        print("tr_det: ", travel_details)
+#       for travel_detail in travel_details:
+#           travel_id = travel_detail.id
+#           print("travel_id: ", travel_id)
+#           try:
+#               booking_details = TravelBookingSummary.objects.get(travel_calendar=travel_id)
+#               booking_summary_id = booking_details.id
+#               print("booking_summary_id: ", booking_summary_id)
+#               employee_id = travel_detail.employee.id
+#               print("emp id: ", employee_id)
+#               employee_name = travel_detail.employee
+#               print("emp name: ", employee_name)
+#               employee_details = Employee.objects.get(id=employee_id)
+
+#               ticket_details = Ticket.objects.get(travel_booking_summary=booking_summary_id)
+#               print("ticket_details id: ", ticket_details.id)
+
+#               hotel_booking_details = HotelBooking.objects.get(travel_booking_summary=booking_summary_id)
+#               print("hotel_name id: ", hotel_booking_details.hotel)
+
+#               hotel_id = hotel_booking_details.hotel.id
+#               print("hotel id: ", hotel_id)
+#               hotel_details = Hotel.objects.get(id=hotel_id)
+
+#           except Exception:
+#               #pass
+#               continue
 
         return render(request, "bookings_upcoming_list.html", {"travel_details": travel_details,
-                                                                    "booking_details": booking_details,
-                                                                    "employee_details": employee_details,
-                                                                     "ticket_details": ticket_details,
-                                                                     "hotel_booking_details": hotel_booking_details,
-                                                                     "hotel_details": hotel_details})
+                                                                   #"booking_details": booking_details,
+                                                                    #"employee_details": employee_details,
+                                                                     #"ticket_details": ticket_details,
+                                                                     #"hotel_booking_details": hotel_booking_details,
+                                                                     #"hotel_details": hotel_details,
+                                                                 #"visa_details": visa_details
+                                                               })
 
 
 class BookingsUpcoming(LoginRequiredMixin, PermissionRequiredMixin, View):
@@ -123,33 +129,52 @@ class BookingsUpcomingInfo(LoginRequiredMixin, PermissionRequiredMixin, View):
         try:
             travel_details = TravelCalendar.objects.get(id=id)
             travel_id = travel_details.id
+        except ObjectDoesNotExist:
+            return render(request, "booking_upcoming_details.html", {"travel_details": travel_details})
+        try:
             booking_details = TravelBookingSummary.objects.get(travel_calendar=travel_id)
             booking_summary_id = booking_details.id
-            print("booking_summary_id: ", booking_summary_id)
-            employee_id = travel_details.employee.id
-            print("emp id: ", employee_id)
-            employee_name = travel_details.employee
-            print("emp name: ", employee_name)
-            employee_details = Employee.objects.get(id=employee_id)
-            ticket_details = Ticket.objects.get(travel_booking_summary=booking_summary_id)
-            print("ticket_details id: ", ticket_details.airport_departure)
-            hotel_booking_details = HotelBooking.objects.get(travel_booking_summary=booking_summary_id)
-            print("hotel_name id: ", hotel_booking_details.hotel)
-            hotel_id = hotel_booking_details.hotel.id
-            print("hotel id: ", hotel_id)
-            hotel_details = Hotel.objects.get(id=hotel_id)
-
-
-
-            return render(request, "booking_upcoming_details.html", {"travel_details": travel_details,
-                                                                    "booking_details": booking_details,
-                                                                    "employee_details": employee_details,
-                                                                     "ticket_details": ticket_details,
-                                                                     "hotel_booking_details": hotel_booking_details,
-                                                                     "hotel_details": hotel_details})
         except ObjectDoesNotExist:
-            return render(request, "add_travel_booking_summary_form.html")
+            return render(request, "booking_upcoming_details.html", {"travel_details": travel_details})
+        try:
+            employee_id = travel_details.employee.id
+            employee_name = travel_details.employee
+            employee_details = Employee.objects.get(id=employee_id)
+        except ObjectDoesNotExist:
+            return render(request, "booking_upcoming_details.html", {"travel_details": travel_details,
+                                                                     "booking_details": booking_details})
+        try:
+            ticket_details = Ticket.objects.get(travel_booking_summary=booking_summary_id)
+        except ObjectDoesNotExist:
+            return render(request, "booking_upcoming_details.html", {"travel_details": travel_details,
+                                                                     "booking_details": booking_details,
+                                                                     "employee_details": employee_details})
+        try:
+            hotel_booking_details = HotelBooking.objects.get(travel_booking_summary=booking_summary_id)
+            hotel_id = hotel_booking_details.hotel.id
+            hotel_details = Hotel.objects.get(id=hotel_id)
+        except ObjectDoesNotExist:
+            return render(request, "booking_upcoming_details.html", {"travel_details": travel_details,
+                                                                     "booking_details": booking_details,
+                                                                     "employee_details": employee_details,
+                                                                     "ticket_details": ticket_details})
+        try:
+            visa_details = Visa.objects.get(travel_booking_summary=booking_summary_id)
+            visa_id = visa_details.id
+            print("visa_id: ", visa_id)
+        except ObjectDoesNotExist:
+            return render(request, "booking_upcoming_details.html", {"travel_details": travel_details,
+                                                                     "booking_details": booking_details,
+                                                                     "employee_details": employee_details,
+                                                                     "ticket_details": ticket_details})
 
+        return render(request, "booking_upcoming_details.html", {"travel_details": travel_details,
+                                                                 "booking_details": booking_details,
+                                                                 "employee_details": employee_details,
+                                                                 "ticket_details": ticket_details,
+                                                                 "hotel_booking_details": hotel_booking_details,
+                                                                 "hotel_details": hotel_details,
+                                                                 "visa_details": visa_details})
 
 
 # Travels management
@@ -174,8 +199,7 @@ class AddTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
     def post(self, request):
         form = TravelCalendarForm(request.POST)
         if form.is_valid():
-            email_new_travel_booking(request)
-            TravelCalendar.objects.create(
+            t = TravelCalendar.objects.create(
                 employee=form.cleaned_data['employee'],
                 travel_date_start=form.cleaned_data['travel_date_start'],
                 travel_date_end=form.cleaned_data['travel_date_end'],
@@ -186,6 +210,18 @@ class AddTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
                 supervisor_approval=form.cleaned_data['supervisor_approval'],
                 notification_advance=form.cleaned_data['notification_advance'],
                 travel_purpose_description=form.cleaned_data['travel_purpose_description'],)
+            employeee = Employee.objects.get(id=t.employee.id)
+            print("emp name: ", employeee)
+            employeee_id = t.employee.id
+            print("emp id: ", employeee_id)
+            employeee_email = employeee.email
+            print("employeee_email: ", employeee_email)
+            subject = 'New travel added'
+            message = ' Please login to your account http://localhost:8000/login/,' \
+                      ' to see recently scheduled travel. '
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [employeee_email, 'supervisortravels@gmail.com']
+            send_mail(subject, message, email_from, recipient_list)
             return redirect('/main_menu/')
         return render(request, 'add_travel_calendar_form.html', {'form': form})
 
@@ -208,6 +244,17 @@ class ListTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
         return render(request, "travel_calendar_list.html", {"travels": travels})
 
 
+# delete travel calendar
+class DeleteTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/login/'
+    permission_required = 'view_user'
+
+    def get(self, request, id):
+        travel_calendar_to_delete = TravelCalendar.objects.get(id=id)
+        travel_calendar_to_delete.delete()
+        return redirect('/manage_trips/')
+
+
 # add travel booking summary
 class AddTravelBookingSummaryView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
@@ -220,11 +267,19 @@ class AddTravelBookingSummaryView(LoginRequiredMixin, PermissionRequiredMixin, V
     def post(self, request):
         form = TravelBookingSummaryForm(request.POST)
         if form.is_valid():
-            email_new_booking_summary(request)
-            TravelBookingSummary.objects.create(
+            tb = TravelBookingSummary.objects.create(
                 travel_calendar=form.cleaned_data['travel_calendar'],
                 employee_comment=form.cleaned_data['employee_comment'],
                 supervisor_comment=form.cleaned_data['supervisor_comment'])
+            travel_calend = TravelCalendar.objects.get(employee=tb.travel_calendar.employee)
+            employeee = Employee.objects.get(id=travel_calend.employee.id)
+            employeee_email = employeee.email
+            subject = 'New booking created'
+            message = ' Please login to your account http://localhost:8000/login/,' \
+                      ' to follow bookings related to scheduled travel. '
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [employeee_email, 'supervisortravels@gmail.com']
+            send_mail(subject, message, email_from, recipient_list)
             return redirect('/main_menu/')
         return render(request, 'add_travel_booking_summary_form.html', {'form': form})
 
@@ -245,6 +300,17 @@ class ListTravelBookingSummaryView(LoginRequiredMixin, PermissionRequiredMixin, 
         except EmptyPage:
             travel_booking_summary = paginator.page(paginator.num_pages)
         return render(request, "travel_booking_summary_list.html", {"travel_booking_summary": travel_booking_summary})
+
+
+# delete travel booking summary
+class DeleteTravelBookingSummaryView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/login/'
+    permission_required = 'view_user'
+
+    def get(self, request, id):
+        travel_booking_summary_to_delete = TravelBookingSummary.objects.get(id=id)
+        travel_booking_summary_to_delete.delete()
+        return redirect('/manage_trips/')
 
 
 # add ticket
@@ -289,6 +355,17 @@ class ListTicketView(LoginRequiredMixin, PermissionRequiredMixin, View):
         return render(request, "ticket_list.html", {"tickets": tickets})
 
 
+# delete ticket
+class DeleteTicketsView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/login/'
+    permission_required = 'view_user'
+
+    def get(self, request, id):
+        tickets_to_delete = Ticket.objects.get(id=id)
+        tickets_to_delete.delete()
+        return redirect('/manage_trips/')
+
+
 # add visa
 class AddVisaView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
@@ -302,7 +379,7 @@ class AddVisaView(LoginRequiredMixin, PermissionRequiredMixin, View):
         form = VisaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/main_menu/')
+            return redirect('/manage_trips/')
         return render(request, 'add_visa_form.html', {'form': form})
 
 
@@ -324,6 +401,17 @@ class ListVisaView(LoginRequiredMixin, PermissionRequiredMixin, View):
         return render(request, "visa_list.html", {"visas": visas})
 
 
+# delete visa
+class DeleteVisaView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/login/'
+    permission_required = 'view_user'
+
+    def get(self, request, id):
+        Visa_to_delete = Visa.objects.get(id=id)
+        Visa_to_delete.delete()
+        return redirect('/manage_trips/')
+
+
 # add hotel bookings
 class AddHotelBookingView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
@@ -341,7 +429,7 @@ class AddHotelBookingView(LoginRequiredMixin, PermissionRequiredMixin, View):
                 hotel=form.cleaned_data['hotel'],
                 check_in=form.cleaned_data['check_in'],
                 check_out=form.cleaned_data['check_out'])
-            return redirect('/main_menu/')
+            return redirect('/manage_trips/')
         return render(request, 'add_hotel_booking_form.html', {'form': form})
 
 
@@ -361,6 +449,17 @@ class ListHotelBookingView(LoginRequiredMixin, PermissionRequiredMixin, View):
         except EmptyPage:
             hotel_bookings = paginator.page(paginator.num_pages)
         return render(request, "hotel_bookings_list.html", {"hotel_bookings": hotel_bookings})
+
+
+# delete hotel booking
+class DeleteHotelBookingView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/login/'
+    permission_required = 'view_user'
+
+    def get(self, request, id):
+        employee_to_delete = HotelBooking.objects.get(id=id)
+        employee_to_delete.delete()
+        return redirect('/manage_trips/')
 
 
 # Manage employees and users
@@ -593,7 +692,7 @@ class AddAirportView(LoginRequiredMixin, PermissionRequiredMixin, View):
         form = AirportForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/main_menu/')
+            return redirect('/list_airport/')
         return render(request, 'add_airport_form.html', {'form': form})
 
 
@@ -621,9 +720,9 @@ class DeleteAirportView(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'view_user'
 
     def get(self, request, id):
-        employee_to_delete = Employee.objects.get(id=id)
-        employee_to_delete.delete()
-        return redirect('/main_menu/')
+        airport_to_delete = Airport.objects.get(id=id)
+        airport_to_delete.delete()
+        return redirect('/list_airport/')
 
 
 # add hotel
@@ -670,3 +769,5 @@ class DeleteHotelView(LoginRequiredMixin, PermissionRequiredMixin, View):
         hotel_to_delete = Hotel.objects.get(id=id)
         hotel_to_delete.delete()
         return redirect('/main_menu/')
+
+

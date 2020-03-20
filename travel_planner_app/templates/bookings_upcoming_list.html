@@ -5,7 +5,7 @@
     <table class="table table-bordered table-sm table-striped m-10px table-hover">
         <thead>
         <tr>
-            <td>Id</td>
+            <td>Trip</td>
             <td>Employee</td>
             <td>Travel date start</td>
             <td>City from</td>
@@ -14,6 +14,8 @@
             <td>Employee approval</td>
             <td>Supervisor approval</td>
             <td>Ticket Id</td>
+            <td>Hotel booking</td>
+            <td>Visa Id</td>
             <td>Info</td>
 
 
@@ -30,7 +32,9 @@
                 <td>{{ travel_detail.employee_approval }}</td>
                 <td>{{ travel_detail.supervisor_approval }}</td>
                 <td>{{ ticket_details.id }}</td>
-                <td><a href="/booking_details/{{ travel_details.id }}/" class="btn btn-info" role="button">Info</a></td>
+                <td>{{ hotel_booking_details.id }}</td>
+                <td>{{ visa_details.id }}</td>
+                <td><a href="/booking_details/{{ travel_detail.id }}/" class="btn btn-info" role="button">Info</a></td>
 
             </tr>
         {% endfor %}

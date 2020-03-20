@@ -55,13 +55,13 @@ class HotelBookingForm(forms.Form):
 
 
 class TravelBookingSummaryForm(forms.Form):
-    travel_calendar = forms.ModelChoiceField(queryset=TravelCalendar.objects.all())
+    travel_calendar = forms.ModelChoiceField(queryset=TravelCalendar.objects.all().order_by('travel_date_start'))
     employee_comment = forms.CharField(label='Employee comment', max_length=500, initial='waiting for comment')
     supervisor_comment = forms.CharField(label='Supervisor comment', max_length=500, initial='waiting for comment')
 
 
 class TravelCalendarForm(forms.Form):
-    employee = forms.ModelChoiceField(queryset=Employee.objects.all())
+    employee = forms.ModelChoiceField(queryset=Employee.objects.all().order_by('surname'))
     travel_date_start = forms.DateField()
     travel_date_end = forms.DateField()
     city_from = forms.ModelChoiceField(queryset=City.objects.all())

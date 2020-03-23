@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.core.validators import EmailValidator, URLValidator, MinValueValidator
 
 
 class Country(models.Model):
@@ -34,7 +35,7 @@ class Ticket(models.Model):
     travel_date_end = models.DateField()
     airport_departure = models.CharField(max_length=128)
     airport_arrival = models.CharField(max_length=128)
-    ticket_cost = models.DecimalField(max_digits=5, decimal_places=2)
+    ticket_cost = models.DecimalField(max_digits=7, decimal_places=2,  validators=[MinValueValidator(0.00)])
     supervisor_approval = models.BooleanField(default=False)
 
 
@@ -43,7 +44,7 @@ class Visa(models.Model):
     issued_on = models.DateField()
     validity_days = models.IntegerField()
     extension_option = models.NullBooleanField(default=False)
-    visa_cost = models.DecimalField(max_digits=5, decimal_places=2)
+    visa_cost = models.DecimalField(max_digits=7, decimal_places=2, validators=[MinValueValidator(0.00)])
 
 
 class Hotel(models.Model):
@@ -52,7 +53,7 @@ class Hotel(models.Model):
     address = models.CharField(max_length=128)
     phone = models.CharField(max_length=30, null=True)
     email = models.EmailField(null=True)
-    cost_per_night = models.DecimalField(max_digits=5, decimal_places=2)
+    cost_per_night = models.DecimalField(max_digits=7, decimal_places=2,  validators=[MinValueValidator(0.00)])
 
     def __str__(self):
         return str(self.city) + str("; Hotel: ") + str(self.name)
@@ -87,7 +88,7 @@ class TravelCalendar(models.Model):
     notification_advance = models.IntegerField(default=14)
 
     def __str__(self):
-        return str(self.employee) + str("; travel start: ") + str(self.travel_date_start)\
+        return str(self.id) + str(self.employee) + str("; travel start: ") + str(self.travel_date_start)\
                + str("; travel end: ") + str(self.travel_date_end)
 
 

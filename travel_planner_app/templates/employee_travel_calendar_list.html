@@ -1,0 +1,51 @@
+{% extends "index_employee.html" %}
+{% block body_employee %}   <br><br>
+
+    <h2>List of {{ employee_logged }} travels </h2><br>
+    <table class="table table-bordered table-sm table-striped m-10px table-hover">
+        <thead>
+        <tr>
+            <td>Id</td>
+            <td>Employee</td>
+            <td>Travel date start</td>
+            <td>City from</td>
+            <td>Country destination</td>
+            <td>Travel purpose</td>
+            <td>Employee approval</td>
+            <td>Supervisor approval</td>
+            <td>Details</td>
+            <td>Approve</td>
+            <td>Comment</td>
+        </tr>
+        </thead>
+        {% for travel in travels %}
+            <tr>
+                <td>{{ travel.id }}</td>
+                <td>{{ travel.employee }}</td>
+                <td>{{ travel.travel_date_start }}</td>
+                <td>{{ travel.city_from }}</td>
+                <td>{{ travel.country_destination }}</td>
+                <td>{{ travel.travel_purpose_description }}</td>
+                <td>{% if travel.employee_approval == True %}
+                    Accepted
+                {% elif travel.employee_approval == False %}
+                    Rejected
+                {% elif travel.employee_approval == None %}
+                    No decision yet
+                {% endif %}</td>
+                <td>{% if travel.supervisor_approval == True %}
+                    Accepted
+                {% elif travel.supervisor_approval == False %}
+                    Rejected
+                {% elif travel.supervisor_approval == None %}
+                    No decision yet
+                {% endif %}</td>
+                <td><a href="/booking_details_employee/{{ travel.id }}/" class="btn btn-info " role="button">Info</a></td>
+                <td><a href="/approve_booking_employee/{{ travel.id }}/" class="btn btn-warning" role="button">Approve</a></td>
+                <td><a href="/comment_booking_employee/{{ travel.id }}/" class="btn btn-warning" role="button">Comment</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+{% endblock %}

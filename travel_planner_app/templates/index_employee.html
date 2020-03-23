@@ -26,14 +26,11 @@
 
     <!-- Sidebar -->
     <div class="bg-light border-right" id="sidebar-wrapper">
-        <div class="sidebar-heading">See available options </div>
+        <div class="sidebar-heading">See available options for {{ user }}</div>
         <div class="list-group list-group-flush">
-            <a href="/main_menu/" class="list-group-item list-group-item-action bg-light">Upcoming travels</a>
-            <a href="/bookings_upcoming/" class="list-group-item list-group-item-action bg-light">All future travels</a>
-            <a href="/manage_trips/" class="list-group-item list-group-item-action bg-light">Manage travels</a>
-            <a href="/manage_employees/" class="list-group-item list-group-item-action bg-light">Manage employees</a>
-            <a href="/manage_locations" class="list-group-item list-group-item-action bg-light">Manage locations</a>
-            <a href="#" class="list-group-item list-group-item-action bg-light">Other</a>
+            <a href="/employee_travels/" class="list-group-item list-group-item-action bg-light">Employee Upcoming travels</a>
+            <a href="/employee_travels_history/" class="list-group-item list-group-item-action bg-light">Travels history</a>
+            <a href="/update_employee_by_employee/{{ employee_logged.id }}/" class="list-group-item list-group-item-action bg-light">Personal information</a>
         </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -46,11 +43,11 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button><br>
-            <h1 class="mt-4 well">&emsp;&emsp;&emsp;<strong>BUSINESS TRAVEL PLANNER</strong></h1>
+            <h1 class="mt-4 well">&emsp;&emsp;&emsp;<strong>EMPLOYEE SECTION</strong></h1>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/index/">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="/index_employee/">Home <span class="sr-only">(current)</span></a>
                     </li>
 
                     {% if user.is_authenticated %}
@@ -71,7 +68,7 @@
         </nav>
 
         <div class="container-fluid"><br>
-            {% block body %}
+            {% block body_employee %}
             {% endblock %}
         </div>
     </div>

@@ -1,5 +1,5 @@
-{% extends 'index.html' %}
-{% block body %}
+{% extends 'index_employee.html' %}
+{% block body_employee %}
 
     <h2>Details of {{ travel_details.employee }} travel to {{ travel_details.city_destination }}</h2><br>
     <h3>Travel data</h3>
@@ -24,9 +24,21 @@
             <td>{{ travel_details.city_from }}</td>
             <td>{{ travel_details.city_destination }}</td>
             <td>{{ travel_details.travel_purpose_description }}</td>
-            <td>{{ travel_details.employee_approval }}</td>
+            <td>{% if travel_details.employee_approval == True %}
+                Accepted
+            {% elif travel_details.employee_approval == False %}
+                Rejected
+            {% elif travel_details.employee_approval == None %}
+                No decision yet
+            {% endif %}</td>
             <td>{{ booking_details.employee_comment }}</td>
-            <td>{{ travel_details.supervisor_approval }}</td>
+            <td>{% if travel_details.supervisor_approval == True %}
+                Accepted
+            {% elif travel_details.supervisor_approval == False %}
+                Rejected
+            {% elif travel_details.supervisor_approval == None %}
+                No decision yet
+            {% endif %}</td>
             <td>{{ booking_details.supervisor_comment }}</td>
         </tr>
     </table>

@@ -21,12 +21,18 @@ from travel_planner_app.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', LandingPageLogin.as_view(), name="start"),
+    path('users_redirecting/', UsersRedirectingView.as_view(), name="users-redirecting"),
+    path('employee/', EmployeeLandingPageView.as_view(), name="start-employee"),
     path('index/', LandingPage.as_view(), name="landing-page"),
+    path('index_employee/', EmployeeIndexPageView.as_view(), name="landing-page-employee"),
 
 
     path('main_menu/', MainMenu.as_view(), name="menu"),
     path('bookings_upcoming/', BookingsUpcoming.as_view(), name="bookings-upcoming"),
     path('booking_details/<int:id>/', BookingsUpcomingInfo.as_view(), name="bookings-upcoming-info"),
+    path('booking_details_employee/<int:id>/', BookingsUpcomingEmployeeInfo.as_view(), name="bookings-upcoming-employee-info"),
+    path('approve_booking_employee/<int:pk>/', BookingsUpcomingEmployeeApprove.as_view(template_name='add_employee_approval.html'), name="bookings-upcoming-employee-approve"),
+    path('comment_booking_employee/<int:pk>/', BookingsUpcomingEmployeeComment.as_view(template_name='add_employee_comment_form.html'), name="bookings-upcoming-employee-comment"),
     path('manage_trips/', ManageTrips.as_view(), name="manage-trips"),
     path('manage_employees/', ManageEmployees.as_view(), name="manage-employees"),
     path('manage_locations/', ManageLocations.as_view(), name="manage-locations"),
@@ -34,6 +40,8 @@ urlpatterns = [
 
     path('add_travel/', AddTravelCalendarView.as_view(), name="add-travel-calendar"),
     path('list_travel/', ListTravelCalendarView.as_view(), name="list-travel"),
+    path('employee_travels/', ListEmployeeTravelCalendarView.as_view(), name="list-employee-travel"),
+
     path('booking_delete/<int:id>/', DeleteTravelCalendarView.as_view(), name="delete-travel"),
 
     path('add_travel_booking_summary/', AddTravelBookingSummaryView.as_view(), name="add-travel-booking-summary"),
@@ -61,6 +69,7 @@ urlpatterns = [
     path('add_employee/', AddEmployeeView.as_view(), name="add-employee"),
     path('list_employee/', EmployeesList.as_view(), name="list-employee"),
     path('update_employee/<int:pk>/', UpdateEmployeeView.as_view(template_name='update_employee_form.html'), name="update-employee"),
+    path('update_employee_by_employee/<int:pk>/', UpdateEmployeeByEmployeeView.as_view(template_name='update_employee_form.html'), name="update-employee-by-employee"),
     path('delete_employee/<int:id>/', DeleteEmployeeView.as_view(), name="delete-employee"),
 
 

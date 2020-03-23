@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from .models import *
 from django.core.exceptions import ValidationError
-from django.core.validators import EmailValidator, URLValidator
+from django.core.validators import EmailValidator, URLValidator, MinValueValidator
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
@@ -31,7 +31,7 @@ class TicketForm(forms.Form):
     travel_date_end = forms.DateField()
     airport_departure = forms.ModelChoiceField(queryset=Airport.objects.all())
     airport_arrival = forms.ModelChoiceField(queryset=Airport.objects.all())
-    ticket_cost = forms.DecimalField()
+    ticket_cost = forms.DecimalField(max_digits=7, decimal_places=2,  validators=[MinValueValidator(0.00)])
     supervisor_approval = forms.NullBooleanField()
 
 

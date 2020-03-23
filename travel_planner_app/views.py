@@ -21,24 +21,24 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 
 
-def email_new_travel_booking(request):
-    subject = 'New travel plan created'
-    message = ' Please login to your account http://localhost:8000/login/,' \
-              ' review and approve/reject new plan for your travel. '
-    email_from = settings.EMAIL_HOST_USER
-    recipient_list = ['travel.planner.employee1@onet.pl', 'supervisortravels@gmail.com']
-    send_mail(subject, message, email_from, recipient_list)
-    return redirect('base/')
-
-
-def email_new_booking_summary(request):
-    subject = 'New booking summary created'
-    message = ' Please login to your account http://localhost:8000/login/,' \
-              ' review and leave your comments. '
-    email_from = settings.EMAIL_HOST_USER
-    recipient_list = ['travel.planner.employee1@onet.pl', 'supervisortravels@gmail.com']
-    send_mail(subject, message, email_from, recipient_list)
-    return redirect('base/')
+#def email_new_travel_booking(request):
+#    subject = 'New travel plan created'
+#    message = ' Please login to your account http://localhost:8000/login/,' \
+#              ' review and approve/reject new plan for your travel. '
+#    email_from = settings.EMAIL_HOST_USER
+#    recipient_list = ['travel.planner.employee1@onet.pl', 'supervisortravels@gmail.com']
+#    send_mail(subject, message, email_from, recipient_list)
+#    return redirect('base/')
+#
+#
+#def email_new_booking_summary(request):
+#    subject = 'New booking summary created'
+#    message = ' Please login to your account http://localhost:8000/login/,' \
+#              ' review and leave your comments. '
+#    email_from = settings.EMAIL_HOST_USER
+#    recipient_list = ['travel.planner.employee1@onet.pl', 'supervisortravels@gmail.com']
+#    send_mail(subject, message, email_from, recipient_list)
+#    return redirect('base/')
 
 
 class LandingPage(View):
@@ -50,6 +50,10 @@ class LandingPageLogin(View):
     def get(self, request):
         return render(request, "landing_page_login.html")
 
+    def post(self, request):
+        if request.user.is_staff:
+            print("hello")
+
 
 class Base(LoginRequiredMixin, View):
     login_url = '/login/'
@@ -57,6 +61,43 @@ class Base(LoginRequiredMixin, View):
 
     def get(self, request):
         return render(request, "base.html")
+
+
+class UsersRedirectingView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        staff = ['pawel', 'Supervisor', 'Coordinator']
+        if request.user.get_username() in staff:
+            return redirect('/index/')
+        else:
+            return redirect('/index_employee/')
+
+
+class EmployeeLandingPageView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        user_id = self.request.user.id
+        user_name = request.user.get_username()
+        employee_logged = Employee.objects.get(user=user_id)
+        travels = TravelCalendar.objects.filter(employee=employee_logged).order_by('travel_date_start')
+        return render(request, "employee_welcome.html", {"user_id": user_id,
+                                                         "employee_logged": employee_logged,
+                                                         "travels": travels})
+
+
+class EmployeeIndexPageView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        user_id = self.request.user.id
+        user_name = request.user.get_username()
+        employee_logged = Employee.objects.get(user=user_id)
+        travels = TravelCalendar.objects.filter(employee=employee_logged).order_by('travel_date_start')
+        return render(request, "employee_welcome.html", {"user_id": user_id,
+                                                         "employee_logged": employee_logged,
+                                                         "travels": travels})
 
 
 class MainMenu(LoginRequiredMixin, View):
@@ -177,6 +218,95 @@ class BookingsUpcomingInfo(LoginRequiredMixin, PermissionRequiredMixin, View):
                                                                  "visa_details": visa_details})
 
 
+class BookingsUpcomingEmployeeInfo(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request, id):
+        try:
+            travel_details = TravelCalendar.objects.get(id=id)
+            travel_id = travel_details.id
+        except ObjectDoesNotExist:
+            return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details})
+        try:
+            booking_details = TravelBookingSummary.objects.get(travel_calendar=travel_id)
+            booking_summary_id = booking_details.id
+        except ObjectDoesNotExist:
+            return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details})
+        try:
+            employee_id = travel_details.employee.id
+            employee_name = travel_details.employee
+            employee_details = Employee.objects.get(id=employee_id)
+        except ObjectDoesNotExist:
+            return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
+                                                                     "booking_details": booking_details})
+        try:
+            ticket_details = Ticket.objects.get(travel_booking_summary=booking_summary_id)
+        except ObjectDoesNotExist:
+            return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
+                                                                     "booking_details": booking_details,
+                                                                     "employee_details": employee_details})
+        try:
+            hotel_booking_details = HotelBooking.objects.get(travel_booking_summary=booking_summary_id)
+            hotel_id = hotel_booking_details.hotel.id
+            hotel_details = Hotel.objects.get(id=hotel_id)
+        except ObjectDoesNotExist:
+            return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
+                                                                     "booking_details": booking_details,
+                                                                     "employee_details": employee_details,
+                                                                     "ticket_details": ticket_details})
+        try:
+            visa_details = Visa.objects.get(travel_booking_summary=booking_summary_id)
+            visa_id = visa_details.id
+            print("visa_id: ", visa_id)
+        except ObjectDoesNotExist:
+            return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
+                                                                     "booking_details": booking_details,
+                                                                     "employee_details": employee_details,
+                                                                     "ticket_details": ticket_details})
+
+        return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
+                                                                 "booking_details": booking_details,
+                                                                 "employee_details": employee_details,
+                                                                 "ticket_details": ticket_details,
+                                                                 "hotel_booking_details": hotel_booking_details,
+                                                                 "hotel_details": hotel_details,
+                                                                 "visa_details": visa_details})
+
+
+class BookingsUpcomingEmployeeApprove(LoginRequiredMixin, UpdateView):
+    login_url = '/login/'
+
+    model = TravelCalendar
+    fields = ('employee_approval',)
+
+    success_url = '/employee_travels/'
+
+
+class BookingsUpcomingEmployeeComment(LoginRequiredMixin, UpdateView):
+    login_url = '/login/'
+
+    model = TravelBookingSummary
+    fields = ('employee_comment',)
+
+    success_url = '/employee_travels/'
+#    user_id = self.request.user.id
+#    user_name = request.user.get_username()
+#    employee_logged = Employee.objects.get(user=user_id)
+#    travels = TravelCalendar.objects.filter(employee=employee_logged).order_by('travel_date_start')
+#    return render(request, "employee_welcome.html", {"user_id": user_id,
+#                                                     "employee_logged": employee_logged,
+#                                                     "travels": travels})
+
+
+# update employee information by employee
+class UpdateEmployeeByEmployeeView(LoginRequiredMixin, UpdateView):
+    login_url = '/login/'
+
+    model = Employee
+    fields = ('passport_no', 'passport_validity', 'residence_country', 'residence_city', 'address', 'phone', 'email')
+    success_url = '/index_employee/'
+
+
 # Travels management
 # travel management menu
 class ManageTrips(LoginRequiredMixin, PermissionRequiredMixin, View):
@@ -226,7 +356,7 @@ class AddTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
         return render(request, 'add_travel_calendar_form.html', {'form': form})
 
 
-# travel calendar
+# travel calendar - all
 class ListTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
     permission_required = 'view_user'
@@ -242,6 +372,47 @@ class ListTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
         except EmptyPage:
             travels = paginator.page(paginator.num_pages)
         return render(request, "travel_calendar_list.html", {"travels": travels})
+
+
+# travel calendar - employee
+class ListEmployeeTravelCalendarView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        user_id = self.request.user.id
+        print("user_id", user_id)
+        user_name = request.user.get_username()
+        print("username: ", user_name)
+        employee_logged = Employee.objects.get(user=user_id)
+#        employee_id = employee.id
+#        employee_travels_list = TravelCalendar.objects.filter(employee.id=employee_id).order_by('travel_date_start')
+        travels = TravelCalendar.objects.filter(employee=employee_logged).order_by('travel_date_start')
+        print("travels: ", travels)
+        print("id: ", travels)
+        bookings = {}
+        for travel in travels:
+            travel_id = travel.id
+            print("travel :", travel.id)
+            try:
+                booking = TravelBookingSummary.objects.get(travel_calendar=travel_id)
+                bookings.update({travel.id: booking.employee_comment})
+                #bookings.append(booking.employee_comment)
+                booking_id = booking.id
+#                bookings.append(booking_id)
+                employee_comment = booking.employee_comment
+                supervisor_comment = booking.supervisor_comment
+                print("booking id: ", booking_id)
+                print("employee_comment : ", employee_comment)
+                print("supervisor_comment : ", supervisor_comment)
+            except ObjectDoesNotExist:
+                continue
+        print("bookings :", bookings)
+        return render(request, "employee_travel_calendar_list.html", {"user_id": user_id,
+                                                                      "employee_logged": employee_logged,
+                                                                      "travels": travels,
+                                                                      "employee_comment": employee_comment,
+                                                                      "bookings": bookings})
+
 
 
 # delete travel calendar
@@ -333,7 +504,7 @@ class AddTicketView(LoginRequiredMixin, PermissionRequiredMixin, View):
                 airport_arrival=form.cleaned_data['airport_arrival'],
                 ticket_cost=form.cleaned_data['ticket_cost'],
                 supervisor_approval=form.cleaned_data['supervisor_approval'])
-            return redirect('/main_menu/')
+            return redirect('/list_ticket/')
         return render(request, 'add_employee_form.html', {'form': form})
 
 

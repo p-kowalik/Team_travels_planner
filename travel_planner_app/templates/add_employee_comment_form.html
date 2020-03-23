@@ -1,11 +1,11 @@
 {% extends "index_employee.html" %}
 {% block body_employee %}
     <table class="table table-bordered table-sm table-striped m-10px table-hover">
-    <h3>Update employee</h3>
+    <h3>Add comments regarding this travel</h3>
     <form action="" method="post">
         {% csrf_token %}
         {{ form }}
-        <input type="submit" value="Add" class="btn btn-primary" role="button"><br><br>
+        <input type="submit" value="Add comment" class="btn btn-primary" role="button"><br><br>
     </form>
     </table>
 {% endblock %}

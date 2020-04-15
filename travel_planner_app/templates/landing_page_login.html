@@ -57,6 +57,7 @@
                             </div>
                             <input class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" value="login">
 
+
                             <input type="hidden" name="next" value="/users_redirecting/">
 
                             <hr class="my-4">
@@ -68,6 +69,7 @@
                         <hr class="my-4">
                         {# Assumes you setup the password_reset view in your URLconf #}
                         <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+                        <p><a href="{% url 'landing-page' %}">Visit page without login</a></p>
                     </div>
                 </div>
             </div>

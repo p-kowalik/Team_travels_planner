@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 {% block body %}
-        {% load static%}
+    {% load static%}
     <!DOCTYPE html>
     <html lang="en">
 
@@ -21,83 +21,107 @@
 
     </head>
     <body>
-        <!-- Page Content -->
-        <header>
-            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-                </ol>
-                <div class="carousel-inner" role="listbox">
-                    <!-- Slide One - Set the background image for this slide in the line below -->
-                    <div class="carousel-item active" style="background-image: url('https://source.unsplash.com/RCAhiGJsUUE/1920x1080')">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h3 class="display-4">Employees</h3>
-                            <p class="lead">Manage your employees information</p>
-                        </div>
-                    </div>
-                    <!-- Slide Two - Set the background image for this slide in the line below -->
-                    <div class="carousel-item" style="background-image: url('https://source.unsplash.com/wfh8dDlNFOk/1920x1080')">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h3 class="display-4">Travels</h3>
-                            <p class="lead">Add travels into calendar and keep up to date with reservations progress</p>
-                        </div>
-                    </div>
-                    <!-- Slide Three - Set the background image for this slide in the line below -->
-                    <div class="carousel-item" style="background-image: url('https://source.unsplash.com/O7fzqFEfLlo/1920x1080')">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h3 class="display-4">Messages</h3>
-                            <p class="lead">Receive automatic email notification regarding upcoming events may require your action</p>
-                        </div>
-                    </div>
-                    <!-- Slide Four - Set the background image for this slide in the line below -->
-                    <div class="carousel-item blackwhite" style="background-image: url('/static/images/it-5.jpg')">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h3 class="display-4">Online access</h3>
-                            <p class="lead">Whole team in touch 24/7</p>
-                        </div>
-                    </div>
-                    <!-- Slide Five - Set the background image for this slide in the line below -->
-                    <div class="carousel-item blackwhite" style="background-image: url('/static/images/it-4.jpg')">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h3 class="display-4">Technologies</h3>
-                            <p class="lead">Postgres | Django | Bootstrap | JQuery</p>
-                        </div>
+    <!-- Page Content -->
+    <header>
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                <!-- Slide One - Set the background image for this slide in the line below -->
+                <div class="carousel-item active" style="background-image: url('https://source.unsplash.com/RCAhiGJsUUE/1920x1080')">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3 class="display-4">Employees</h3>
+                        <p class="lead">Manage your employees information</p>
                     </div>
                 </div>
-                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
+                <!-- Slide Two - Set the background image for this slide in the line below -->
+                <div class="carousel-item" style="background-image: url('https://source.unsplash.com/wfh8dDlNFOk/1920x1080')">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3 class="display-4">Travels</h3>
+                        <p class="lead">Add travels into calendar and keep up to date with reservations progress</p>
+                    </div>
+                </div>
+                <!-- Slide Three - Set the background image for this slide in the line below -->
+                <div class="carousel-item" style="background-image: url('https://source.unsplash.com/O7fzqFEfLlo/1920x1080')">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3 class="display-4">Messages</h3>
+                        <p class="lead">Receive automatic email notification regarding upcoming events may require your action</p>
+                    </div>
+                </div>
+                <!-- Slide Four - Set the background image for this slide in the line below -->
+                <div class="carousel-item blackwhite" style="background-image: url('/static/images/it-5.jpg')">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3 class="display-4">Online access</h3>
+                        <p class="lead">Whole team in touch 24/7</p>
+                    </div>
+                </div>
+                <!-- Slide Five - Set the background image for this slide in the line below -->
+                <div class="carousel-item blackwhite" style="background-image: url('/static/images/it-4.jpg')">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3 class="display-4">Technologies</h3>
+                        <p class="lead">Postgres | Django | Bootstrap | JQuery</p>
+                    </div>
+                </div>
             </div>
-        </header>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </header>
 
-        <!-- Page Content -->
-        <section class="py-5">
-            <div class="container">
-                <h3 class="font-weight-light">Use side menu to access your options</h3>
-                <p class="lead">Login to your account first:)</p>
-            </div>
-        </section>
+    <!-- Page Content -->
+    <section class="py-5">
+<hr/>
 
-        <!-- Bootstrap core JavaScript -->
-        <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-        <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    </section>
 
-        <!-- Menu Toggle Script -->
-        <script>
-            $("#menu-toggle").click(function(e) {
-                e.preventDefault();
-                $("#wrapper").toggleClass("toggled");
-            });
-        </script>
+    <section class="py-5" id="wfmanual">
+        <div class="container">
+        <h3 class="font-weight-light">Basic workflow steps</h3><br>
+            {% if user.is_authenticated %}
+                <ul>
+                    <li>"Upcoming travels" - you can review travels calendar for next 14 days.
+                        You can find more details for each travel and booking there.</li><br>
+                    <li>"All travels" - access to all scheduled travels (from now).</li><br>
+                    <li>"Manage Travels" - here you can manage calendar, create new travels,
+                    review employee and supervisor comments and approvals or rejections.
+                        Add or edit ticket and visa info</li><br>
+                    <li>"Manage Employees" - New employee in company? - here you go. You can
+                    add him/her to DB, create account and password to let him access the system.</li><br>
+                <li>"Manage Locations" - New country, city, airport or hotel? - Create or modify
+                this information here.</li><br>
+
+                </ul>
+                For more details on particular operation go to the selected page and
+                check out for workflow details there.<br>
+            {% else %}
+                <p class="lead">Login to your account to access details</p>
+            {% endif %}
+        </div>
+    </section>
+
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
 
     </body>
 

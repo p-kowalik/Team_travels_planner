@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'travel_planner_app',
     'django_crontab',
+    'bootstrap_datepicker_plus',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -147,3 +149,6 @@ CRONJOBS = [
 #python manage.py crontab show - view active crone jobs
 #python manage.py crontab remove - remove all
 
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}

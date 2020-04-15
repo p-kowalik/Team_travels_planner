@@ -1,11 +1,15 @@
 {% extends "index_employee.html" %}
 {% block body_employee %}
+    {% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
+    {% bootstrap_css %}         {# Embed Bootstrap CSS #}
+    {% bootstrap_javascript jquery='full' %}  {# Embed Bootstrap JS+jQuery #}
+    {{ form.media }}            {# Adds date-picker required JS and CSS #}
     <table class="table table-bordered table-sm table-striped m-10px table-hover">
     <h3>Update employee</h3>
     <form action="" method="post">
         {% csrf_token %}
         {{ form }}
-        <input type="submit" value="Add" class="btn btn-primary" role="button"><br><br>
+        <input type="submit" value="Update" class="btn btn-primary" role="button"><br><br>
     </form>
     </table>
 {% endblock %}

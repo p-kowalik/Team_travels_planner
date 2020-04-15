@@ -88,7 +88,7 @@ class TravelCalendar(models.Model):
     notification_advance = models.IntegerField(default=14)
 
     def __str__(self):
-        return str(self.id) + str(self.employee) + str("; travel start: ") + str(self.travel_date_start)\
+        return str(self.id) + str(" - ") + str(self.employee) + str("; travel start: ") + str(self.travel_date_start)\
                + str("; travel end: ") + str(self.travel_date_end)
 
 

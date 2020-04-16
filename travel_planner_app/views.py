@@ -167,16 +167,26 @@ class BookingsUpcomingInfo(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'view_user'
 
     def get(self, request, id):
+ #       try:
+ #           travel_details = TravelCalendar.objects.get(id=id)
+ #           travel_id = travel_details.id
+ #           employee_id = travel_details.employee.id
+ #           employee_name = travel_details.employee
+ #           employee_details = Employee.objects.get(id=employee_id)
+ #       except ObjectDoesNotExist:
+ #           return render(request, "booking_upcoming_details.html", {"travel_details": travel_details,
+ #                                                                    "employee_details": employee_details})
         try:
             travel_details = TravelCalendar.objects.get(id=id)
             travel_id = travel_details.id
-        except ObjectDoesNotExist:
-            return render(request, "booking_upcoming_details.html", {"travel_details": travel_details})
-        try:
+            employee_id = travel_details.employee.id
+            #employee_name = travel_details.employee
+            employee_details = Employee.objects.get(id=employee_id)
             booking_details = TravelBookingSummary.objects.get(travel_calendar=travel_id)
             booking_summary_id = booking_details.id
         except ObjectDoesNotExist:
-            return render(request, "booking_upcoming_details.html", {"travel_details": travel_details})
+            return render(request, "booking_upcoming_details.html", {"travel_details": travel_details,
+                                                                     "employee_details": employee_details})
         try:
             employee_id = travel_details.employee.id
             employee_name = travel_details.employee
@@ -666,7 +676,7 @@ class EmployeesList(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'view_user'
 
     def get(self, request):
-        employees_list = Employee.objects.all()
+        employees_list = Employee.objects.all().order_by('surname')
         page = request.GET.get('page', 1)
         paginator = Paginator(employees_list, 10)
         try:

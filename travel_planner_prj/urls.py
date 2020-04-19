@@ -29,6 +29,7 @@ urlpatterns = [
 
     path('main_menu/', MainMenu.as_view(), name="menu"),
     path('bookings_upcoming/', BookingsUpcoming.as_view(), name="bookings-upcoming"),
+    path('search_for_travel/', SearchForTravelsView.as_view(), name="search-for-travel"),
     path('booking_details/<int:id>/', BookingsUpcomingInfo.as_view(), name="bookings-upcoming-info"),
     path('booking_details_employee/<int:id>/', BookingsUpcomingEmployeeInfo.as_view(), name="bookings-upcoming-employee-info"),
     path('approve_booking_employee/<int:pk>/', BookingsUpcomingEmployeeApprove.as_view(template_name='add_employee_approval.html'), name="bookings-upcoming-employee-approve"),

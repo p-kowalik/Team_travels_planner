@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 
 from django.core.mail import EmailMessage
 from django import forms
@@ -21,29 +22,14 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 
 
-#def email_new_travel_booking(request):
-#    subject = 'New travel plan created'
-#    message = ' Please login to your account http://localhost:8000/login/,' \
-#              ' review and approve/reject new plan for your travel. '
-#    email_from = settings.EMAIL_HOST_USER
-#    recipient_list = ['travel.planner.employee1@onet.pl', 'supervisortravels@gmail.com']
-#    send_mail(subject, message, email_from, recipient_list)
-#    return redirect('base/')
-#
-#
-#def email_new_booking_summary(request):
-#    subject = 'New booking summary created'
-#    message = ' Please login to your account http://localhost:8000/login/,' \
-#              ' review and leave your comments. '
-#    email_from = settings.EMAIL_HOST_USER
-#    recipient_list = ['travel.planner.employee1@onet.pl', 'supervisortravels@gmail.com']
-#    send_mail(subject, message, email_from, recipient_list)
-#    return redirect('base/')
+#currentDate = datetime.now()
 
 
 class LandingPage(View):
     def get(self, request):
-        return render(request, "welcome.html")
+        global currentdate
+        currentDate = datetime.now()
+        return render(request, "welcome.html", {"date": currentDate})
 
 
 class LandingPageLogin(View):
@@ -151,6 +137,7 @@ class BookingsUpcoming(LoginRequiredMixin, PermissionRequiredMixin, View):
 
     def get(self, request):
         bookings_list = TravelCalendar.objects.filter(travel_date_start__gt=date.today()).order_by('travel_date_start')
+        form = SearchForTravelsForm()
         page = request.GET.get('page', 1)
         paginator = Paginator(bookings_list, 10)
         try:
@@ -159,7 +146,52 @@ class BookingsUpcoming(LoginRequiredMixin, PermissionRequiredMixin, View):
             bookings = paginator.page(1)
         except EmptyPage:
             bookings = paginator.page(paginator.num_pages)
-        return render(request, "future_travels.html", {"bookings": bookings})
+        return render(request, "future_travels.html", {"bookings": bookings, 'form': form})
+
+
+class SearchForTravelsView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/login/'
+    permission_required = 'view_user'
+
+    def get(self, request):
+        form = SearchForTravelsForm()
+        return render(request, 'future_travels.html', {'form': form})
+
+    def post(self, request):
+        form = SearchForTravelsForm(request.POST)
+        if form.is_valid():
+            employee = form.cleaned_data['employee']
+            travel_date_from = form.cleaned_data['travel_date_from']
+            travel_date_to = form.cleaned_data['travel_date_to']
+            if travel_date_from and travel_date_to:
+                if travel_date_from > travel_date_to:
+                    messages.error(request, 'Dates mismatch.')
+                    return redirect('/bookings_upcoming/')
+                    #messages.error(request, "Error")
+                    #return (print('Date conflict'))
+                    #raise Exception ('Travel start date cant be after departure')
+            if not employee:
+                if not travel_date_from and not travel_date_to:
+                    return redirect('/bookings_upcoming/')
+                elif not travel_date_from:
+                    bookings = TravelCalendar.objects.filter(travel_date_start__gt='2000-01-01').filter(
+                        travel_date_start__lt=travel_date_to).order_by('travel_date_start')
+                elif not travel_date_to:
+                    bookings = TravelCalendar.objects.filter(travel_date_start__gt=travel_date_from).filter(
+                        travel_date_start__lt='2100-01-01').order_by('travel_date_start')
+                else:
+                    bookings = TravelCalendar.objects.filter(travel_date_start__gt=travel_date_from).filter(travel_date_start__lt=travel_date_to).order_by('travel_date_start')
+            elif not travel_date_from and not travel_date_to:
+                bookings = TravelCalendar.objects.filter(employee=employee).order_by('travel_date_start')
+            elif not travel_date_from:
+                bookings = TravelCalendar.objects.filter(employee=employee).filter(travel_date_start__gt='2000-01-01').filter(
+                    travel_date_start__lt=travel_date_to).order_by('travel_date_start')
+            elif not travel_date_to:
+                bookings = TravelCalendar.objects.filter(employee=employee).filter(travel_date_start__gt=travel_date_from).filter(
+                    travel_date_start__lt='2100-01-01').order_by('travel_date_start')
+            else:
+                bookings = TravelCalendar.objects.filter(employee=employee).filter(travel_date_start__gt=travel_date_from).filter(travel_date_start__lt=travel_date_to).order_by('travel_date_start')
+            return render(request, "future_travels.html", {"bookings": bookings, 'form': form})
 
 
 class BookingsUpcomingInfo(LoginRequiredMixin, PermissionRequiredMixin, View):

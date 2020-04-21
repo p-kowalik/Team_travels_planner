@@ -1,7 +1,17 @@
 {% extends "locations.html" %}
-{% block country %}   <br><br>
-
+{% load static%}
+{% block search %}
     <h2>List of all countries </h2><br>
+    <button name="searchButton" onclick="hideFunction()">Search</button><br><br>
+
+    <form id="searchForm" action="{% url "list-country" %}" method="post" class="not_visible">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Get results" class="btn btn-primary" role="button"><br><br>
+    </form>
+{% endblock %}
+{% block country %}
+
         <table class="table table-bordered table-sm table-striped m-10px table-hover">
         <thead>
         <tr>

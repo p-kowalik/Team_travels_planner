@@ -91,8 +91,9 @@ class MainMenu(LoginRequiredMixin, View):
     permission_required = 'view_user'
 
     def get(self, request):
+        form = SearchForTravelsForm14days()
         date_in_14_days = (datetime.now() + timedelta(days=14)).strftime('%Y-%m-%d')
-        travel_details = TravelCalendar.objects.filter(travel_date_start__gt=date.today()).filter(travel_date_start__lt=date_in_14_days).order_by('travel_date_start')
+        travel_details = TravelCalendar.objects.filter(travel_date_start__gte=date.today()).filter(travel_date_start__lte=date_in_14_days).order_by('travel_date_start')
 #        print("tr_det: ", travel_details)
 #       for travel_detail in travel_details:
 #           travel_id = travel_detail.id
@@ -122,6 +123,7 @@ class MainMenu(LoginRequiredMixin, View):
 #               continue
 
         return render(request, "bookings_upcoming_list.html", {"travel_details": travel_details,
+                                                               'form': form
                                                                    #"booking_details": booking_details,
                                                                     #"employee_details": employee_details,
                                                                      #"ticket_details": ticket_details,
@@ -131,12 +133,55 @@ class MainMenu(LoginRequiredMixin, View):
                                                                })
 
 
+class SearchForTravels14DaysView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/login/'
+    permission_required = 'view_user'
+
+    def get(self, request):
+        form = SearchForTravelsForm14days()
+        return render(request, 'bookings_upcoming_list.html', {'form': form})
+
+    def post(self, request):
+        form = SearchForTravelsForm14days(request.POST)
+        date_in_14_days = (datetime.now() + timedelta(days=14)).strftime('%Y-%m-%d')
+        if form.is_valid():
+            employee = form.cleaned_data['employee']
+            travel_date_from = form.cleaned_data['travel_date_from']
+            travel_date_to = form.cleaned_data['travel_date_to']
+            if travel_date_from and travel_date_to:
+                if travel_date_from > travel_date_to:
+                    messages.error(request, 'Dates mismatch.')
+                    return redirect('/main_menu/')
+            if not employee:
+                if not travel_date_from and not travel_date_to:
+                    return redirect('/main_menu/')
+                elif not travel_date_from:
+                    bookings = TravelCalendar.objects.filter(travel_date_start__gte=datetime.now()).filter(
+                        travel_date_start__lte=travel_date_to).order_by('travel_date_start')
+                elif not travel_date_to:
+                    bookings = TravelCalendar.objects.filter(travel_date_start__gte=travel_date_from).filter(
+                        travel_date_start__lte=date_in_14_days).order_by('travel_date_start')
+                else:
+                    bookings = TravelCalendar.objects.filter(travel_date_start__gte=travel_date_from).filter(travel_date_start__lte=travel_date_to).order_by('travel_date_start')
+            elif not travel_date_from and not travel_date_to:
+                bookings = TravelCalendar.objects.filter(employee=employee).filter(travel_date_start__lte=date_in_14_days).order_by('travel_date_start')
+            elif not travel_date_from:
+                bookings = TravelCalendar.objects.filter(employee=employee).filter(travel_date_start__gte='2000-01-01').filter(
+                    travel_date_start__lte=travel_date_to).order_by('travel_date_start')
+            elif not travel_date_to:
+                bookings = TravelCalendar.objects.filter(employee=employee).filter(travel_date_start__gte=travel_date_from).filter(
+                    travel_date_start__lte=date_in_14_days).order_by('travel_date_start')
+            else:
+                bookings = TravelCalendar.objects.filter(employee=employee).filter(travel_date_start__gte=travel_date_from).filter(travel_date_start__lte=travel_date_to).order_by('travel_date_start')
+            return render(request, "bookings_upcoming_list.html", {"travel_details": bookings, 'form': form})
+
+
 class BookingsUpcoming(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
     permission_required = 'view_user'
 
     def get(self, request):
-        bookings_list = TravelCalendar.objects.filter(travel_date_start__gt=date.today()).order_by('travel_date_start')
+        bookings_list = TravelCalendar.objects.filter(travel_date_start__gte=date.today()).order_by('travel_date_start')
         form = SearchForTravelsForm()
         page = request.GET.get('page', 1)
         paginator = Paginator(bookings_list, 10)
@@ -167,30 +212,32 @@ class SearchForTravelsView(LoginRequiredMixin, PermissionRequiredMixin, View):
                 if travel_date_from > travel_date_to:
                     messages.error(request, 'Dates mismatch.')
                     return redirect('/bookings_upcoming/')
-                    #messages.error(request, "Error")
-                    #return (print('Date conflict'))
-                    #raise Exception ('Travel start date cant be after departure')
             if not employee:
                 if not travel_date_from and not travel_date_to:
                     return redirect('/bookings_upcoming/')
                 elif not travel_date_from:
-                    bookings = TravelCalendar.objects.filter(travel_date_start__gt='2000-01-01').filter(
-                        travel_date_start__lt=travel_date_to).order_by('travel_date_start')
+                    bookings = TravelCalendar.objects.filter(travel_date_start__gte='2000-01-01').filter(
+                        travel_date_start__lte=travel_date_to).order_by('travel_date_start')
                 elif not travel_date_to:
                     bookings = TravelCalendar.objects.filter(travel_date_start__gt=travel_date_from).filter(
                         travel_date_start__lt='2100-01-01').order_by('travel_date_start')
                 else:
-                    bookings = TravelCalendar.objects.filter(travel_date_start__gt=travel_date_from).filter(travel_date_start__lt=travel_date_to).order_by('travel_date_start')
+                    bookings = TravelCalendar.objects.filter(travel_date_start__gt=travel_date_from).filter(
+                        travel_date_start__lte=travel_date_to).order_by('travel_date_start')
             elif not travel_date_from and not travel_date_to:
                 bookings = TravelCalendar.objects.filter(employee=employee).order_by('travel_date_start')
             elif not travel_date_from:
-                bookings = TravelCalendar.objects.filter(employee=employee).filter(travel_date_start__gt='2000-01-01').filter(
-                    travel_date_start__lt=travel_date_to).order_by('travel_date_start')
+                bookings = TravelCalendar.objects.filter(employee=employee).filter(
+                    travel_date_start__gte='2000-01-01').filter(
+                    travel_date_start__lte=travel_date_to).order_by('travel_date_start')
             elif not travel_date_to:
-                bookings = TravelCalendar.objects.filter(employee=employee).filter(travel_date_start__gt=travel_date_from).filter(
-                    travel_date_start__lt='2100-01-01').order_by('travel_date_start')
+                bookings = TravelCalendar.objects.filter(employee=employee).filter(
+                    travel_date_start__gte=travel_date_from).filter(
+                    travel_date_start__lte='2100-01-01').order_by('travel_date_start')
             else:
-                bookings = TravelCalendar.objects.filter(employee=employee).filter(travel_date_start__gt=travel_date_from).filter(travel_date_start__lt=travel_date_to).order_by('travel_date_start')
+                bookings = TravelCalendar.objects.filter(employee=employee).filter(
+                    travel_date_start__gte=travel_date_from).filter(
+                    travel_date_start__lte=travel_date_to).order_by('travel_date_start')
             return render(request, "future_travels.html", {"bookings": bookings, 'form': form})
 
 
@@ -709,6 +756,7 @@ class EmployeesList(LoginRequiredMixin, PermissionRequiredMixin, View):
 
     def get(self, request):
         employees_list = Employee.objects.all().order_by('surname')
+        form = SearchForEmployeesForm()
         page = request.GET.get('page', 1)
         paginator = Paginator(employees_list, 10)
         try:
@@ -717,7 +765,37 @@ class EmployeesList(LoginRequiredMixin, PermissionRequiredMixin, View):
             employees = paginator.page(1)
         except EmptyPage:
             employees = paginator.page(paginator.num_pages)
-        return render(request, "employees_list.html", {"employees": employees})
+        return render(request, "employees_list.html", {"employees": employees, "form": form})
+
+    def post(self, request):
+        form = SearchForEmployeesForm(request.POST)
+        if form.is_valid():
+            employee = form.cleaned_data['employee']
+            if not employee:
+                return redirect('/list_employee/')
+            else:
+                employees = Employee.objects.filter(surname=employee.surname)
+            return render(request, "employees_list.html", {"employees": employees, 'form': form})
+
+
+## search for employees
+#lass SearchForEmployeeView(LoginRequiredMixin, PermissionRequiredMixin, View):
+#   login_url = '/login/'
+#   permission_required = 'view_user'
+
+#   def get(self, request):
+#       form = SearchForEmployeesForm()
+#       return render(request, 'employees_list.html', {'form': form})
+
+#   def post(self, request):
+#       form = SearchForEmployeesForm(request.POST)
+#       if form.is_valid():
+#           employee = form.cleaned_data['employee']
+#           if not employee:
+#               return redirect('/list_employee/')
+#           else:
+#               employees = Employee.objects.filter(surname=employee)
+#           return render(request, "employees_list.html", {"employees": employees, 'form': form})
 
 
 # update employee information
@@ -727,8 +805,8 @@ class UpdateEmployeeView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView
 
     model = Employee
     fields = ('id', 'forename', 'surname', 'passport_no', 'passport_validity', 'birthday', 'nationality',
-              'residence_country', 'residence_city', 'address', 'phone', 'email', 'user')
-    success_url = '/main_menu/'
+              'residence_country', 'residence_city', 'address', 'phone', 'email')
+    success_url = '/list_employee/'
 
 
 # delete employee
@@ -824,6 +902,7 @@ class CountryListView(LoginRequiredMixin, PermissionRequiredMixin, View):
 
     def get(self, request):
         countries_list = Country.objects.all()
+        form = SearchForCountriesForm()
         page = request.GET.get('page', 1)
         paginator = Paginator(countries_list, 20)
         try:
@@ -832,7 +911,17 @@ class CountryListView(LoginRequiredMixin, PermissionRequiredMixin, View):
             countries = paginator.page(1)
         except EmptyPage:
             countries = paginator.page(paginator.num_pages)
-        return render(request, "countries_list.html", {"countries": countries})
+        return render(request, "countries_list.html", {"countries": countries, "form": form})
+
+    def post(self, request):
+        form = SearchForCountriesForm(request.POST)
+        if form.is_valid():
+            country = form.cleaned_data['name']
+            if not country:
+                return redirect('/list_country/')
+            else:
+                countries = Country.objects.filter(name=country)
+            return render(request, "countries_list.html", {"countries": countries, 'form': form})
 
 
 # delete country

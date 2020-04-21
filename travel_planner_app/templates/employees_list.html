@@ -1,27 +1,36 @@
 {% extends "employees_users.html" %}
-{% block employees %}
-    <br><br>
+{% load static%}
+{% block search %}
+    <h2>List of all employees </h2><br>
+    <button name="searchButton" onclick="hideFunction()">Search</button><br><br>
 
-    <table class="table table-bordered table-sm table-striped m-10px table-hover">
-        <thead>
+    <form id="searchForm" action="{% url "list-employee" %}" method="post" class="not_visible">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Get results" class="btn btn-primary" role="button"><br><br>
+    </form>
+{% endblock %}
+{% block employees %}
+    <table id="current_table" class="table table-bordered table-sm table-striped m-10px table-hover">
+
         <tr>
-            <td>Id</td>
-            <td>Forename</td>
-            <td>Surname</td>
-            <td>Passport no</td>
-            <td>Passport validity</td>
-            <td>Birthday</td>
-            <td>Nationality</td>
-            <td>Residence country</td>
-            <td>Residence city</td>
-            <td>Address</td>
-            <td>Phone</td>
-            <td>Email</td>
-            <td>Username</td>
-            <td>Edit</td>
-            <td>Delete</td>
+            <th onclick="sortTable(0)">Id</th>
+            <th onclick="sortTable(1)">Forename</th>
+            <th onclick="sortTable(2)">Surname</th>
+            <th onclick="sortTable(3)">Passport no</th>
+            <th onclick="sortTable(4)">Passport validity</th>
+            <th onclick="sortTable(5)">Birthday</th>
+            <th onclick="sortTable(6)">Nationality</th>
+            <th onclick="sortTable(7)">Residence country</th>
+            <th onclick="sortTable(8)">Residence city</th>
+            <th onclick="sortTable(9)">Address</th>
+            <th onclick="sortTable(10)">Phone</th>
+            <th onclick="sortTable(11)">Email</th>
+            <th onclick="sortTable(12)">Username</th>
+            <th onclick="sortTable(13)">Edit</th>
+            <th onclick="sortTable(14)">Delete</th>
         </tr>
-        </thead>
+
         <tbody>
         {% for employee in employees %}
             <tr>
@@ -64,5 +73,7 @@
             {% endif %}
         </ul>
     {% endif %}
+
+    <script src="{% static 'js/travel_planner.js' %}"></script>
 
 {% endblock %}

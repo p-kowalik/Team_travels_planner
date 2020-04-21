@@ -1,26 +1,48 @@
 {% extends 'index.html' %}
+{% load static%}
 {% block body %}
+    {% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
+    {% bootstrap_css %}         {# Embed Bootstrap CSS #}
+    {% bootstrap_javascript jquery='full' %}  {# Embed Bootstrap JS+jQuery #}
+    {{ form.media }}            {# Adds date-picker required JS and CSS #}
 
     <h2>List of travels starting over next 14 days</h2><br>
-    <table class="table table-bordered table-sm table-striped m-10px table-hover">
-        <thead>
+    <button name="searchButton" onclick="hideFunction()">Search</button><br><br>
+
+    <form id="searchForm" action="{% url "search-for-travel-14-days" %}" method="post" class="not_visible">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Get results" class="btn btn-primary" role="button"><br><br>
+    </form>
+
+    {% if messages %}
+        <script>alert("Dates range conflict! 'Travel date from' has to be earlier than 'Travel date to'. Select correct dates. ")</script>
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <table id="current_table" class="table table-bordered table-sm table-striped m-10px table-hover">
+
         <tr>
-            <td>Trip</td>
-            <td>Employee</td>
-            <td>Travel date start</td>
-            <td>City from</td>
-            <td>City to</td>
-            <td>Travel purpose</td>
-            <td>Employee approval</td>
-            <td>Supervisor approval</td>
-            {% comment %}<td>Ticket Id</td>
-            <td>Hotel booking</td>
-            <td>Visa Id</td>{% endcomment %}
-            <td>Info</td>
+            <th onclick="sortTable(0)">Trip</td>
+            <th onclick="sortTable(1)">Employee</td>
+            <th onclick="sortTable(2)">Travel date start</td>
+            <th onclick="sortTable(3)">City from</td>
+            <th onclick="sortTable(4)">City to</td>
+            <th onclick="sortTable(5)">Travel purpose</td>
+            <th onclick="sortTable(6)">Employee approval</td>
+            <th onclick="sortTable(7)">Supervisor approval</td>
+            <th onclick="sortTable(8)">Info</td>
 
 
         </tr>
-        </thead>
+
         {% for travel_detail in travel_details %}
             <tr>
                 <td>{{ travel_detail.id }}</td>
@@ -31,9 +53,6 @@
                 <td>{{ travel_detail.travel_purpose_description }}</td>
                 <td>{{ travel_detail.employee_approval }}</td>
                 <td>{{ travel_detail.supervisor_approval }}</td>
-                {% comment %}<td>{{ ticket_details.id }}</td>
-                <td>{{ hotel_booking_details.id }}</td>
-                <td>{{ visa_details.id }}</td>{% endcomment %}
                 <td><a href="/booking_details/{{ travel_detail.id }}/" class="btn btn-info" role="button">Info</a></td>
 
             </tr>
@@ -43,8 +62,8 @@
     {% if travel_details.has_other_pages %}
         <ul class="pagination">
             {% if travel_details.has_previous %}
-                <a href="?page=1">&laquo; First page &emsp;</a>
-                <a href="?page={{ travel_details.previous_page_number }}">Previous &emsp;</a>
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo; First page &emsp;</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ travel_details.previous_page_number }}">Previous &emsp;</a></li>
             {% else %}
                 <li class="disabled"><span>&laquo;</span></li>
             {% endif %}
@@ -52,8 +71,8 @@
                 Page {{ travel_details.number }} of {{ travel_details.paginator.num_pages }}&emsp;
                 </span>
             {% if travel_details.has_next %}
-                <a href="?page={{ travel_details.next_page_number }}"> Next &emsp;</a>
-                <a href="?page={{ travel_details.paginator.num_pages }}">Last page &raquo;</a>
+                <li class="page-item"><a class="page-link" href="?page={{ travel_details.next_page_number }}"> Next &emsp;</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ travel_details.paginator.num_pages }}">Last page &raquo;</a></li>
             {% else %}
                 <li class="disabled"><span>&raquo;</span></li>
             {% endif %}

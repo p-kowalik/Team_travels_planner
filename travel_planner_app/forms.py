@@ -77,12 +77,6 @@ class TravelCalendarForm(forms.Form):
     travel_purpose_description = forms.CharField(max_length=500, initial='Work')
 
 
-class SearchForTravelsForm(forms.Form):
-    employee = forms.ModelChoiceField(required=False, queryset=Employee.objects.all().order_by('surname'))
-    travel_date_from = forms.DateField(required=False, widget=DatePickerInput(format='%Y-%m-%d'))
-    travel_date_to = forms.DateField(required=False, widget=DatePickerInput(format='%Y-%m-%d'))
-
-
 class EmployeeForm(ModelForm):
     class Meta:
         model = Employee
@@ -97,3 +91,23 @@ class AddUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username", "password1", "password2", "first_name", "last_name", "email")
+
+
+class SearchForTravelsForm(forms.Form):
+    employee = forms.ModelChoiceField(required=False, queryset=Employee.objects.all().order_by('surname'))
+    travel_date_from = forms.DateField(required=False, widget=DatePickerInput(format='%Y-%m-%d'))
+    travel_date_to = forms.DateField(required=False, widget=DatePickerInput(format='%Y-%m-%d'))
+
+
+class SearchForTravelsForm14days(forms.Form):
+    employee = forms.ModelChoiceField(required=False, queryset=Employee.objects.all().order_by('surname'))
+    travel_date_from = forms.DateField(required=False, widget=DatePickerInput(format='%Y-%m-%d'))
+    travel_date_to = forms.DateField(required=False, widget=DatePickerInput(format='%Y-%m-%d'))
+
+
+class SearchForEmployeesForm(forms.Form):
+    employee = forms.ModelChoiceField(required=False, queryset=Employee.objects.all().order_by('surname'))
+
+
+class SearchForCountriesForm(forms.Form):
+    name = forms.ModelChoiceField(required=False, queryset=Country.objects.all().order_by('name'))

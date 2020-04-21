@@ -30,6 +30,7 @@ urlpatterns = [
     path('main_menu/', MainMenu.as_view(), name="menu"),
     path('bookings_upcoming/', BookingsUpcoming.as_view(), name="bookings-upcoming"),
     path('search_for_travel/', SearchForTravelsView.as_view(), name="search-for-travel"),
+    path('search_for_travel_14_days/', SearchForTravels14DaysView.as_view(), name="search-for-travel-14-days"),
     path('booking_details/<int:id>/', BookingsUpcomingInfo.as_view(), name="bookings-upcoming-info"),
     path('booking_details_employee/<int:id>/', BookingsUpcomingEmployeeInfo.as_view(), name="bookings-upcoming-employee-info"),
     path('approve_booking_employee/<int:pk>/', BookingsUpcomingEmployeeApprove.as_view(template_name='add_employee_approval.html'), name="bookings-upcoming-employee-approve"),
@@ -70,9 +71,8 @@ urlpatterns = [
     path('add_employee/', AddEmployeeView.as_view(), name="add-employee"),
     path('list_employee/', EmployeesList.as_view(), name="list-employee"),
     path('update_employee/<int:pk>/', UpdateEmployeeView.as_view(template_name='update_employee_form.html'), name="update-employee"),
-    path('update_employee_by_employee/<int:pk>/', UpdateEmployeeByEmployeeView.as_view(template_name='update_employee_form.html'), name="update-employee-by-employee"),
+    path('update_employee_by_employee/<int:pk>/', UpdateEmployeeByEmployeeView.as_view(template_name='update_employee_by_employee_form.html'), name="update-employee-by-employee"),
     path('delete_employee/<int:id>/', DeleteEmployeeView.as_view(), name="delete-employee"),
-
 
     path('add_country/', AddCountryView.as_view(), name="add-country"),
     path('list_country/', CountryListView.as_view(), name="list-country"),

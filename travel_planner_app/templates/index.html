@@ -19,6 +19,8 @@
     <link href="{% static 'css/carousel.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/travel_planner.css' %}">
 
+
+
 </head>
 
 <body>
@@ -29,12 +31,14 @@
     <div class="bg-light border-right" id="sidebar-wrapper">
         <div class="sidebar-heading">See available options </div>
         <div class="list-group list-group-flush">
+            <a href="/index/" class="list-group-item list-group-item-action bg-light">Home</a>
             <a href="/main_menu/" class="list-group-item list-group-item-action bg-light">Upcoming travels</a>
             <a href="/bookings_upcoming/" class="list-group-item list-group-item-action bg-light">All future travels</a>
             <a href="/manage_trips/" class="list-group-item list-group-item-action bg-light">Manage travels</a>
             <a href="/manage_employees/" class="list-group-item list-group-item-action bg-light">Manage employees</a>
             <a href="/manage_locations" class="list-group-item list-group-item-action bg-light">Manage locations</a>
             <a href="#wfmanual" class="list-group-item list-group-item-action bg-light">Workflow hints</a>
+
         </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -53,10 +57,6 @@
                     <li class="nav-item">
                         <p class="nav-link">{{ date|date:"d-M-Y" }}</p>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/index/">Home <span class="sr-only">(current)</span></a>
-                    </li>
-
                     {% if user.is_authenticated %}
                         <li class="nav-item">
                             <p class="nav-link">Logged user: {{user}}</p>

@@ -13,6 +13,7 @@ from django.views.generic.edit import UpdateView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from bootstrap_datepicker_plus import DatePickerInput
 
 from django.core.mail import EmailMessage
 from django import forms
@@ -210,7 +211,7 @@ class SearchForTravelsView(LoginRequiredMixin, PermissionRequiredMixin, View):
             travel_date_to = form.cleaned_data['travel_date_to']
             if travel_date_from and travel_date_to:
                 if travel_date_from > travel_date_to:
-                    messages.error(request, 'Dates mismatch.')
+                    messages.error(request, 'Selected dates conflict!')
                     return redirect('/bookings_upcoming/')
             if not employee:
                 if not travel_date_from and not travel_date_to:
@@ -429,19 +430,17 @@ class AddTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
                 supervisor_approval=form.cleaned_data['supervisor_approval'],
                 notification_advance=form.cleaned_data['notification_advance'],
                 travel_purpose_description=form.cleaned_data['travel_purpose_description'],)
+            messages.success(request, 'New travel plan has been created.')
             employeee = Employee.objects.get(id=t.employee.id)
-            print("emp name: ", employeee)
             employeee_id = t.employee.id
-            print("emp id: ", employeee_id)
             employeee_email = employeee.email
-            print("employeee_email: ", employeee_email)
             subject = 'New travel added'
             message = ' Please login to your account http://localhost:8000/login/,' \
                       ' to see recently scheduled travel. '
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [employeee_email, 'supervisortravels@gmail.com']
             send_mail(subject, message, email_from, recipient_list)
-            return redirect('/main_menu/')
+            return redirect('/manage_trips/')
         return render(request, 'add_travel_calendar_form.html', {'form': form})
 
 
@@ -503,7 +502,6 @@ class ListEmployeeTravelCalendarView(LoginRequiredMixin, View):
                                                                       "bookings": bookings})
 
 
-
 # delete travel calendar
 class DeleteTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
@@ -531,6 +529,7 @@ class AddTravelBookingSummaryView(LoginRequiredMixin, PermissionRequiredMixin, V
                 travel_calendar=form.cleaned_data['travel_calendar'],
                 employee_comment=form.cleaned_data['employee_comment'],
                 supervisor_comment=form.cleaned_data['supervisor_comment'])
+            messages.success(request, 'New travel booking summary has been created.')
             travel_calend = TravelCalendar.objects.get(employee=tb.travel_calendar.employee)
             employeee = Employee.objects.get(id=travel_calend.employee.id)
             employeee_email = employeee.email
@@ -540,7 +539,7 @@ class AddTravelBookingSummaryView(LoginRequiredMixin, PermissionRequiredMixin, V
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [employeee_email, 'supervisortravels@gmail.com']
             send_mail(subject, message, email_from, recipient_list)
-            return redirect('/main_menu/')
+            return redirect('/manage_trips/')
         return render(request, 'add_travel_booking_summary_form.html', {'form': form})
 
 
@@ -593,8 +592,9 @@ class AddTicketView(LoginRequiredMixin, PermissionRequiredMixin, View):
                 airport_arrival=form.cleaned_data['airport_arrival'],
                 ticket_cost=form.cleaned_data['ticket_cost'],
                 supervisor_approval=form.cleaned_data['supervisor_approval'])
-            return redirect('/list_ticket/')
-        return render(request, 'add_employee_form.html', {'form': form})
+            messages.success(request, 'New ticket information has been added.')
+            return redirect('/manage_trips/')
+        return render(request, 'add_ticket_form.html', {'form': form})
 
 
 # view all tickets
@@ -639,6 +639,7 @@ class AddVisaView(LoginRequiredMixin, PermissionRequiredMixin, View):
         form = VisaForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'New visa information has been added.')
             return redirect('/manage_trips/')
         return render(request, 'add_visa_form.html', {'form': form})
 
@@ -669,6 +670,7 @@ class DeleteVisaView(LoginRequiredMixin, PermissionRequiredMixin, View):
     def get(self, request, id):
         Visa_to_delete = Visa.objects.get(id=id)
         Visa_to_delete.delete()
+        messages.success(request, 'Visa information has been removed.')
         return redirect('/manage_trips/')
 
 
@@ -689,6 +691,7 @@ class AddHotelBookingView(LoginRequiredMixin, PermissionRequiredMixin, View):
                 hotel=form.cleaned_data['hotel'],
                 check_in=form.cleaned_data['check_in'],
                 check_out=form.cleaned_data['check_out'])
+            messages.success(request, 'New hotel booking information has been added.')
             return redirect('/manage_trips/')
         return render(request, 'add_hotel_booking_form.html', {'form': form})
 
@@ -719,6 +722,7 @@ class DeleteHotelBookingView(LoginRequiredMixin, PermissionRequiredMixin, View):
     def get(self, request, id):
         employee_to_delete = HotelBooking.objects.get(id=id)
         employee_to_delete.delete()
+        messages.success(request, 'Hotel booking information has been removed.')
         return redirect('/manage_trips/')
 
 
@@ -745,7 +749,8 @@ class AddEmployeeView(LoginRequiredMixin, PermissionRequiredMixin, View):
         form = EmployeeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/main_menu/')
+            messages.success(request, 'New employee has been added.')
+            return redirect('/manage_employees/')
         return render(request, 'add_employee_form.html', {'form': form})
 
 
@@ -806,6 +811,7 @@ class UpdateEmployeeView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView
     model = Employee
     fields = ('id', 'forename', 'surname', 'passport_no', 'passport_validity', 'birthday', 'nationality',
               'residence_country', 'residence_city', 'address', 'phone', 'email')
+
     success_url = '/list_employee/'
 
 
@@ -817,7 +823,8 @@ class DeleteEmployeeView(LoginRequiredMixin, PermissionRequiredMixin, View):
     def get(self, request, id):
         employee_to_delete = Employee.objects.get(id=id)
         employee_to_delete.delete()
-        return redirect('/main_menu/')
+        messages.success(request, 'Employee data has been removed.')
+        return redirect('/manage_employees/')
 
 
 # add user
@@ -833,7 +840,8 @@ class AddUserView(LoginRequiredMixin, PermissionRequiredMixin, View):
         form = AddUserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/main_menu/')
+            messages.success(request, 'New user has been created.')
+            return redirect('/manage_employees/')
         return render(request, 'add_user_form.html', {'form': form})
 
 
@@ -865,7 +873,8 @@ class DeleteUserView(LoginRequiredMixin, PermissionRequiredMixin, View):
     def get(self, request, id):
         user_to_delete = User.objects.get(id=id)
         user_to_delete.delete()
-        return redirect('/main_menu/')
+        messages.success(request, 'User data has been removed.')
+        return redirect('/manage_employees/')
 
 
 # Mange locations
@@ -891,7 +900,8 @@ class AddCountryView(LoginRequiredMixin, PermissionRequiredMixin, View):
         form = CountryForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/main_menu/')
+            messages.success(request, 'New country has been added.')
+            return redirect('/manage_locations/')
         return render(request, 'country_form.html', {'form': form})
 
 
@@ -932,7 +942,8 @@ class DeleteCountryView(LoginRequiredMixin, PermissionRequiredMixin, View):
     def get(self, request, id):
         country_to_delete = Country.objects.get(id=id)
         country_to_delete.delete()
-        return redirect('/list_country/')
+        messages.success(request, 'Country data has been removed.')
+        return redirect('/manage_locations/')
 
 
 # add city
@@ -948,7 +959,8 @@ class AddCityView(LoginRequiredMixin, PermissionRequiredMixin, View):
         form = CityForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/main_menu/')
+            messages.success(request, 'New city has been added.')
+            return redirect('/manage_locations/')
         return render(request, 'city_form.html', {'form': form})
 
 
@@ -978,7 +990,8 @@ class DeleteCityView(LoginRequiredMixin, PermissionRequiredMixin, View):
     def get(self, request, id):
         city_to_delete = City.objects.get(id=id)
         city_to_delete.delete()
-        return redirect('/main_menu/')
+        messages.success(request, 'City data has been removed.')
+        return redirect('/manage_locations/')
 
 
 # add airport
@@ -994,7 +1007,8 @@ class AddAirportView(LoginRequiredMixin, PermissionRequiredMixin, View):
         form = AirportForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/list_airport/')
+            messages.success(request, 'New airport has been added.')
+            return redirect('/manage_locations/')
         return render(request, 'add_airport_form.html', {'form': form})
 
 
@@ -1024,7 +1038,8 @@ class DeleteAirportView(LoginRequiredMixin, PermissionRequiredMixin, View):
     def get(self, request, id):
         airport_to_delete = Airport.objects.get(id=id)
         airport_to_delete.delete()
-        return redirect('/list_airport/')
+        messages.success(request, 'Airport data has been removed.')
+        return redirect('/manage_locations/')
 
 
 # add hotel
@@ -1040,7 +1055,8 @@ class AddHotelView(LoginRequiredMixin, PermissionRequiredMixin, View):
         form = HotelForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/main_menu/')
+            messages.success(request, 'New hotel has been added.')
+            return redirect('/manage_locations/')
         return render(request, 'add_hotel_form.html', {'form': form})
 
 
@@ -1050,7 +1066,7 @@ class HotelListView(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'view_user'
 
     def get(self, request):
-        hotels_list = Hotel.objects.all()
+        hotels_list = Hotel.objects.all().order_by('city')
         page = request.GET.get('page', 1)
         paginator = Paginator(hotels_list, 20)
         try:
@@ -1070,6 +1086,7 @@ class DeleteHotelView(LoginRequiredMixin, PermissionRequiredMixin, View):
     def get(self, request, id):
         hotel_to_delete = Hotel.objects.get(id=id)
         hotel_to_delete.delete()
-        return redirect('/main_menu/')
+        messages.success(request, 'Hotel data has been removed.')
+        return redirect('/manage_locations/')
 
 

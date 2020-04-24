@@ -11,6 +11,18 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import environ
+
+env = environ.Env(
+    DEBUG=(bool, False)
+                  )
+
+# reading .env file
+environ.Env.read_env()
+
+# SECURITY WARNING: keep the secret key used in production secret!
+# https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
+SECRET_KEY = env('SECRET_KEY')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,11 +31,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'y=53-g%($6*&q&4vinq*g+#pg0l^a-vv8mfyvt6ray+ji87$&8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -80,10 +90,10 @@ WSGI_APPLICATION = 'travel_planner_prj.wsgi.application'
 DATABASES = {
     'default': {
         'HOST': '127.0.0.1',
-        'NAME': 'travel_planner_db',
+        'NAME': env('NAME'),
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'USER': 'postgres',
-        'PASSWORD': 'coderslab',
+        'PASSWORD': env('PASSWORD'),
     }
 }
 
@@ -124,21 +134,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-#STATICFILES_DIRS = (
-#
-#    # path to bootstrap folder
-#    '/home/pawel/Kurs_Python/Team_travels_planner/travel_planner_app/static/bootstrap',
-#)
-
 STATIC_URL = '/static/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'travel.planner.notification@gmail.com'
-EMAIL_HOST_PASSWORD = '11_Travel_planner_admin'
-# AUTH_USER_MODEL = 'travel_planner_app.Employee'
+IL_HOST = 'smtp.gmail.com'
+IL_USE_TLS = True
+IL_PORT = 587
+IL_HOST_USER = 'travel.planner.notification@gmail.com'
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 CRONJOBS = [
     ('1 7 * * *', 'travel_planner_app.cron.upcoming_travels')

@@ -35,7 +35,7 @@ keyring~=10.6.0
 PyYAML~=3.12
 Jinja2~=2.11.0
 numpy~=1.18.1
-pygobject~=3.26.1
+
 matplotlib~=3.1.2
 packaging~=20.3
 setuptools~=45.1.0

@@ -89,3 +89,44 @@ else:
   print('Got unexpected status code {}: {!r}'.format(response.status_code, response.content))
 
 
+
+Wdrażanie na pythonanywhere:
+w konsoli bash wpisujemy komendę która automatycznie pobierze z githuba repo i zainstaluje na pythonanywhere:
+pa_autoconfigure_django.py https://github.com/p-kowalik/Team_travels_planner.git 
+
+jeśli istnieje aplikacja o tej nazwie (niedziałająca - do zastąpienia) to należy ją usunąć opcją nuke:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -137,20 +137,20 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-IL_HOST = 'smtp.gmail.com'
-IL_USE_TLS = True
-IL_PORT = 587
-IL_HOST_USER = 'travel.planner.notification@gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'travel.planner.notification@gmail.com'
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 CRONJOBS = [
     ('1 7 * * *', 'travel_planner_app.cron.upcoming_travels')
 ]
-#sends mail daily 7:01 am     ('1 7 * * *', 'travel_planner_app.cron.test_mail')
-#https://gutsytechster.wordpress.com/2019/06/24/how-to-setup-a-cron-job-in-django/
-#python manage.py crontab add - update crone jobs
-#python manage.py crontab show - view active crone jobs
-#python manage.py crontab remove - remove all
+# sends mail daily 7:01 am     ('1 7 * * *', 'travel_planner_app.cron.test_mail')
+# https://gutsytechster.wordpress.com/2019/06/24/how-to-setup-a-cron-job-in-django/
+# python manage.py crontab add - update crone jobs
+# python manage.py crontab show - view active crone jobs
+# python manage.py crontab remove - remove all
 
 BOOTSTRAP4 = {
     'include_jquery': True,

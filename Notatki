@@ -89,18 +89,31 @@ else:
   print('Got unexpected status code {}: {!r}'.format(response.status_code, response.content))
 
 
+*******************************************
+PYTHONANYWHERE
+*******************************************
 
 Wdrażanie na pythonanywhere:
 w konsoli bash wpisujemy komendę która automatycznie pobierze z githuba repo i zainstaluje na pythonanywhere:
 pa_autoconfigure_django.py https://github.com/p-kowalik/Team_travels_planner.git 
 
 jeśli istnieje aplikacja o tej nazwie (niedziałająca - do zastąpienia) to należy ją usunąć opcją nuke:
+pa_autoconfigure_django.py --nuke https://github.com/p-kowalik/Team_travels_planner.git
+
+Virtual environment (on/off):
+workon <my-virt-environmnet>
+deactivate
 
 
 
+Migracja z Postgres na MySQL
+1. Instalacja MySQL Workbench na lokalnej maszynie (https://mysqlworkbench.org/2012/11/how-to-migrate-postgresql-databases-to-mysql-using-the-mysql-workbench-migration-wizard/)
+2. Instalacja PostgreSQL ODBC driver (http://mysqlworkbench.org/2012/11/set-up-and-configure-postgresql-odbc-drivers-for-the-mysql-workbench-migration-wizard/)
+3. 
 
 
-
+Generowanie i dodawanie losowych danych do bazy danych. Używamy konsoli pythonowej (nie połączonej z DB).
+(my-virtualenv) 10:28 ~/Team_travels_planner (master)$ python manage.py populate_ccaeh 
 
 
 

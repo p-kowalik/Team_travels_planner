@@ -54,7 +54,7 @@ class UsersRedirectingView(LoginRequiredMixin, View):
     login_url = '/login/'
 
     def get(self, request):
-        staff = ['pawel', 'Supervisor', 'Coordinator']
+        staff = ['pawel', 'Supervisor', 'Coordinator', 'guest']
         if request.user.get_username() in staff:
             return redirect('/index/')
         else:
@@ -439,7 +439,11 @@ class AddTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
                       ' to see recently scheduled travel. '
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [employeee_email, 'supervisortravels@gmail.com']
-            send_mail(subject, message, email_from, recipient_list)
+            try:
+                send_mail(subject, message, email_from, recipient_list)
+                messages.success(request, 'Message has been sent to employee and supervisor.')
+            except:
+                messages.error(request, 'Something went wrong and notification was not sent! Check messages settings.')
             return redirect('/manage_trips/')
         return render(request, 'add_travel_calendar_form.html', {'form': form})
 
@@ -530,15 +534,18 @@ class AddTravelBookingSummaryView(LoginRequiredMixin, PermissionRequiredMixin, V
                 employee_comment=form.cleaned_data['employee_comment'],
                 supervisor_comment=form.cleaned_data['supervisor_comment'])
             messages.success(request, 'New travel booking summary has been created.')
-            travel_calend = TravelCalendar.objects.get(employee=tb.travel_calendar.employee)
-            employeee = Employee.objects.get(id=travel_calend.employee.id)
+            employeee = Employee.objects.get(id=tb.travel_calendar.employee.id)
             employeee_email = employeee.email
             subject = 'New booking created'
             message = ' Please login to your account http://localhost:8000/login/,' \
                       ' to follow bookings related to scheduled travel. '
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [employeee_email, 'supervisortravels@gmail.com']
-            send_mail(subject, message, email_from, recipient_list)
+            try:
+                send_mail(subject, message, email_from, recipient_list)
+                messages.success(request, 'Message has been sent to employee and supervisor.')
+            except:
+                messages.error(request, 'Something went wrong and notification was not sent! Check messages settings.')
             return redirect('/manage_trips/')
         return render(request, 'add_travel_booking_summary_form.html', {'form': form})
 
@@ -810,7 +817,7 @@ class UpdateEmployeeView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView
 
     model = Employee
     fields = ('id', 'forename', 'surname', 'passport_no', 'passport_validity', 'birthday', 'nationality',
-              'residence_country', 'residence_city', 'address', 'phone', 'email')
+              'residence_country', 'residence_city', 'address', 'phone', 'email', 'user')
 
     success_url = '/list_employee/'
 

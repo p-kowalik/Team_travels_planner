@@ -117,6 +117,33 @@ Generowanie i dodawanie losowych danych do bazy danych. Używamy konsoli pythono
 
 
 
+*******************************************
+GITHUB PAGES
+*******************************************
+TYLKO DLA STRON STATYCZNYCH - NIE DZIAŁA DLA APLIKACJI DJANGO
+
+Repozytorium -> settings -> github pages -> source (select Master branch)
+
+
+*******************************************
+HEROKU
+*******************************************
+Django-Heroku - biblioteka służąca do wdrażania aplikacji Django na Heroku.
+
+Ustawianie wersji Pythona pod którą działa projekt:
+add a runtime.txt file to your app’s root directory that declares the exact version number to use:
+$ touch runtime.txt
+$ cat >> runtime.txt
+python-3.7.2
+ctrl+D
+
+
+settings.py, at the very bottom:
+
+…
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())
 
 
 

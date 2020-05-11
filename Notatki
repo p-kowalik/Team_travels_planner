@@ -146,11 +146,36 @@ import django_heroku
 django_heroku.settings(locals())
 
 
+# instalacja heroku w konsoli:
+sudo snap install heroku --classic
 
+# logowanie do heroku w konsoli:
+heroku login
 
+# clone projekt z github (powinien zawierać runtime.txt z wersją Pythona + requirements.txt)
+git clone https://github.com/heroku/<nazwa_projektu.git>
+cd <nazwa projektu>
 
+# tworzenie aplikacji na heroku - uruchamiane z katalogu root aplikacji (nazwa będzie nadana losowo)
+heroku create
 
+Creating app... done, ⬢ whispering-lake-37789
+https://whispering-lake-37789.herokuapp.com/ | https://git.heroku.com/whispering-lake-37789.git
 
+# sprawdzanie czy nowe repozytorium na heroku jest dostępne (może nie być jeśli apka na heroku była usuwana i jest instalowane ponownie)
+git remote -v
+# jeśli jej nie ma:
+https://stackoverflow.com/questions/34379130/pushing-to-heroku-fails-no-such-app-fatal
+git remote rm heroku
+git remote add heroku https://git.heroku.com/<nazwa_apki>.git
+
+# 
+
+# uruchamianie aplikacji z konsoli
+heroku open
+
+# konfiguracja plików statycznych
+python manage.py collectstatic
 
 
 

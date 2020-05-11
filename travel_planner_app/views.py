@@ -312,29 +312,35 @@ class BookingsUpcomingEmployeeInfo(LoginRequiredMixin, View):
     login_url = '/login/'
 
     def get(self, request, id):
+        user_id = self.request.user.id
+        employee_logged = Employee.objects.get(user=user_id)
         try:
             travel_details = TravelCalendar.objects.get(id=id)
             travel_id = travel_details.id
         except ObjectDoesNotExist:
-            return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details})
+            return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
+                                                                              "employee_logged": employee_logged})
         try:
             booking_details = TravelBookingSummary.objects.get(travel_calendar=travel_id)
             booking_summary_id = booking_details.id
         except ObjectDoesNotExist:
-            return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details})
+            return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
+                                                                              "employee_logged": employee_logged})
         try:
             employee_id = travel_details.employee.id
             employee_name = travel_details.employee
             employee_details = Employee.objects.get(id=employee_id)
         except ObjectDoesNotExist:
             return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
-                                                                     "booking_details": booking_details})
+                                                                     "booking_details": booking_details,
+                                                                              "employee_logged": employee_logged})
         try:
             ticket_details = Ticket.objects.get(travel_booking_summary=booking_summary_id)
         except ObjectDoesNotExist:
             return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
                                                                      "booking_details": booking_details,
-                                                                     "employee_details": employee_details})
+                                                                     "employee_details": employee_details,
+                                                                              "employee_logged": employee_logged})
         try:
             hotel_booking_details = HotelBooking.objects.get(travel_booking_summary=booking_summary_id)
             hotel_id = hotel_booking_details.hotel.id
@@ -343,7 +349,8 @@ class BookingsUpcomingEmployeeInfo(LoginRequiredMixin, View):
             return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
                                                                      "booking_details": booking_details,
                                                                      "employee_details": employee_details,
-                                                                     "ticket_details": ticket_details})
+                                                                     "ticket_details": ticket_details,
+                                                                              "employee_logged": employee_logged})
         try:
             visa_details = Visa.objects.get(travel_booking_summary=booking_summary_id)
             visa_id = visa_details.id
@@ -352,7 +359,8 @@ class BookingsUpcomingEmployeeInfo(LoginRequiredMixin, View):
             return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
                                                                      "booking_details": booking_details,
                                                                      "employee_details": employee_details,
-                                                                     "ticket_details": ticket_details})
+                                                                     "ticket_details": ticket_details,
+                                                                              "employee_logged": employee_logged})
 
         return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
                                                                  "booking_details": booking_details,
@@ -360,7 +368,8 @@ class BookingsUpcomingEmployeeInfo(LoginRequiredMixin, View):
                                                                  "ticket_details": ticket_details,
                                                                  "hotel_booking_details": hotel_booking_details,
                                                                  "hotel_details": hotel_details,
-                                                                 "visa_details": visa_details})
+                                                                 "visa_details": visa_details,
+                                                                          "employee_logged": employee_logged})
 
 
 class BookingsUpcomingEmployeeApprove(LoginRequiredMixin, UpdateView):
@@ -472,19 +481,12 @@ class ListEmployeeTravelCalendarView(LoginRequiredMixin, View):
 
     def get(self, request):
         user_id = self.request.user.id
-        print("user_id", user_id)
         user_name = request.user.get_username()
-        print("username: ", user_name)
         employee_logged = Employee.objects.get(user=user_id)
-#        employee_id = employee.id
-#        employee_travels_list = TravelCalendar.objects.filter(employee.id=employee_id).order_by('travel_date_start')
-        travels = TravelCalendar.objects.filter(employee=employee_logged).order_by('travel_date_start')
-        print("travels: ", travels)
-        print("id: ", travels)
+        travels = TravelCalendar.objects.filter(employee=employee_logged).filter(travel_date_start__gte=date.today()).order_by('travel_date_start')
         bookings = {}
         for travel in travels:
             travel_id = travel.id
-            print("travel :", travel.id)
             try:
                 booking = TravelBookingSummary.objects.get(travel_calendar=travel_id)
                 bookings.update({travel.id: booking.employee_comment})
@@ -493,13 +495,37 @@ class ListEmployeeTravelCalendarView(LoginRequiredMixin, View):
 #                bookings.append(booking_id)
                 employee_comment = booking.employee_comment
                 supervisor_comment = booking.supervisor_comment
-                print("booking id: ", booking_id)
-                print("employee_comment : ", employee_comment)
-                print("supervisor_comment : ", supervisor_comment)
             except ObjectDoesNotExist:
                 continue
-        print("bookings :", bookings)
         return render(request, "employee_travel_calendar_list.html", {"user_id": user_id,
+                                                                      "employee_logged": employee_logged,
+                                                                      "travels": travels,
+                                                                      "employee_comment": employee_comment,
+                                                                      "bookings": bookings})
+
+
+class ListEmployeeTravelHistoryView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        user_id = self.request.user.id
+        employee_logged = Employee.objects.get(user=user_id)
+        travels = TravelCalendar.objects.filter(employee=employee_logged).filter(
+            travel_date_start__lt=date.today()).order_by('travel_date_start')
+        bookings = {}
+        for travel in travels:
+            travel_id = travel.id
+            try:
+                booking = TravelBookingSummary.objects.get(travel_calendar=travel_id)
+                bookings.update({travel.id: booking.employee_comment})
+                # bookings.append(booking.employee_comment)
+                booking_id = booking.id
+                #                bookings.append(booking_id)
+                employee_comment = booking.employee_comment
+                supervisor_comment = booking.supervisor_comment
+            except ObjectDoesNotExist:
+                continue
+        return render(request, "employee_travel_calendar_history.html", {"user_id": user_id,
                                                                       "employee_logged": employee_logged,
                                                                       "travels": travels,
                                                                       "employee_comment": employee_comment,
@@ -1097,3 +1123,19 @@ class DeleteHotelView(LoginRequiredMixin, PermissionRequiredMixin, View):
         return redirect('/manage_locations/')
 
 
+# financial summary
+class CostOfTravelsView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/login/'
+    permission_required = 'view_user'
+
+    def get(self, request):
+        travels_list = TravelBookingSummary.objects.all()
+        travel_calendar = TravelCalendar.objects.all()
+        visas = Visa.objects.all()
+        hotels = HotelBooking.objects.all()
+        tickets = Ticket.objects.all()
+        return render(request, "travel_cost.html", {"travels_list": travels_list,
+                                                    "travel_calendar": travel_calendar,
+                                                    "visas": visas,
+                                                    "hotels": hotels,
+                                                    "tickets": tickets})

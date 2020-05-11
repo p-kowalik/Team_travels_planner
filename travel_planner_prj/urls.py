@@ -38,11 +38,13 @@ urlpatterns = [
     path('manage_trips/', ManageTrips.as_view(), name="manage-trips"),
     path('manage_employees/', ManageEmployees.as_view(), name="manage-employees"),
     path('manage_locations/', ManageLocations.as_view(), name="manage-locations"),
+    path('travel_cost/', CostOfTravelsView.as_view(), name="travel-cost"),
 
 
     path('add_travel/', AddTravelCalendarView.as_view(), name="add-travel-calendar"),
     path('list_travel/', ListTravelCalendarView.as_view(), name="list-travel"),
     path('employee_travels/', ListEmployeeTravelCalendarView.as_view(), name="list-employee-travel"),
+    path('employee_travels_history/', ListEmployeeTravelHistoryView.as_view(), name="list-employee-travel-history"),
 
     path('booking_delete/<int:id>/', DeleteTravelCalendarView.as_view(), name="delete-travel"),
 

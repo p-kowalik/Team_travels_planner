@@ -1,0 +1,54 @@
+{% extends 'index.html' %}
+{% block body %}
+
+    <h2>Summary of costs associated to travels</h2><br>
+
+    <table id="current_table" class="table table-bordered table-sm table-striped m-10px table-hover">
+        <tr>
+            <th onclick="sortTable(0)">Travel Id</th>
+            <th onclick="sortTable(1)">Date</th>
+            <th onclick="sortTable(2)">Employee</th>
+            <th onclick="sortTable(3)">Ticket cost</th>
+            <th onclick="sortTable(4)">Hotel cost</th>
+            <th onclick="sortTable(5)">Visa cost</th>
+            <th onclick="sortTable(6)">Total cost</th>
+        </tr>
+
+        {% for travel in travels_list %}
+            <tr>
+                <td>{{ travel.id }}</td>
+
+                <td>{{ travel.travel_calendar.travel_date_start }}</td>
+
+                <td>{{ travel.travel_calendar.employee }}</td>
+
+                <td>
+                    {% for ticket in tickets %}
+                        {% if ticket.travel_booking_summary.id == travel.id %}
+                            {{ ticket.ticket_cost }}
+                        {% endif %}
+                {% endfor %}
+                </td>
+
+                <td>
+                    {% for hotel in hotels %}
+                        {% if hotel.travel_booking_summary.id == travel.id %}
+                            {{ hotel.check_out }} - {{ hotel.check_in }}
+                            {% comment %}{{ hotel.hotel.cost_per_night }}{% endcomment %}
+                        {% endif %}
+                {% endfor %}
+
+                <td>
+                    {% for visa in visas %}
+                        {% if visa.travel_booking_summary.id == travel.id %}
+                            {{ visa.visa_cost }}
+                        {% endif %}
+                {% endfor %}
+                </td>
+
+                <td>total cost{{ travel.id }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

@@ -4,8 +4,8 @@
 env/
 tags
 venv/
-
-
+Notatki.txt
+login_data.ods
 # Created by https://www.gitignore.io/api/django,python,visualstudiocode
 
 ### Django ###

@@ -1129,13 +1129,15 @@ class CostOfTravelsView(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'view_user'
 
     def get(self, request):
+        cost_summary_view = TravelCostSummary.objects.all()
         travels_list = TravelBookingSummary.objects.all()
         travel_calendar = TravelCalendar.objects.all()
         visas = Visa.objects.all()
         hotels = HotelBooking.objects.all()
         tickets = Ticket.objects.all()
         return render(request, "travel_cost.html", {"travels_list": travels_list,
-                                                    "travel_calendar": travel_calendar,
-                                                    "visas": visas,
-                                                    "hotels": hotels,
-                                                    "tickets": tickets})
+                                                            "travel_calendar": travel_calendar,
+                                                            "visas": visas,
+                                                            "hotels": hotels,
+                                                            "tickets": tickets,
+                                                            "cost_summary_view": cost_summary_view})

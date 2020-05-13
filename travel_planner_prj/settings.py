@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'django_crontab',
     'bootstrap_datepicker_plus',
     'bootstrap4',
+    'jinja2',
+    'mathfilters',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +68,15 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'travel_planner_prj.urls'
 
 TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'environment': 'jinja2.Environment',
+
+        }
+    },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],

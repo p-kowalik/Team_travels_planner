@@ -110,3 +110,19 @@ class Employee(models.Model):
 
     def __str__(self):
         return str(self.surname) + str(" ") + str(self.forename)
+
+
+# view (postgres v_travel_cost_summary)
+class TravelCostSummary(models.Model):
+    id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
+    booking_id = models.IntegerField(null=True)
+    employee_name = models.CharField(max_length=128, null=True)
+    travel_date = models.DateField(null=True)
+    visa_cost = models.DecimalField(max_digits=7, decimal_places=2,  validators=[MinValueValidator(0.00)], null=True)
+    ticket_price = models.DecimalField(max_digits=7, decimal_places=2,  validators=[MinValueValidator(0.00)], null=True)
+    hotel_cost = models.DecimalField(max_digits=7, decimal_places=2,  validators=[MinValueValidator(0.00)], null=True)
+    total_travel_cost = models.DecimalField(max_digits=7, decimal_places=2,  validators=[MinValueValidator(0.00)], null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'v_travel_cost_summary_3'

@@ -46,6 +46,10 @@ urlpatterns = [
     path('employee_travels/', ListEmployeeTravelCalendarView.as_view(), name="list-employee-travel"),
     path('employee_travels_history/', ListEmployeeTravelHistoryView.as_view(), name="list-employee-travel-history"),
 
+    path('supervisor_review_travels/', ListAllTravelCalendarSupervisorReviewView.as_view(), name="list-travels-supervisor-review"),
+    path('review_booking_supervisor/<int:pk>/', BookingsUpcomingSupervisorApprove.as_view(template_name='add_supervisor_approval.html'), name="bookings-upcoming-supervisor-approve"),
+    path('comment_booking_supervisor/<int:pk>/', BookingsUpcomingSupervisorComment.as_view(template_name='add_supervisor_comment_form.html'), name="bookings-upcoming-supervisor-comment"),
+
     path('booking_delete/<int:id>/', DeleteTravelCalendarView.as_view(), name="delete-travel"),
 
     path('add_travel_booking_summary/', AddTravelBookingSummaryView.as_view(), name="add-travel-booking-summary"),

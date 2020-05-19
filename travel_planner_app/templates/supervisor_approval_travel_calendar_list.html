@@ -1,12 +1,12 @@
-{% extends "index_employee.html" %}
-{% block body_employee %}   <br><br>
+{% extends "index.html" %}
+{% block body %}   <br><br>
 
     {% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
     {% bootstrap_css %}         {# Embed Bootstrap CSS #}
     {% bootstrap_javascript jquery='full' %}  {# Embed Bootstrap JS+jQuery #}
     {{ form.media }}            {# Adds date-picker required JS and CSS #}
 
-    <h2>List of {{ employee_logged }} travels </h2><br>
+    <h2>List of upcoming travels </h2><br>
     <table id="current_table" class="table table-bordered table-sm table-striped m-10px table-hover">
         <tr>
             <th onclick="sortTable(0)">TC_Id</th>
@@ -51,11 +51,11 @@
                 {% elif travel.supervisor_approval == None %}
                     No decision yet
                 {% endif %}</td>
-                <td><a href="/booking_details_employee/{{ travel.id }}/" class="btn btn-info " role="button">Info</a></td>
-                <td><a href="/approve_booking_employee/{{ travel.id }}/" class="btn btn-warning" role="button">Approve</a></td>
+                <td><a href="/booking_details/{{ travel.id }}/" class="btn btn-info " role="button">Info</a></td>
+                <td><a href="/review_booking_supervisor/{{ travel.id }}/" class="btn btn-warning" role="button">Approve</a></td>
                 {% for travel_booking in travel_bookings %}
                     {% if travel_booking.travel_calendar.id == travel.id %}
-                        <td><a href="/comment_booking_employee/{{ travel_booking.id }}/" class="btn btn-warning" role="button">Comment</a></td>
+                        <td><a href="/comment_booking_supervisor/{{ travel_booking.id }}/" class="btn btn-warning" role="button">Comment</a></td>
                     {% endif %}
                 {% endfor %}
             </tr>

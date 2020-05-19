@@ -44,7 +44,6 @@ class LandingPageLogin(View):
 
 class Base(LoginRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'add_country'
 
     def get(self, request):
         return render(request, "base.html")
@@ -87,56 +86,29 @@ class EmployeeIndexPageView(LoginRequiredMixin, View):
                                                          "travels": travels})
 
 
-class MainMenu(LoginRequiredMixin, View):
+class MainMenu(PermissionRequiredMixin, LoginRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_travelcalendar'
 
     def get(self, request):
         form = SearchForTravelsForm14days()
         date_in_14_days = (datetime.now() + timedelta(days=14)).strftime('%Y-%m-%d')
         travel_details = TravelCalendar.objects.filter(travel_date_start__gte=date.today()).filter(travel_date_start__lte=date_in_14_days).order_by('travel_date_start')
-#        print("tr_det: ", travel_details)
-#       for travel_detail in travel_details:
-#           travel_id = travel_detail.id
-#           print("travel_id: ", travel_id)
-#           try:
-#               booking_details = TravelBookingSummary.objects.get(travel_calendar=travel_id)
-#               booking_summary_id = booking_details.id
-#               print("booking_summary_id: ", booking_summary_id)
-#               employee_id = travel_detail.employee.id
-#               print("emp id: ", employee_id)
-#               employee_name = travel_detail.employee
-#               print("emp name: ", employee_name)
-#               employee_details = Employee.objects.get(id=employee_id)
-
-#               ticket_details = Ticket.objects.get(travel_booking_summary=booking_summary_id)
-#               print("ticket_details id: ", ticket_details.id)
-
-#               hotel_booking_details = HotelBooking.objects.get(travel_booking_summary=booking_summary_id)
-#               print("hotel_name id: ", hotel_booking_details.hotel)
-
-#               hotel_id = hotel_booking_details.hotel.id
-#               print("hotel id: ", hotel_id)
-#               hotel_details = Hotel.objects.get(id=hotel_id)
-
-#           except Exception:
-#               #pass
-#               continue
-
-        return render(request, "bookings_upcoming_list.html", {"travel_details": travel_details,
-                                                               'form': form
-                                                                   #"booking_details": booking_details,
-                                                                    #"employee_details": employee_details,
-                                                                     #"ticket_details": ticket_details,
-                                                                     #"hotel_booking_details": hotel_booking_details,
-                                                                     #"hotel_details": hotel_details,
-                                                                 #"visa_details": visa_details
-                                                               })
+        travel_bookings = TravelBookingSummary.objects.all()
+        tickets = Ticket.objects.all()
+        hotel_bookings = HotelBooking.objects.all()
+        visas = Visa.objects.all()
+        return render(request, "bookings_upcoming_list.html", {'travel_details': travel_details,
+                                                               'form': form,
+                                                               'travel_bookings': travel_bookings,
+                                                               'tickets': tickets,
+                                                               'hotel_bookings': hotel_bookings,
+                                                               'visas': visas,})
 
 
 class SearchForTravels14DaysView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_travelcalendar'
 
     def get(self, request):
         form = SearchForTravelsForm14days()
@@ -179,7 +151,7 @@ class SearchForTravels14DaysView(LoginRequiredMixin, PermissionRequiredMixin, Vi
 
 class BookingsUpcoming(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_travelcalendar'
 
     def get(self, request):
         bookings_list = TravelCalendar.objects.filter(travel_date_start__gte=date.today()).order_by('travel_date_start')
@@ -197,7 +169,7 @@ class BookingsUpcoming(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 class SearchForTravelsView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_travelcalendar'
 
     def get(self, request):
         form = SearchForTravelsForm()
@@ -244,23 +216,13 @@ class SearchForTravelsView(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 class BookingsUpcomingInfo(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_travelcalendar'
 
     def get(self, request, id):
- #       try:
- #           travel_details = TravelCalendar.objects.get(id=id)
- #           travel_id = travel_details.id
- #           employee_id = travel_details.employee.id
- #           employee_name = travel_details.employee
- #           employee_details = Employee.objects.get(id=employee_id)
- #       except ObjectDoesNotExist:
- #           return render(request, "booking_upcoming_details.html", {"travel_details": travel_details,
- #                                                                    "employee_details": employee_details})
         try:
             travel_details = TravelCalendar.objects.get(id=id)
             travel_id = travel_details.id
             employee_id = travel_details.employee.id
-            #employee_name = travel_details.employee
             employee_details = Employee.objects.get(id=employee_id)
             booking_details = TravelBookingSummary.objects.get(travel_calendar=travel_id)
             booking_summary_id = booking_details.id
@@ -332,14 +294,14 @@ class BookingsUpcomingEmployeeInfo(LoginRequiredMixin, View):
             employee_details = Employee.objects.get(id=employee_id)
         except ObjectDoesNotExist:
             return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
-                                                                     "booking_details": booking_details,
+                                                                              "booking_details": booking_details,
                                                                               "employee_logged": employee_logged})
         try:
             ticket_details = Ticket.objects.get(travel_booking_summary=booking_summary_id)
         except ObjectDoesNotExist:
             return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
-                                                                     "booking_details": booking_details,
-                                                                     "employee_details": employee_details,
+                                                                              "booking_details": booking_details,
+                                                                              "employee_details": employee_details,
                                                                               "employee_logged": employee_logged})
         try:
             hotel_booking_details = HotelBooking.objects.get(travel_booking_summary=booking_summary_id)
@@ -347,9 +309,9 @@ class BookingsUpcomingEmployeeInfo(LoginRequiredMixin, View):
             hotel_details = Hotel.objects.get(id=hotel_id)
         except ObjectDoesNotExist:
             return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
-                                                                     "booking_details": booking_details,
-                                                                     "employee_details": employee_details,
-                                                                     "ticket_details": ticket_details,
+                                                                              "booking_details": booking_details,
+                                                                              "employee_details": employee_details,
+                                                                              "ticket_details": ticket_details,
                                                                               "employee_logged": employee_logged})
         try:
             visa_details = Visa.objects.get(travel_booking_summary=booking_summary_id)
@@ -357,18 +319,17 @@ class BookingsUpcomingEmployeeInfo(LoginRequiredMixin, View):
             print("visa_id: ", visa_id)
         except ObjectDoesNotExist:
             return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
-                                                                     "booking_details": booking_details,
-                                                                     "employee_details": employee_details,
-                                                                     "ticket_details": ticket_details,
+                                                                              "booking_details": booking_details,
+                                                                              "employee_details": employee_details,
+                                                                              "ticket_details": ticket_details,
                                                                               "employee_logged": employee_logged})
 
         return render(request, "booking_upcoming_details_employee.html", {"travel_details": travel_details,
-                                                                 "booking_details": booking_details,
-                                                                 "employee_details": employee_details,
-                                                                 "ticket_details": ticket_details,
-                                                                 "hotel_booking_details": hotel_booking_details,
-                                                                 "hotel_details": hotel_details,
-                                                                 "visa_details": visa_details,
+                                                                          "booking_details": booking_details,
+                                                                          "employee_details": employee_details,
+                                                                          "ticket_details": ticket_details,
+                                                                          "hotel_booking_details": hotel_booking_details,
+                                                                          "visa_details": visa_details,
                                                                           "employee_logged": employee_logged})
 
 
@@ -388,13 +349,6 @@ class BookingsUpcomingEmployeeComment(LoginRequiredMixin, UpdateView):
     fields = ('employee_comment',)
 
     success_url = '/employee_travels/'
-#    user_id = self.request.user.id
-#    user_name = request.user.get_username()
-#    employee_logged = Employee.objects.get(user=user_id)
-#    travels = TravelCalendar.objects.filter(employee=employee_logged).order_by('travel_date_start')
-#    return render(request, "employee_welcome.html", {"user_id": user_id,
-#                                                     "employee_logged": employee_logged,
-#                                                     "travels": travels})
 
 
 # update employee information by employee
@@ -410,7 +364,7 @@ class UpdateEmployeeByEmployeeView(LoginRequiredMixin, UpdateView):
 # travel management menu
 class ManageTrips(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_travelcalendar'
 
     def get(self, request):
         return render(request, "trips.html")
@@ -419,7 +373,7 @@ class ManageTrips(LoginRequiredMixin, PermissionRequiredMixin, View):
 # add travel calendar
 class AddTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.add_travelcalendar'
 
     def get(self, request):
         form = TravelCalendarForm()
@@ -460,7 +414,7 @@ class AddTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # travel calendar - all
 class ListTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_travelcalendar'
 
     def get(self, request):
         travels_list = TravelCalendar.objects.order_by('travel_date_start')
@@ -484,6 +438,7 @@ class ListEmployeeTravelCalendarView(LoginRequiredMixin, View):
         user_name = request.user.get_username()
         employee_logged = Employee.objects.get(user=user_id)
         travels = TravelCalendar.objects.filter(employee=employee_logged).filter(travel_date_start__gte=date.today()).order_by('travel_date_start')
+        travel_bookings = TravelBookingSummary.objects.all()
         bookings = {}
         for travel in travels:
             travel_id = travel.id
@@ -501,7 +456,8 @@ class ListEmployeeTravelCalendarView(LoginRequiredMixin, View):
                                                                       "employee_logged": employee_logged,
                                                                       "travels": travels,
                                                                       "employee_comment": employee_comment,
-                                                                      "bookings": bookings})
+                                                                      "bookings": bookings,
+                                                                      "travel_bookings": travel_bookings})
 
 
 class ListEmployeeTravelHistoryView(LoginRequiredMixin, View):
@@ -535,7 +491,7 @@ class ListEmployeeTravelHistoryView(LoginRequiredMixin, View):
 # delete travel calendar
 class DeleteTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.delete_travelcalendar'
 
     def get(self, request, id):
         travel_calendar_to_delete = TravelCalendar.objects.get(id=id)
@@ -546,7 +502,7 @@ class DeleteTravelCalendarView(LoginRequiredMixin, PermissionRequiredMixin, View
 # add travel booking summary
 class AddTravelBookingSummaryView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.add_travelbookingsummary'
 
     def get(self, request):
         form = TravelBookingSummaryForm()
@@ -579,7 +535,7 @@ class AddTravelBookingSummaryView(LoginRequiredMixin, PermissionRequiredMixin, V
 # view travel booking summary
 class ListTravelBookingSummaryView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_travelbookingsummary'
 
     def get(self, request):
         travel_booking_summary_list = TravelBookingSummary.objects.all()
@@ -597,7 +553,7 @@ class ListTravelBookingSummaryView(LoginRequiredMixin, PermissionRequiredMixin, 
 # delete travel booking summary
 class DeleteTravelBookingSummaryView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.delete_travelbookingsummary'
 
     def get(self, request, id):
         travel_booking_summary_to_delete = TravelBookingSummary.objects.get(id=id)
@@ -608,7 +564,7 @@ class DeleteTravelBookingSummaryView(LoginRequiredMixin, PermissionRequiredMixin
 # add ticket
 class AddTicketView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.add_ticket'
 
     def get(self, request):
         form = TicketForm()
@@ -633,7 +589,7 @@ class AddTicketView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # view all tickets
 class ListTicketView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_ticket'
 
     def get(self, request):
         tickets_list = Ticket.objects.order_by('travel_date_start')
@@ -651,7 +607,7 @@ class ListTicketView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # delete ticket
 class DeleteTicketsView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.delete_ticket'
 
     def get(self, request, id):
         tickets_to_delete = Ticket.objects.get(id=id)
@@ -662,7 +618,7 @@ class DeleteTicketsView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # add visa
 class AddVisaView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.add_visa'
 
     def get(self, request):
         form = VisaForm()
@@ -680,7 +636,7 @@ class AddVisaView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # view all visas
 class ListVisaView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_visa'
 
     def get(self, request):
         visas_list = Visa.objects.order_by('travel_booking_summary')
@@ -698,7 +654,7 @@ class ListVisaView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # delete visa
 class DeleteVisaView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.delete_visa'
 
     def get(self, request, id):
         Visa_to_delete = Visa.objects.get(id=id)
@@ -710,7 +666,7 @@ class DeleteVisaView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # add hotel bookings
 class AddHotelBookingView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.add_hotelbooking'
 
     def get(self, request):
         form = HotelBookingForm()
@@ -732,7 +688,7 @@ class AddHotelBookingView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # view all hotel bookings
 class ListHotelBookingView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_hotelbooking'
 
     def get(self, request):
         hotel_booking_list = HotelBooking.objects.order_by('check_in')
@@ -750,7 +706,7 @@ class ListHotelBookingView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # delete hotel booking
 class DeleteHotelBookingView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.delete_hotelbooking'
 
     def get(self, request, id):
         employee_to_delete = HotelBooking.objects.get(id=id)
@@ -763,7 +719,7 @@ class DeleteHotelBookingView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # employees management menu
 class ManageEmployees(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_employee'
 
     def get(self, request):
         return render(request, "employees_users.html")
@@ -772,7 +728,7 @@ class ManageEmployees(LoginRequiredMixin, PermissionRequiredMixin, View):
 # add employee
 class AddEmployeeView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.add_employee'
 
     def get(self, request):
         form = EmployeeForm()
@@ -790,7 +746,7 @@ class AddEmployeeView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # list of employees
 class EmployeesList(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_employee'
 
     def get(self, request):
         employees_list = Employee.objects.all().order_by('surname')
@@ -839,7 +795,7 @@ class EmployeesList(LoginRequiredMixin, PermissionRequiredMixin, View):
 # update employee information
 class UpdateEmployeeView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.change_employee'
 
     model = Employee
     fields = ('id', 'forename', 'surname', 'passport_no', 'passport_validity', 'birthday', 'nationality',
@@ -851,7 +807,7 @@ class UpdateEmployeeView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView
 # delete employee
 class DeleteEmployeeView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.delete_employee'
 
     def get(self, request, id):
         employee_to_delete = Employee.objects.get(id=id)
@@ -863,7 +819,7 @@ class DeleteEmployeeView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # add user
 class AddUserView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'auth.add_user'
 
     def get(self, request):
         form = AddUserForm()
@@ -881,7 +837,7 @@ class AddUserView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # users list
 class UsersList(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'auth.view_user'
 
     def get(self, request):
         users = User.objects.all()
@@ -891,7 +847,7 @@ class UsersList(LoginRequiredMixin, PermissionRequiredMixin, View):
 # update user information
 class UpdateUserView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'auth.change_user'
 
     model = User
     fields = ('id', 'username', 'first_name', 'last_name', 'email')
@@ -901,7 +857,7 @@ class UpdateUserView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 # delete users
 class DeleteUserView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'auth.delete_user'
 
     def get(self, request, id):
         user_to_delete = User.objects.get(id=id)
@@ -913,7 +869,7 @@ class DeleteUserView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # Mange locations
 # locations menu
 class ManageLocations(LoginRequiredMixin, PermissionRequiredMixin, View):
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_country'
     login_url = '/login/'
 
     def get(self, request):
@@ -922,7 +878,7 @@ class ManageLocations(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 # add country
 class AddCountryView(LoginRequiredMixin, PermissionRequiredMixin, View):
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.add_country'
     login_url = '/login/'
 
     def get(self, request):
@@ -941,7 +897,7 @@ class AddCountryView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # list of countries
 class CountryListView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_country'
 
     def get(self, request):
         countries_list = Country.objects.all()
@@ -970,7 +926,7 @@ class CountryListView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # delete country
 class DeleteCountryView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.delete_country'
 
     def get(self, request, id):
         country_to_delete = Country.objects.get(id=id)
@@ -982,7 +938,7 @@ class DeleteCountryView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # add city
 class AddCityView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.add_city'
 
     def get(self, request):
         form = CityForm()
@@ -1000,7 +956,7 @@ class AddCityView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # list of cities
 class CityListView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_city'
 
     def get(self, request):
         cities_list = City.objects.all()
@@ -1018,7 +974,7 @@ class CityListView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # delete city
 class DeleteCityView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.delete_city'
 
     def get(self, request, id):
         city_to_delete = City.objects.get(id=id)
@@ -1030,7 +986,7 @@ class DeleteCityView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # add airport
 class AddAirportView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.add_airport'
 
     def get(self, request):
         form = AirportForm()
@@ -1048,7 +1004,7 @@ class AddAirportView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # list of airports
 class AirportListView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_airport'
 
     def get(self, request):
         airport_list = Airport.objects.all()
@@ -1066,7 +1022,7 @@ class AirportListView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # delete airport
 class DeleteAirportView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.delete_airport'
 
     def get(self, request, id):
         airport_to_delete = Airport.objects.get(id=id)
@@ -1078,7 +1034,7 @@ class DeleteAirportView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # add hotel
 class AddHotelView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.add_hotel'
 
     def get(self, request):
         form = HotelForm()
@@ -1096,7 +1052,7 @@ class AddHotelView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # list of hotel
 class HotelListView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_hotel'
 
     def get(self, request):
         hotels_list = Hotel.objects.all().order_by('city')
@@ -1114,7 +1070,7 @@ class HotelListView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # delete hotel
 class DeleteHotelView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.delete_hotel'
 
     def get(self, request, id):
         hotel_to_delete = Hotel.objects.get(id=id)
@@ -1126,7 +1082,7 @@ class DeleteHotelView(LoginRequiredMixin, PermissionRequiredMixin, View):
 # financial summary
 class CostOfTravelsView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/login/'
-    permission_required = 'view_user'
+    permission_required = 'travel_planner_app.view_travelcostsummary'
 
     def get(self, request):
         cost_summary_view = TravelCostSummary.objects.all()
@@ -1136,8 +1092,41 @@ class CostOfTravelsView(LoginRequiredMixin, PermissionRequiredMixin, View):
         hotels = HotelBooking.objects.all()
         tickets = Ticket.objects.all()
         return render(request, "travel_cost.html", {"travels_list": travels_list,
-                                                            "travel_calendar": travel_calendar,
-                                                            "visas": visas,
-                                                            "hotels": hotels,
-                                                            "tickets": tickets,
-                                                            "cost_summary_view": cost_summary_view})
+                                                    "travel_calendar": travel_calendar,
+                                                    "visas": visas,
+                                                    "hotels": hotels,
+                                                    "tickets": tickets,
+                                                    "cost_summary_view": cost_summary_view})
+
+
+# travel calendar - supervisor
+class ListAllTravelCalendarSupervisorReviewView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/login/'
+    permission_required = 'travel_planner_app.view_travelcalendar'
+
+    def get(self, request):
+        travels = TravelCalendar.objects.filter(travel_date_start__gte=date.today()).order_by('travel_date_start')
+        travel_bookings = TravelBookingSummary.objects.all()
+        return render(request, "supervisor_approval_travel_calendar_list.html", {"travels": travels,
+                                                                                 "travel_bookings": travel_bookings})
+
+
+class BookingsUpcomingSupervisorApprove(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    login_url = '/login/'
+    permission_required = 'travel_planner_app.change_travelcalendar'
+
+    model = TravelCalendar
+    fields = ('supervisor_approval',)
+
+    success_url = '/supervisor_review_travels/'
+
+
+class BookingsUpcomingSupervisorComment(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    login_url = '/login/'
+    permission_required = 'travel_planner_app.change_travelbookingsummary'
+
+    model = TravelBookingSummary
+    fields = ('supervisor_comment',)
+
+    success_url = '/supervisor_review_travels/'
+

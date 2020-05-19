@@ -125,4 +125,4 @@ class TravelCostSummary(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'v_travel_cost_summary_3'
+        db_table = 'v_travel_cost_summary_6'

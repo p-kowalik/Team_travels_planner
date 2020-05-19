@@ -38,7 +38,11 @@
             <th onclick="sortTable(5)">Travel purpose</th>
             <th onclick="sortTable(6)">Employee approval</th>
             <th onclick="sortTable(7)">Supervisor approval</th>
-            <th onclick="sortTable(8)">Info</th>
+            <th onclick="sortTable(8)">Travel booking</th>
+            <th onclick="sortTable(9)">Ticket</th>
+            <th onclick="sortTable(10)">Hotel booking</th>
+            <th onclick="sortTable(11)">Visa</th>
+            <th onclick="sortTable(12)">Info</th>
 
 
         </tr>
@@ -51,8 +55,57 @@
                 <td>{{ travel_detail.city_from }}</td>
                 <td>{{ travel_detail.city_destination }}</td>
                 <td>{{ travel_detail.travel_purpose_description }}</td>
-                <td>{{ travel_detail.employee_approval }}</td>
-                <td>{{ travel_detail.supervisor_approval }}</td>
+                <td>{% if travel_detail.employee_approval == True %}
+                    Accepted
+                {% elif travel_detail.employee_approval == False %}
+                    Rejected
+                {% elif travel_detail.employee_approval == None %}
+                    No decision yet
+                {% endif %}</td>
+                <td>{% if travel_detail.supervisor_approval == True %}
+                    Accepted
+                {% elif travel_detail.supervisor_approval == False %}
+                    Rejected
+                {% elif travel_detail.supervisor_approval == None %}
+                    No decision yet
+                {% endif %}</td>
+
+                <td>{% for travel_booking in travel_bookings %}
+                    {% if travel_booking.travel_calendar.id == travel_detail.id %}
+                        {{ travel_booking.id }}
+                    {% endif %}
+                {% endfor %}</td>
+
+                <td>{% for travel_booking in travel_bookings %}
+                    {% if travel_booking.travel_calendar.id == travel_detail.id %}
+                        {% for ticket in tickets %}
+                            {% if ticket.travel_booking_summary.id == travel_booking.id %}
+                                {{ ticket.id }}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}</td>
+
+            <td>{% for travel_booking in travel_bookings %}
+                    {% if travel_booking.travel_calendar.id == travel_detail.id %}
+                        {% for hotel_booking in hotel_bookings %}
+                            {% if hotel_booking.travel_booking_summary.id == travel_booking.id %}
+                                {{ hotel_booking.id }}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}</td>
+
+            <td>{% for travel_booking in travel_bookings %}
+                    {% if travel_booking.travel_calendar.id == travel_detail.id %}
+                        {% for visa in visas %}
+                            {% if visa.travel_booking_summary.id == travel_booking.id %}
+                                {{ visa.id }}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}</td>
+
                 <td><a href="/booking_details/{{ travel_detail.id }}/" class="btn btn-info" role="button">Info</a></td>
 
             </tr>

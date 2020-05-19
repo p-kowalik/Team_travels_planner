@@ -30,7 +30,7 @@
 
     <!-- Sidebar -->
     <div class="bg-light border-right" id="sidebar-wrapper">
-        <div class="sidebar-heading">See available options for {{ user }}</div>
+        <div class="sidebar-heading">See available options for {{ employee_logged }}</div>
         <div class="list-group list-group-flush">
             <a href="/index_employee/" class="list-group-item list-group-item-action bg-light">Home</a>
             <a href="/employee_travels/" class="list-group-item list-group-item-action bg-light">Employee Upcoming travels</a>
@@ -54,7 +54,7 @@
 
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <p class="nav-link">Logged user: {{user}}</p>
+                            <p class="nav-link">User: {{employee_logged}}</p>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout/">Logout</a>
